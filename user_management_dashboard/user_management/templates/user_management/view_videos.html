@@ -1,0 +1,28 @@
+{% extends "user_management/base.html" %}
+
+{% block content %}
+
+<h1>Available Topics</h1>
+
+<ul>
+    {% for topic in topics %}
+        <li>
+            <h3>{{ topic.name }}</h3>
+            <ul>
+                {% for subtopic in topic.subtopics.all %}
+                    <li>
+                        <a href="{% url 'topic_videos' topic_name=topic.name subtopic_name=subtopic.name %}">
+                            {{ subtopic.name }}
+                        </a>
+                    </li>
+                {% empty %}
+                    <p>No subtopics available for this topic.</p>
+                {% endfor %}
+            </ul>
+        </li>
+    {% empty %}
+        <p>No topics available.</p>
+    {% endfor %}
+</ul>
+
+{% endblock %}

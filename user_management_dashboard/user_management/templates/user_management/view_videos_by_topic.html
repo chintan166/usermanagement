@@ -1,0 +1,21 @@
+{% extends "user_management/base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<h2>Videos for {{ topic.name }}</h2>
+<ul>
+  {% for video in videos %}
+    <li>
+      <h3>{{ video.title }}</h3>
+      <p>{{ video.description }}</p>
+      <video controls>
+        <source src="{{ video.video_file.url }}" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </li>
+  {% endfor %}
+</ul>
+
+{% endblock %}

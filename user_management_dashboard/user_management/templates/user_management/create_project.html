@@ -1,0 +1,25 @@
+{% extends "user_management/base.html" %}
+
+{% block content %}
+<h2>Create Project</h2>
+
+<form method="post">
+    {% csrf_token %}
+    
+    <!-- Check for form errors -->
+    {% if form.errors %}
+        <div class="errors">
+            <ul>
+                {% for field in form %}
+                    {% if field.errors %}
+                        <li>{{ field.name }}: {{ field.errors }}</li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+    
+    {{ form.as_p }}
+    <button type="submit">Create Project</button>
+</form>
+{% endblock %}

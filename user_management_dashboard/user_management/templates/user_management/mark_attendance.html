@@ -1,0 +1,16 @@
+{% extends "user_management/base.html" %}
+
+{% block content %}
+<h2>Mark Attendance</h2>
+
+{% if message %}
+  <p>{{ message }}</p>
+{% endif %}
+
+{% if not message or message != "You have already marked your attendance for today." %}
+<form method="post">
+  {% csrf_token %}
+  <button type="submit">Mark Attendance</button>
+</form>
+{% endif %}
+{% endblock %}

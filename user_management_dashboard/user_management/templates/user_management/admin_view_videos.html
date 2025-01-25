@@ -1,0 +1,14 @@
+{% extends "user_management/base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<h2>Topics</h2>
+<ul>
+  {% for topic in topics %}
+    <li><a href="{% url 'view_videos_by_topic' topic.id %}">{{ topic.name }}</a></li>
+  {% endfor %}
+</ul>
+
+{% endblock %}

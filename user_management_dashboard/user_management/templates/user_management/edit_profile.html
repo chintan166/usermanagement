@@ -1,0 +1,53 @@
+{% extends "user_management/base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+    <div class="container-scroller">
+      <div class="container-fluid page-body-wrapper full-page-wrapper">
+        <div class="content-wrapper d-flex align-items-center auth">
+          <div class="row flex-grow" style="width:100%">
+            <div class="col-lg-12 mx-auto">
+              <div class="auth-form-light text-left p-5">
+                
+                <h4>Edit Your Profile</h4>
+                <h6 class="font-weight-light">Update your profile information below.</h6>
+
+                <form method="post" class="pt-3">
+                  {% csrf_token %}
+                  <div class="form-group">
+                    <label for="education">Education:</label>
+                    <input type="text" name="education" value="{{ form.education.value }}" class="form-control" id="education" placeholder="Education">
+                  </div>
+                  <div class="form-group">
+                    <label for="college_name">College Name:</label>
+                    <input type="text" name="college_name" value="{{ form.college_name.value }}" class="form-control" id="college_name" placeholder="College Name">
+                  </div>
+                  <div class="form-group">
+                    <label for="address">Address:</label>
+                    <input type="text" name="address" value="{{ form.address.value }}" class="form-control" id="address" placeholder="Address">
+                  </div>
+                  <div class="form-group">
+                    <label for="sex">Sex:</label>
+                    <select name="sex" class="form-control" id="sex">
+                      <option value="Male" {% if form.sex.value == 'Male' %}selected{% endif %}>Male</option>
+                      <option value="Female" {% if form.sex.value == 'Female' %}selected{% endif %}>Female</option>
+                      <option value="Other" {% if form.sex.value == 'Other' %}selected{% endif %}>Other</option>
+                    </select>
+                  </div>
+                  <div class="mt-3 d-grid gap-2">
+                    <button class="btn btn-block btn-gradient-primary btn-lg font-weight-medium auth-form-btn" type="submit">Save Changes</button>
+                  </div>
+                </form>
+
+                <div class="mt-3 d-grid gap-2">
+                  <a href="{% url 'profile' %}" class="btn btn-block btn-gradient-primary btn-lg font-weight-medium auth-form-btn">Cancel</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+{% endblock %}

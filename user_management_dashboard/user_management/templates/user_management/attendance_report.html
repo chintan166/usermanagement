@@ -1,0 +1,42 @@
+{% extends "user_management/base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+
+<h2>Attendance Report</h2>
+
+<form method="get" action="{% url 'attendance_report' %}">
+  <label for="start_date">Start Date:</label>
+  <input type="date" id="start_date" name="start_date" value="{{ start_date }}">
+  
+  <label for="end_date">End Date:</label>
+  <input type="date" id="end_date" name="end_date" value="{{ end_date }}">
+  
+  <button type="submit">Filter</button>
+</form>
+
+<form method="get" action="{% url 'export_attendance_csv' %}">
+  <input type="hidden" name="start_date" value="{{ request.GET.start_date }}">
+  <input type="hidden" name="end_date" value="{{ request.GET.end_date }}">
+  <button type="submit">Export to CSV</button>
+</form>
+
+<table border="1">
+  <tr>
+    <th>User</th>
+    <th>Date</th>
+    <th>Status</th>
+  </tr>
+  {% for record in records %}
+    <tr>
+      <td>{{ record.user.username }}</td>
+      <td>{{ record.date }}</td>
+      <td>{{ record.status }}</td>
+    </tr>
+  {% endfor %}
+</table>
+
+
+{% endblock %}

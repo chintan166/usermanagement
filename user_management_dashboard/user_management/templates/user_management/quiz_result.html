@@ -1,0 +1,22 @@
+{% extends "user_management/base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<h2>{{ quiz.title }} - Results</h2>
+<p>Your score: {{ score }} out of {{ total }}</p>
+
+{% for answer_info in user_answers %}
+    <h3>{{ answer_info.question.text }}</h3>
+    <p>Your answer: {{ answer_info.selected_answer.text }}</p>
+
+    {% if answer_info.selected_answer != answer_info.correct_answer %}
+        <p><strong>Correct answer: {{ answer_info.correct_answer.text }}</strong></p>
+    {% else %}
+        <p><strong>Correct answer!</strong></p>
+    {% endif %}
+{% endfor %}
+
+
+{% endblock %}

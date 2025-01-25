@@ -1,0 +1,108 @@
+{% load static %}
+<nav class="sidebar sidebar-offcanvas" id="sidebar">
+    <ul class="nav">
+      <li class="nav-item nav-profile">
+        <a href="{% url 'dashboard' %}" class="nav-link">
+          <div class="nav-profile-image">
+            {% if request.user.profile_pic %}
+          <img src="{{ request.user.profile_pic.url }}" alt="profile" />
+        {% else %}
+          <img src="{% static 'images/faces/face1.jpg' %}" alt="default profile" />
+        {% endif %}
+            <span class="login-status online"></span>
+            <!--change to offline or busy as needed-->
+          </div>
+          <div class="nav-profile-text d-flex flex-column">
+            <span class="font-weight-bold mb-2">{% if request.user.is_authenticated %}
+                <p>Welcome, {{ request.user.username }}</p>
+                {% endif %}
+            </span>
+          </div>
+          <i class="mdi mdi-bookmark-check text-success nav-profile-badge"></i>
+        </a>
+      </li>
+      {% if not request.user.is_superuser %}
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'mark_attendance' %}">
+          <span class="menu-title">Mark Attendance</span>
+          <i class="mdi mdi-home menu-icon"></i>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'view_attendance' %}">
+          <span class="menu-title">View Attendance</span>
+          <i class="mdi mdi-home menu-icon"></i>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'quiz_list' %}">
+          <span class="menu-title">Take a Quiz</span>
+          <i class="mdi mdi-home menu-icon"></i>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'list_projects' %}">
+          <span class="menu-title">Projects List</span>
+          <i class="mdi mdi-home menu-icon"></i>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'view_videos' %}">
+          <span class="menu-title">View Videos</span>
+          <i class="mdi mdi-home menu-icon"></i>
+        </a>
+      </li>
+      
+      
+      
+      {% endif %}
+      {% if request.user.is_superuser %}
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'upload_video' %}">
+          <span class="menu-title">Upload Video</span>
+          <i class="mdi mdi-home menu-icon"></i>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'create_project' %}">
+          <span class="menu-title">Create Project</span>
+          <i class="mdi mdi-home menu-icon"></i>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'view_users_and_area_of_interest' %}">
+          <span class="menu-title">All User</span>
+          <i class="mdi mdi-home menu-icon"></i>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'admin_view_videos' %}">
+          <span class="menu-title">View Videos</span>
+          <i class="mdi mdi-home menu-icon"></i>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'admin_list_projects' %}">
+          <span class="menu-title">All Project</span>
+          <i class="mdi mdi-home menu-icon"></i>
+        </a>
+      </li>
+
+      
+
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'attendance_report' %}">
+          <span class="menu-title">Attendance Report</span>
+          <i class="mdi mdi-home menu-icon"></i>
+        </a>
+      </li>
+      {% endif %}
+      
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'logout' %}">
+          <span class="menu-title">Logout</span>
+          <i class="mdi mdi-home menu-icon"></i>
+        </a>
+      </li>
+    </ul>
+  </nav>

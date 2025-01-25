@@ -1,0 +1,130 @@
+{% extends "user_management/base.html" %}
+
+{% block content %}
+
+<h1>Videos for {{ topic.name }} - {{ subtopic.name }}</h1>
+
+<div style="display: flex;">
+
+    <!-- Left Section: List of Video Titles -->
+    <div style="width: 30%; padding-right: 20px;">
+        {% if videos %}
+            <ul>
+                {% for video in videos %}
+                    <li>
+                        <a href="#" class="video-link" data-video-url="{{ video.video_file.url }}" data-video-title="{{ video.title }}">
+                            {{ video.title }}
+                        </a>
+                        <p>{{ video.description }}</p>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No videos available for this subtopic.</p>
+        {% endif %}
+    </div>
+
+    <!-- Right Section: Video Player -->
+    <div id="video-container" style="width: 70%; border-left: 2px solid #ddd; padding-left: 20px;">
+        <h2 id="video-title">Select a video to watch</h2>
+        <video id="video-player" width="100%">
+            <source id="video-source" src="" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    
+        <!-- Custom Controls -->
+        <div id="video-controls">
+            <button id="play-pause-btn">Play</button>
+            <input type="range" id="progress-bar" value="0" max="100">
+            <input type="range" id="volume-control" value="100" max="100">
+            <button id="full-width-btn">Full Width</button> <!-- Button to toggle full width -->
+        </div>
+    </div>
+
+</div>
+
+<script>
+    const videoPlayer = document.getElementById('video-player');
+    const videoSource = document.getElementById('video-source');
+    const videoTitle = document.getElementById('video-title');
+    const videoContainer = document.getElementById('video-container');
+
+    const playPauseButton = document.getElementById('play-pause-btn');
+    const progressBar = document.getElementById('progress-bar');
+    const volumeControl = document.getElementById('volume-control');
+    const fullWidthButton = document.getElementById('full-width-btn');
+
+    const videoLinks = document.querySelectorAll('.video-link');
+
+    let isFullWidth = false;
+
+    videoLinks.forEach(link => {
+        link.addEventListener('click', (event) => {
+            event.preventDefault();  // Prevent the default link behavior
+
+            // Get the video URL and title from the data attributes
+            const videoUrl = link.getAttribute('data-video-url');
+            const videoTitleText = link.getAttribute('data-video-title');
+
+            // Update the video player with the new video
+            videoSource.src = videoUrl;
+            videoPlayer.load();  // Reload the video with the new source
+            videoTitle.textContent = videoTitleText;  // Update the title
+
+            // Auto-play the video
+            videoPlayer.play();
+            playPauseButton.textContent = 'Pause';
+        });
+    });
+
+    // Play/Pause button functionality
+    playPauseButton.addEventListener('click', () => {
+        if (videoPlayer.paused) {
+            videoPlayer.play();
+            playPauseButton.textContent = 'Pause';
+        } else {
+            videoPlayer.pause();
+            playPauseButton.textContent = 'Play';
+        }
+    });
+
+    // Update the progress bar as the video plays
+    videoPlayer.addEventListener('timeupdate', () => {
+        const progress = (videoPlayer.currentTime / videoPlayer.duration) * 100;
+        progressBar.value = progress;
+    });
+
+    // Seek through the video with the progress bar
+    progressBar.addEventListener('input', () => {
+        const seekTime = (progressBar.value / 100) * videoPlayer.duration;
+        videoPlayer.currentTime = seekTime;
+    });
+
+    // Volume control functionality
+    volumeControl.addEventListener('input', () => {
+        videoPlayer.volume = volumeControl.value / 100;
+    });
+
+    // Full-width toggle button functionality
+    fullWidthButton.addEventListener('click', () => {
+        if (isFullWidth) {
+            // Reset to normal width
+            videoContainer.style.width = '70%';  // Set back to 70% width
+            videoPlayer.style.width = '100%';    // Video player also takes up 100% of the container
+            fullWidthButton.textContent = 'Full Width';  // Change button text back
+        } else {
+            // Set video player to full width (100% of the window width)
+            videoContainer.style.width = '100%';  // Set the container to take full width
+            videoPlayer.style.width = '100vw';    // Set video player to 100% of the viewport width
+            fullWidthButton.textContent = 'Normal Size';  // Change button text to reset
+        }
+        isFullWidth = !isFullWidth;  // Toggle the state
+    });
+
+    // Disable right-click on the entire page
+    document.addEventListener('contextmenu', (event) => {
+        event.preventDefault();
+    });
+</script>
+
+{% endblock %}

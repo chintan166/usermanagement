@@ -1,0 +1,40 @@
+{% extends "user_management/base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+
+<h2>Available Projects</h2>
+{% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+            <p class="message {{ message.tags }}">{{ message }}</p>
+        {% endfor %}
+    </div>
+{% endif %}
+
+{% if projects %}
+
+<ul>
+  {% for project in projects %}
+    <li>
+      <h3>{{ project.title }}</h3>
+      <p>{{ project.description }}</p>
+      <p><strong>Start Date:</strong> {{ project.start_date }}</p>
+      <p><strong>End Date:</strong> {{ project.end_date }}</p>
+
+      {% if project.document %}
+            <p><strong>Download Document:</strong> 
+                <a href="{{ project.get_document_url }}" target="_blank">Click here to download</a>
+            </p>
+        {% else %}
+            <p>No document uploaded.</p>
+        {% endif %}
+
+      <a href="{% url 'submit_project' %}">Submit Your Work</a>
+    </li>
+  {% endfor %}
+</ul>
+{% endif %}
+{% endblock %}

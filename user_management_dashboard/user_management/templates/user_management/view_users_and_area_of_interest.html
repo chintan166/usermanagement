@@ -1,0 +1,29 @@
+{% extends "user_management/base.html" %}
+
+{% block content %}
+    <div class="container">
+        <h2>All Users and Their Area of Interest</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Area of Interest</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for profile in user_profiles %}
+                    <tr>
+                        <td>{{ profile.user.username }}</td>
+                        <td>{{ profile.user.email }}</td>
+                        <td>{{ profile.area_of_interest }}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="3">No users found.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

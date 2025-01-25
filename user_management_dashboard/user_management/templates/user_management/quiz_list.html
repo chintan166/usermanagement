@@ -1,0 +1,19 @@
+{% extends "user_management/base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+
+<h2>Available Quizzes</h2>
+{% if quizzes %}
+    {% for quiz in quizzes %}
+        <h3>{{ quiz.title }}</h3>
+        <p>{{ quiz.description }}</p>
+        <a href="{% url 'quiz_detail' quiz.id %}">Take Quiz</a>
+    {% endfor %}
+{% else %}
+    <p>No quizzes available for your area of interest.</p>
+{% endif %}
+
+{% endblock %}

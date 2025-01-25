@@ -1,0 +1,124 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Purple Admin</title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="{% static 'css/materialdesignicons.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/themify-icons.css' %}">
+    <link rel="stylesheet" href="{% static 'css/vendor.bundle.base.css'%} ">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css'%} ">
+    <!-- endinject -->
+    <!-- Plugin css for this page -->
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <!-- endinject -->
+    <!-- Layout styles -->
+    <link rel="stylesheet" href="{% static 'css/style.css'%}">
+    <!-- End layout styles -->
+    <link rel="shortcut icon" href="{% static 'images/favicon.png'%}" />
+  </head>
+  <body>
+    <div class="container-scroller">
+      <div class="container-fluid page-body-wrapper full-page-wrapper">
+        <div class="content-wrapper d-flex align-items-center auth">
+          <div class="row flex-grow">
+            <div class="col-lg-4 mx-auto">
+              <div class="auth-form-light text-left p-5">
+                <div class="brand-logo">
+                  <img src="{% static 'images/logo.svg'%}">
+                </div>
+                <h4>New here?</h4>
+                <h6 class="font-weight-light">Signing up is easy. It only takes a few steps                </h6>
+                <form method="POST" enctype="multipart/form-data" class="pt-3">
+                  {% csrf_token %}
+                  <div class="form-group">
+                    <input type="text" name="username" class="form-control form-control-lg" maxlength="150" autofocus="" required="" placeholder="username" id="id_username">
+                  </div>
+                  <div class="form-group">
+                    <input type="email" name="email" class="form-control form-control-lg" maxlength="254" autofocus="" required="" placeholder="email" id="id_email">
+                  </div>
+                  <div class="form-group">
+                    <input type="password" name="password1" autocomplete="new-password" class="form-control form-control-lg" id="id_password1" placeholder="Password">
+                  </div>
+                  <div class="form-group">
+                    <input type="password" name="password2" autocomplete="new-password" class="form-control form-control-lg" id="id_password2" placeholder="Password">
+                  </div>
+                  <div class="form-group">
+                    <label for="id_area_of_interest">Area of interest:</label>
+                    <select name="area_of_interest" id="id_area_of_interest" class="form-select form-select-lg" id="exampleFormControlSelect2">
+                      <option value="Django">Django</option>
+                      <option value="Machine Learning">Machine Learning</option>
+                      <option value="AI">AI</option>
+                      <option value="Laravel">Laravel</option>
+                      <option value="React">React</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <input type="text" name="education" class="form-control form-control-lg" maxlength="100" placeholder="Education" id="id_education">
+                  </div>
+                  <div class="form-group">
+                    <input type="text" name="college_name" class="form-control form-control-lg" maxlength="255" placeholder="College Name" id="id_college_name">
+                  </div>
+                  <div class="form-group">
+                    <label for="id_profile_pic">Profile Pic:</label> <!-- New file upload field -->
+                    <input type="file" name="profile_pic" id="id_profile_pic" class="form-control form-control-lg" accept="image/*"> <!-- Added screenshot input -->
+                  </div>
+                  <div class="form-group">
+                    <input type="text" name="address" class="form-control form-control-lg" maxlength="255" placeholder="Address" id="id_address">
+                  </div>
+                  <div class="form-group">
+                    <select name="sex" id="id_sex" class="form-select form-select-lg">
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="id_screenshot">Upload Screenshot:</label> <!-- New file upload field -->
+                    <input type="file" name="screenshot" id="id_screenshot" class="form-control form-control-lg" accept="image/*"> <!-- Added screenshot input -->
+                  </div>
+                  <div class="mt-3 d-grid gap-2">
+                    <button class="btn btn-block btn-gradient-primary btn-lg font-weight-medium auth-form-btn" type="submit">Register</button>
+                  </div>
+                  
+                  <div class="my-2 d-flex justify-content-between align-items-center">
+                    <div class="form-check">
+                      <label class="form-check-label text-muted">
+                        <input type="checkbox" class="form-check-input"> Keep me signed in </label>
+                    </div>
+                    
+                  </div>
+                  <div class="text-center mt-4 font-weight-light"> If you have an account? <a href="{% url 'login' %}" class="text-primary">Login</a>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- content-wrapper ends -->
+      </div>
+      <!-- page-body-wrapper ends -->
+    </div>
+    <!-- container-scroller -->
+    <!-- plugins:js -->
+    <script src="{% static 'js/vendor.bundle.base.js' %}"></script>
+    <!-- endinject -->
+    <!-- Plugin js for this page -->
+    <!-- End plugin js for this page -->
+    <!-- inject:js -->
+    <script src="{% static 'js/off-canvas.js' %}"></script>
+    <script src="{% static 'js/misc.js'%}"></script>
+    <script src="{% static 'js/settings.js'%}"></script>
+    <script src="{% static 'js/todolist.js'%}"></script>
+    <script src="{% static 'js/jquery.cookie.js'%}"></script>
+    <!-- endinject -->
+  </body>
+</html>
+
+
+
+
