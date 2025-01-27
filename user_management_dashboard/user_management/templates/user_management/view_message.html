@@ -1,0 +1,22 @@
+{% extends "user_management/base.html" %}
+
+{% load static %}
+
+{% block content %}
+  <h1>Message Details</h1>
+
+  <h3>Subject: {{ message.subject }}</h3>
+  <p><strong>Your Message:</strong> {{ message.content }}</p>
+  <p><small>Sent on: {{ message.created_at }}</small></p>
+
+  {% if message.reply %}
+    <h4>Admin Reply:</h4>
+    <p>{{ message.reply }}</p>
+    <small>Replied on: {{ message.updated_at }}</small>
+  {% else %}
+    <p><em>No reply from admin yet.</em></p>
+  {% endif %}
+
+  <a href="{% url 'send_message' %}">Send another message</a>
+{% endblock %}
+

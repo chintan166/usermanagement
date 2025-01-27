@@ -1,0 +1,22 @@
+{% extends "user_management/base.html" %}
+
+{% load static %}
+
+{% block content %}
+  <h1>Messages from Users</h1>
+  <ul>
+    {% for message in messages %}
+      <li>
+        <strong>{{ message.subject }}</strong><br>
+        {{ message.content }}<br>
+        <a href="{% url 'reply_to_message' message.id %}">Reply</a><br>
+        <small>{{ message.created_at }}</small>
+        {% if message.reply %}
+          <p><strong>Replied:</strong> {{ message.reply }}</p>
+        {% else %}
+          <p><em>No reply yet</em></p>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+{% endblock %}

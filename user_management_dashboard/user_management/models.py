@@ -159,3 +159,23 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+    
+class Message(models.Model):
+    STATUS_CHOICES = [
+        ('sent', 'Sent'),
+        ('replied', 'Replied'),
+    ]
+    
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)  # The user who sent the message
+    subject = models.CharField(max_length=200)  # Subject of the message
+    content = models.TextField()  # Message content
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='sent')  # Message status
+    reply = models.TextField(null=True, blank=True)  # Admin reply (can be empty initially)
+    created_at = models.DateTimeField(auto_now_add=True)  # When the message was sent
+    updated_at = models.DateTimeField(auto_now=True)  # When the message was replied
+
+    def __str__(self):
+        return f"Message from {self.user.username} - {self.subject}"
+
+    class Meta:
+        ordering = ['-created_at']

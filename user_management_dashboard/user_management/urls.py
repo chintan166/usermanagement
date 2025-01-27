@@ -32,4 +32,9 @@ urlpatterns = [
     path('password_reset/<int:user_id>/', views.password_reset, name='password_reset'),
     path('view_users_and_area_of_interest/', views.view_users_and_area_of_interest, name='view_users_and_area_of_interest'),
     path('jobs_by_area/', views.jobs_by_area, name='jobs_by_area'),
+    path('send_message/', views.send_message, name='send_message'),  # User sends a message
+    path('message_sent/', views.message_sent, name='message_sent'),  # Confirmation page
+    path('view_message/<int:message_id>/', views.view_message, name='view_message'),  # User views their message and reply
+    path('view_messages/', views.view_messages, name='view_messages'),  # Admin views messages
+    path('reply_message/<int:message_id>/', views.reply_to_message, name='reply_to_message'),
 ]

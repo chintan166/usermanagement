@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib.auth import login, authenticate, logout,get_user_model
-from .forms import CustomUserCreationForm,EditProfileForm,ProjectForm,PasswordResetRequestForm,CustomAuthenticationForm,VideoUploadForm,SubmissionForm
-from .models import CustomUser,Post,AttendanceRecord,Subtopic,Quiz,UserProfile, Question, Answer,Video, Topic,Project, Submission
+from .forms import CustomUserCreationForm,MessageForm,ReplyForm,EditProfileForm,ProjectForm,PasswordResetRequestForm,CustomAuthenticationForm,VideoUploadForm,SubmissionForm
+from .models import CustomUser,Post,Message,AttendanceRecord,Subtopic,Quiz,UserProfile, Question, Answer,Video, Topic,Project, Submission
 from django.utils.timezone import now
 from django.contrib.auth.decorators import login_required, user_passes_test
 from datetime import datetime
@@ -424,3 +424,45 @@ def jobs_by_area(request):
     posts = Post.objects.filter(area_of_interest=user_profile.area_of_interest, is_active=True).order_by('created_at')
 
     return render(request, 'user_management/jobs_by_area.html', {'posts': posts})
+
+def send_message(request):
+    if request.method == 'POST':
+        form = MessageForm(request.POST)
+        if form.is_valid():
+            message = form.save(commit=False)
+            message.user = request.user  # Associate message with the logged-in user
+            message.save()
+            return redirect('message_sent')  # Redirect to a confirmation page
+    else:
+        form = MessageForm()
+
+    return render(request, 'user_management/send_message.html', {'form': form})
+
+
+def view_messages(request):
+    messages = Message.objects.filter(user=request.user)  # Fetch messages that are not replied to
+    return render(request, 'user_management/view_messages.html', {'messages': messages})
+
+def view_message(request, message_id):
+    # Fetch the message that belongs to the logged-in user using message_id
+    message = get_object_or_404(Message, id=message_id, user=request.user)
+
+    # Render the template with the message and reply (if any)
+    return render(request, 'user_management/view_message.html', {'message': message})
+
+def reply_to_message(request, message_id):
+    message = get_object_or_404(Message, id=message_id)
+    
+    if request.method == 'POST':
+        form = ReplyForm(request.POST, instance=message)
+        if form.is_valid():
+            message.status = 'replied'  # Change status to replied
+            form.save()
+            return redirect('view_messages')  # Redirect to the list of messages
+    else:
+        form = ReplyForm(instance=message)
+
+    return render(request, 'user_management/reply_message.html', {'form': form, 'message': message})
+
+def message_sent(request):
+    return render(request, 'user_management/message_sent.html')

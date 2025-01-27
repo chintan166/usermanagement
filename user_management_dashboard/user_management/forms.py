@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from .models import CustomUser,Video,Submission,Project
+from .models import CustomUser,Video,Submission,Project,Message
 
 class CustomUserCreationForm(UserCreationForm):
     area_of_interest = forms.ChoiceField(choices=[
@@ -46,3 +46,13 @@ class ProjectForm(forms.ModelForm):
         
 class PasswordResetRequestForm(forms.Form):
     username_or_email = forms.CharField(label='Username or Email', max_length=254)
+    
+class MessageForm(forms.ModelForm):
+    class Meta:
+        model = Message
+        fields = ['subject', 'content']  # Allow users to send subject and content
+        
+class ReplyForm(forms.ModelForm):
+    class Meta:
+        model = Message
+        fields = ['reply']  # Admin can only reply to the message
