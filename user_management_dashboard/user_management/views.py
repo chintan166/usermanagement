@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib.auth import login, authenticate, logout,get_user_model
 from .forms import CustomUserCreationForm,EditProfileForm,ProjectForm,PasswordResetRequestForm,CustomAuthenticationForm,VideoUploadForm,SubmissionForm
-from .models import CustomUser,AttendanceRecord,Subtopic,Quiz,UserProfile, Question, Answer,Video, Topic,Project, Submission
+from .models import CustomUser,Post,AttendanceRecord,Subtopic,Quiz,UserProfile, Question, Answer,Video, Topic,Project, Submission
 from django.utils.timezone import now
 from django.contrib.auth.decorators import login_required, user_passes_test
 from datetime import datetime
@@ -415,3 +415,12 @@ def view_users_and_area_of_interest(request):
     return render(request, 'user_management/view_users_and_area_of_interest.html', {
         'user_profiles': user_profiles
     })
+
+def jobs_by_area(request):
+    # Get the logged-in user's area of interest from their profile
+    user_profile = request.user.userprofile  # Assuming `UserProfile` model exists with area_of_interest
+
+    # Filter posts by the user's area of interest and active status
+    posts = Post.objects.filter(area_of_interest=user_profile.area_of_interest, is_active=True).order_by('created_at')
+
+    return render(request, 'user_management/jobs_by_area.html', {'posts': posts})

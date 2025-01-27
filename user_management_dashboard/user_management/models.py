@@ -140,3 +140,22 @@ class Submission(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.project.title}"
+    
+class Post(models.Model):
+    area_of_interest = models.CharField(
+        max_length=100, 
+        choices=[
+            ('Django', 'Django'),
+            ('Machine Learning', 'Machine Learning'),
+            ('Laravel', 'Laravel'),
+            ('React', 'React'),
+        ]
+    )
+    title = models.CharField(max_length=200)
+    apply = models.CharField(max_length=200,null=True, help_text="URL or email to apply for the position")
+    description = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.title

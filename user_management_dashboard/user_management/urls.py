@@ -31,4 +31,5 @@ urlpatterns = [
     path('password_reset_request/', views.password_reset_request, name='password_reset_request'),
     path('password_reset/<int:user_id>/', views.password_reset, name='password_reset'),
     path('view_users_and_area_of_interest/', views.view_users_and_area_of_interest, name='view_users_and_area_of_interest'),
+    path('jobs_by_area/', views.jobs_by_area, name='jobs_by_area'),
 ]

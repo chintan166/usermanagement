@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import AttendanceRecord,Quiz,Subtopic,Question,Answer,UserProfile,Topic,Video,Project, Submission,CustomUser
+from .models import AttendanceRecord,Post,Quiz,Subtopic,Question,Answer,UserProfile,Topic,Video,Project, Submission,CustomUser
 
 class UserProfileAdmin(admin.ModelAdmin):
     # List the fields to be displayed in the admin change list page (list view)
@@ -30,3 +30,4 @@ admin.site.register(Submission)
 admin.site.register(CustomUser,CustomUserAdmin)
 admin.site.register(UserProfile,UserProfileAdmin)
 admin.site.register(Subtopic)
+admin.site.register(Post)
