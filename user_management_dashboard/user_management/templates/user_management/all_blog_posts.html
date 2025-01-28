@@ -1,0 +1,24 @@
+{% extends "user_management/base.html" %}
+
+{% block content %}
+    <h1>Hello {{request.user.username}}</h1>
+
+    {% if posts %}
+        <ul>
+            {% for post in posts %}
+                <li>
+                    <h2>{{ post.title }}</h2>
+                    <p>{{ post.description }}</p>
+                    <p><small>Posted on: {{ post.created_at }}</small></p>
+                    {% if post.blog_image %}
+                        <div class="post-image">
+                            <img src="{{ post.blog_image.url }}" alt="{{ post.title }} image" />
+                        </div>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No posts available.</p>
+    {% endif %}
+{% endblock %}

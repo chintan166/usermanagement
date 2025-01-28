@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from .models import CustomUser,Video,Submission,Project,Message,Resume
+from .models import CustomUser,BlogPost,Video,Submission,Project,Message,Resume
 
 TEMPLATE_CHOICES = [
     ('simple_layout', 'Simple Layout'),
@@ -63,6 +63,12 @@ class ReplyForm(forms.ModelForm):
         fields = ['reply']  # Admin can only reply to the message
         
 class ResumeForm(forms.ModelForm):
+    template = forms.ChoiceField(choices=TEMPLATE_CHOICES, required=True)
     class Meta:
         model = Resume
-        fields = ['name', 'email', 'phone', 'about', 'education', 'experience', 'skills', 'template']
+        fields = ['name', 'email', 'phone', 'about', 'education', 'experience', 'skills','template']
+        
+class BlogPostForm(forms.ModelForm):
+    class Meta:
+        model = BlogPost
+        fields = ['title', 'description','blog_image','is_active']

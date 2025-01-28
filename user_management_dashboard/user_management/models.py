@@ -199,3 +199,16 @@ class Resume(models.Model):
 
     def __str__(self):
         return self.name
+    
+class BlogPost(models.Model):
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    blog_image = models.ImageField(upload_to='blog_img/', null=True, blank=True)
+    is_active = models.BooleanField(default=True)  # Make the post visible to everyone
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        ordering = ['-created_at']  # Show latest posts first

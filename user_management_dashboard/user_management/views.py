@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib.auth import login, authenticate, logout,get_user_model
-from .forms import CustomUserCreationForm,ResumeForm,MessageForm,ReplyForm,EditProfileForm,ProjectForm,PasswordResetRequestForm,CustomAuthenticationForm,VideoUploadForm,SubmissionForm
-from .models import CustomUser,Post,Resume,Message,AttendanceRecord,Subtopic,Quiz,UserProfile, Question, Answer,Video, Topic,Project, Submission
+from .forms import CustomUserCreationForm,BlogPostForm,ResumeForm,MessageForm,ReplyForm,EditProfileForm,ProjectForm,PasswordResetRequestForm,CustomAuthenticationForm,VideoUploadForm,SubmissionForm
+from .models import CustomUser,BlogPost,Post,Resume,Message,AttendanceRecord,Subtopic,Quiz,UserProfile, Question, Answer,Video, Topic,Project, Submission
 from django.utils.timezone import now
 from django.contrib.auth.decorators import login_required, user_passes_test
 from datetime import datetime
@@ -91,11 +91,6 @@ def password_reset(request, user_id):
         form = SetPasswordForm(user)
 
     return render(request, 'user_management/password_reset.html', {'form': form})
-
-def dashboard(request):
-    resumes = Resume.objects.filter(user=request.user)
-    return render(request, 'user_management/dashboard.html', {'resumes': resumes})
-
 
 @user_passes_test(is_admin)
 @login_required
@@ -469,6 +464,15 @@ def reply_to_message(request, message_id):
 def message_sent(request):
     return render(request, 'user_management/message_sent.html')
 
+def dashboard(request):
+    posts = BlogPost.objects.filter(is_active=True).order_by('-created_at')  # Show only active posts
+    #return render(request, 'user_management/all_blog_posts.html', {'posts': posts})
+    return render(request, 'user_management/dashboard.html', {'posts': posts})
+
+def myresume(request):
+    resumes = Resume.objects.filter(user=request.user)
+    return render(request, 'user_management/myresume.html', {'resumes': resumes})
+
 def create_resume(request):
     if request.method == 'POST':
         form = ResumeForm(request.POST)
@@ -532,3 +536,23 @@ def download_pdf(request, resume_id):
 
 def resume_success(request):
     return render(request, 'user_management/resume_success.html')
+
+def create_blog_post(request):
+    if not request.user.is_superuser:
+        return redirect('home')  # Redirect non-admin users to home page or another appropriate page
+
+    if request.method == 'POST':
+        form = BlogPostForm(request.POST)
+        if form.is_valid():
+            form.save()  # Save the post to the database
+            return redirect('all_posts')  # Redirect to the page showing all posts after successful creation
+    else:
+        form = BlogPostForm()
+
+    return render(request, 'user_management/create_blog_post.html', {'form': form})
+
+
+# View to show all posts, visible to everyone
+def all_blog_posts(request):
+    posts = BlogPost.objects.filter(is_active=True).order_by('-created_at')  # Show only active posts
+    return render(request, 'user_management/all_blog_posts.html', {'posts': posts})

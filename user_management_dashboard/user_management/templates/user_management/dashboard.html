@@ -1,25 +1,112 @@
 {% extends "user_management/base.html" %}
 
 {% block content %}
-<h1>Welcome, {{ user.username }}!</h1>
+    <h1>Hello {{ request.user.username }}</h1>
 
-<h2>Your Resumes</h2>
+    {% if posts %}
+        <ul class="posts-list">
+            {% for post in posts %}
+                <li class="post-item">
+                    <h2 class="post-title">{{ post.title }}</h2>
+                    <p class="post-description">{{ post.description }}</p>
+                    <p><small>Posted on: {{ post.created_at }}</small></p>
+                    
+                    {% if post.blog_image %}
+                        <div class="post-image">
+                            <img src="{{ post.blog_image.url }}" alt="{{ post.title }} image" />
+                        </div>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No posts available.</p>
+    {% endif %}
+{% endblock %}
 
-{% if resumes %}
-    <ul>
-        {% for resume in resumes %}
-            <li>
-                <p>Name: {{ resume.name }}</p>
-                <p>Email: {{ resume.email }}</p>
-                <p>Phone: {{ resume.phone }}</p>
-                <p>Template: {{ resume.template }}</p>
-                <a href="{% url 'view_resume' resume.id %}">View Resume</a>
-                <a href="{% url 'download_pdf' resume.id %}">Download PDF</a>
-                <a href="{% url 'edit_resume' resume.id %}">Edit Resume</a>
-            </li>
-        {% endfor %}
-    </ul>
-{% else %}
-    <p>No resumes found. <a href="{% url 'create_resume' %}">Create a Resume</a></p>
-{% endif %}
+{% block extra_css %}
+<style>
+    .home-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        font-family: Arial, sans-serif;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .greeting {
+        text-align: center;
+        font-size: 2em;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    .posts-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .post-item {
+        background-color: #fff;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .post-title {
+        font-size: 1.8em;
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    .post-description {
+        font-size: 1.1em;
+        color: #555;
+        margin-bottom: 10px;
+    }
+
+    .post-image img {
+        width: 100%;
+        height: auto;
+        border-radius: 8px;
+        margin-top: 15px;
+    }
+
+    .post-date {
+        font-size: 0.9em;
+        color: #999;
+    }
+
+    .no-posts {
+        text-align: center;
+        font-size: 1.2em;
+        color: #888;
+    }
+
+    /* Mobile-friendly styling */
+    @media (max-width: 768px) {
+        .home-container {
+            padding: 15px;
+        }
+
+        .greeting {
+            font-size: 1.5em;
+        }
+
+        .post-title {
+            font-size: 1.6em;
+        }
+
+        .post-description {
+            font-size: 1em;
+        }
+
+        .post-date {
+            font-size: 0.8em;
+        }
+    }
+</style>
 {% endblock %}

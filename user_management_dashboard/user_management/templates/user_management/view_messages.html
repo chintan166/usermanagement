@@ -6,8 +6,9 @@
   <h1>Messages from Users</h1>
   <ul>
     {% for message in messages %}
+
       <li>
-        <strong>{{ message.subject }}</strong><br>
+        <strong>{{ request.user.username|capfirst }} : {{ message.subject }}</strong><br>
         {{ message.content }}<br>
         <a href="{% url 'reply_to_message' message.id %}">Reply</a><br>
         <small>{{ message.created_at }}</small>
