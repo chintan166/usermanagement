@@ -179,3 +179,23 @@ class Message(models.Model):
 
     class Meta:
         ordering = ['-created_at']
+        
+TEMPLATE_CHOICES = [
+    ('simple_layout', 'Simple Layout'),
+    ('creative_layout', 'Creative Layout'),
+    # Add more templates here as needed
+]
+
+class Resume(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    phone = models.CharField(max_length=15)
+    about = models.TextField()
+    education = models.TextField()
+    experience = models.TextField()
+    skills = models.TextField()
+    template = models.CharField(max_length=50, choices=TEMPLATE_CHOICES,null=True)  # Add this line
+
+    def __str__(self):
+        return self.name

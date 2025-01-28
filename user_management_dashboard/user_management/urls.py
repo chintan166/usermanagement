@@ -37,4 +37,9 @@ urlpatterns = [
     path('view_message/<int:message_id>/', views.view_message, name='view_message'),  # User views their message and reply
     path('view_messages/', views.view_messages, name='view_messages'),  # Admin views messages
     path('reply_message/<int:message_id>/', views.reply_to_message, name='reply_to_message'),
+    path('create/', views.create_resume, name='create_resume'),
+    path('resume/<int:resume_id>/', views.view_resume, name='view_resume'),
+    path('resume/<int:resume_id>/download/', views.download_pdf, name='download_pdf'),
+    path('resume/success/', views.resume_success, name='resume_success'),
+    path('resume/<int:resume_id>/edit/', views.edit_resume, name='edit_resume'),  # Add Edit Resume URL
 ]

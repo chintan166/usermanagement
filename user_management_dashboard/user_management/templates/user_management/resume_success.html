@@ -1,0 +1,11 @@
+{% extends "user_management/base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+    <h1>Your resume has been created successfully!</h1>
+    <p>You can now view or download your resume.</p>
+    <a href="{% url 'dashboard' %}">Go to Dashboard</a>
+
+{% endblock %}

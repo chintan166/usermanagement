@@ -1,6 +1,11 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from .models import CustomUser,Video,Submission,Project,Message
+from .models import CustomUser,Video,Submission,Project,Message,Resume
+
+TEMPLATE_CHOICES = [
+    ('simple_layout', 'Simple Layout'),
+    ('creative_layout', 'Creative Layout'),
+]
 
 class CustomUserCreationForm(UserCreationForm):
     area_of_interest = forms.ChoiceField(choices=[
@@ -56,3 +61,8 @@ class ReplyForm(forms.ModelForm):
     class Meta:
         model = Message
         fields = ['reply']  # Admin can only reply to the message
+        
+class ResumeForm(forms.ModelForm):
+    class Meta:
+        model = Resume
+        fields = ['name', 'email', 'phone', 'about', 'education', 'experience', 'skills', 'template']

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: 'Helvetica', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            background-color: #f2f2f2;
+            text-align: center;
+            padding: 20px;
+        }
+        .header h1 {
+            font-size: 36px;
+        }
+        .contact-info {
+            margin-top: 10px;
+            font-size: 18px;
+        }
+        .section {
+            margin-top: 20px;
+        }
+        .section h2 {
+            background-color: #e6e6e6;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>{{ resume.name }}</h1>
+        <p class="contact-info">{{ resume.email }} | {{ resume.phone }}</p>
+    </div>
+
+    <div class="section">
+        <h2>About Me</h2>
+        <p>{{ resume.about }}</p>
+    </div>
+
+    <div class="section">
+        <h2>Education</h2>
+        <p>{{ resume.education }}</p>
+    </div>
+
+    <div class="section">
+        <h2>Experience</h2>
+        <p>{{ resume.experience }}</p>
+    </div>
+
+    <div class="section">
+        <h2>Skills</h2>
+        <p>{{ resume.skills }}</p>
+    </div>
+
+</body>
+</html>

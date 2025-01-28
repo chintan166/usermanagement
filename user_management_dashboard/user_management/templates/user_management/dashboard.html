@@ -1,10 +1,25 @@
 {% extends "user_management/base.html" %}
 
-{% load static %}
-
 {% block content %}
+<h1>Welcome, {{ user.username }}!</h1>
 
-<h2>Welcome to the Dashboard</h2>
+<h2>Your Resumes</h2>
 
-
+{% if resumes %}
+    <ul>
+        {% for resume in resumes %}
+            <li>
+                <p>Name: {{ resume.name }}</p>
+                <p>Email: {{ resume.email }}</p>
+                <p>Phone: {{ resume.phone }}</p>
+                <p>Template: {{ resume.template }}</p>
+                <a href="{% url 'view_resume' resume.id %}">View Resume</a>
+                <a href="{% url 'download_pdf' resume.id %}">Download PDF</a>
+                <a href="{% url 'edit_resume' resume.id %}">Edit Resume</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No resumes found. <a href="{% url 'create_resume' %}">Create a Resume</a></p>
+{% endif %}
 {% endblock %}

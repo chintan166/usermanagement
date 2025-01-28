@@ -1,0 +1,18 @@
+{% extends "user_management/base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<h1>{{ resume.name }}'s Resume</h1>
+<p>Email: {{ resume.email }}</p>
+<p>Phone: {{ resume.phone }}</p>
+<p>About Me: {{ resume.about }}</p>
+<p>Education: {{ resume.education }}</p>
+<p>Experience: {{ resume.experience }}</p>
+<p>Skills: {{ resume.skills }}</p>
+
+<a href="{% url 'edit_resume' resume.id %}">Edit Resume</a>
+<a href="{% url 'download_pdf' resume.id %}">Download PDF</a>
+
+{% endblock %}

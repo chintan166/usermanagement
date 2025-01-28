@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib.auth import login, authenticate, logout,get_user_model
-from .forms import CustomUserCreationForm,MessageForm,ReplyForm,EditProfileForm,ProjectForm,PasswordResetRequestForm,CustomAuthenticationForm,VideoUploadForm,SubmissionForm
-from .models import CustomUser,Post,Message,AttendanceRecord,Subtopic,Quiz,UserProfile, Question, Answer,Video, Topic,Project, Submission
+from .forms import CustomUserCreationForm,ResumeForm,MessageForm,ReplyForm,EditProfileForm,ProjectForm,PasswordResetRequestForm,CustomAuthenticationForm,VideoUploadForm,SubmissionForm
+from .models import CustomUser,Post,Resume,Message,AttendanceRecord,Subtopic,Quiz,UserProfile, Question, Answer,Video, Topic,Project, Submission
 from django.utils.timezone import now
 from django.contrib.auth.decorators import login_required, user_passes_test
 from datetime import datetime
@@ -10,6 +10,8 @@ from django.http import HttpResponse,Http404
 from django.template.loader import render_to_string
 import csv
 import pytz
+from xhtml2pdf import pisa
+from weasyprint import HTML
 from django.db import IntegrityError
 from django.contrib import messages
 from django.contrib.auth.forms import SetPasswordForm
@@ -90,9 +92,9 @@ def password_reset(request, user_id):
 
     return render(request, 'user_management/password_reset.html', {'form': form})
 
-@login_required(login_url='/login/')
 def dashboard(request):
-    return render(request, 'user_management/dashboard.html')
+    resumes = Resume.objects.filter(user=request.user)
+    return render(request, 'user_management/dashboard.html', {'resumes': resumes})
 
 
 @user_passes_test(is_admin)
@@ -466,3 +468,67 @@ def reply_to_message(request, message_id):
 
 def message_sent(request):
     return render(request, 'user_management/message_sent.html')
+
+def create_resume(request):
+    if request.method == 'POST':
+        form = ResumeForm(request.POST)
+        if form.is_valid():
+            resume = form.save(commit=False)
+            resume.user = request.user  # Associate the logged-in user with the resume
+            resume.save()  # Save the resume to the database
+            return redirect('resume_success')  # Redirect to success page after saving
+    else:
+        form = ResumeForm()
+
+    return render(request, 'user_management/create_resume.html', {'form': form})
+
+def edit_resume(request, resume_id):
+    resume = get_object_or_404(Resume, id=resume_id)
+    if request.method == 'POST':
+        form = ResumeForm(request.POST, instance=resume)
+        if form.is_valid():
+            form.save()
+            return redirect('dashboard')  # Redirect back to dashboard after editing
+    else:
+        form = ResumeForm(instance=resume)
+    return render(request, 'user_management/create_resume.html', {'form': form})
+
+def view_resume(request, resume_id):
+    # Fetch the resume by ID and handle the case where the resume does not exist
+    resume = get_object_or_404(Resume, id=resume_id)
+
+    # Dynamically select the template based on the resume's template field
+    template_name = f'user_management/{resume.template}.html'
+
+    try:
+        return render(request, template_name, {'resume': resume})
+    except Exception as e:
+        # Handle error when template is not found or fails to render
+        return render(request, 'user_management/error.html', {'message': 'Resume template not found or error rendering template.'})
+
+
+def download_pdf(request, resume_id):
+    # Fetch the resume by ID
+    resume = Resume.objects.get(id=resume_id)
+
+    # Generate the HTML content from the selected template
+    html_content = render_to_string(f'user_management/{resume.template}.html', {'resume': resume})
+
+    # Generate the PDF from the HTML content
+    #html = HTML(string=html_content)
+    #pdf = html.write_pdf()
+
+    # Return the PDF as a downloadable response
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="{resume.name}_resume.pdf"'
+    
+    pisa_status = pisa.CreatePDF(html_content, dest=response)
+
+    if pisa_status.err:
+        return HttpResponse("Error generating PDF")
+    
+    return response
+
+
+def resume_success(request):
+    return render(request, 'user_management/resume_success.html')
