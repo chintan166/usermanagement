@@ -1,0 +1,74 @@
+<!-- sidebar.html -->
+<div class="sidebar">
+    <h3 class="sidebar-title">Top News</h3>
+    {% if articles %}
+        <div class="news-list">
+            {% for article in articles %}
+                <div class="news-item">
+                    <h5 class="news-title"><a href="{{ article.url }}" target="_blank">{{ article.title }}</a></h5>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="no-news">No news articles available at the moment.</p>
+    {% endif %}
+</div>
+
+<style>
+    .sidebar {
+        width: 300px;
+        
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        
+        top: 20px;
+        right: 20px;
+        height: auto;
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+    .sidebar-title {
+        font-size: 22px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 15px;
+        border-bottom: 2px solid #3498db;
+        padding-bottom: 10px;
+    }
+    .news-list {
+        margin-top: 10px;
+    }
+
+    .news-item {
+        margin-bottom: 15px;
+    }
+
+    .news-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #3498db;
+        transition: color 0.3s ease;
+    }
+
+    .news-title:hover {
+        color: #2980b9;
+    }
+
+    .news-snippet {
+        font-size: 14px;
+        color: #7f8c8d;
+        line-height: 1.4;
+        margin-top: 5px;
+    }
+
+    .no-news {
+        font-size: 16px;
+        color: #e74c3c;
+        text-align: center;
+    }
+
+    a {
+        text-decoration: none;
+    }
+</style>

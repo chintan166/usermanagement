@@ -41,9 +41,10 @@ urlpatterns = [
     path('myresume/', login_required(views.myresume), name='myresume'),
     path('resume/<int:resume_id>/', views.view_resume, name='view_resume'),
     path('resume/<int:resume_id>/download/', views.download_pdf, name='download_pdf'),
+    path('resume/<int:resume_id>/delete/', views.delete_resume, name='delete_resume'),
     path('resume/success/', views.resume_success, name='resume_success'),
     path('resume/<int:resume_id>/edit/', views.edit_resume, name='edit_resume'),  # Add Edit Resume URL
-    path('create-blog-post/', views.create_blog_post, name='create_blog_post'),  # Admin-only view to create a post
+    path('create_blog_post/', views.create_blog_post, name='create_blog_post'),  # Admin-only view to create a post
     path('all-blog-posts/', views.all_blog_posts, name='all_blog_posts'),
     
 ]

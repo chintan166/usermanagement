@@ -26265,7 +26265,7 @@ dl li {
 
 .main-panel {
   transition: width 0.25s ease, margin 0.25s ease;
-  width: calc(100% - 260px);
+  width: calc(75% - 260px);
   min-height: calc(100vh - 70px);
   display: -webkit-flex;
   display: flex;

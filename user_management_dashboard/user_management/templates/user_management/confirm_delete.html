@@ -1,0 +1,16 @@
+{% extends "user_management/base.html" %}
+
+{% block content %}
+<h1>Are you sure you want to delete this resume?</h1>
+
+<p>Name: {{ resume.name }}</p>
+<p>Email: {{ resume.email }}</p>
+<p>Phone: {{ resume.phone }}</p>
+<p>Template: {{ resume.template }}</p>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Yes, delete it</button>
+    <a href="{% url 'myresume' %}">Cancel</a>
+</form>
+{% endblock %}

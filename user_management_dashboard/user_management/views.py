@@ -10,6 +10,7 @@ from django.http import HttpResponse,Http404
 from django.template.loader import render_to_string
 import csv
 import pytz
+import requests
 from xhtml2pdf import pisa
 from weasyprint import HTML
 from django.db import IntegrityError
@@ -510,6 +511,14 @@ def view_resume(request, resume_id):
         # Handle error when template is not found or fails to render
         return render(request, 'user_management/error.html', {'message': 'Resume template not found or error rendering template.'})
 
+def delete_resume(request, resume_id):
+    resume = get_object_or_404(Resume, id=resume_id, user=request.user)
+    
+    if request.method == 'POST':  # This ensures that the delete is confirmed
+        resume.delete()
+        return redirect('myresume')  # Redirect to the dashboard or another page after deletion
+    
+    return render(request, 'user_management/confirm_delete.html', {'resume': resume})
 
 def download_pdf(request, resume_id):
     # Fetch the resume by ID
@@ -534,6 +543,8 @@ def download_pdf(request, resume_id):
     return response
 
 
+
+
 def resume_success(request):
     return render(request, 'user_management/resume_success.html')
 
@@ -545,7 +556,7 @@ def create_blog_post(request):
         form = BlogPostForm(request.POST)
         if form.is_valid():
             form.save()  # Save the post to the database
-            return redirect('all_posts')  # Redirect to the page showing all posts after successful creation
+            return redirect('dashboard')  # Redirect to the page showing all posts after successful creation
     else:
         form = BlogPostForm()
 

@@ -16,6 +16,7 @@
                 <a href="{% url 'view_resume' resume.id %}">View Resume</a>
                 <a href="{% url 'download_pdf' resume.id %}">Download PDF</a>
                 <a href="{% url 'edit_resume' resume.id %}">Edit Resume</a>
+                <a href="{% url 'delete_resume' resume.id %}">Delete Resume</a>
             </li>
         {% endfor %}
     </ul>
