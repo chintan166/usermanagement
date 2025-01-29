@@ -3,12 +3,17 @@
 {% block content %}
     <div class="container">
         <h2>All Users and Their Area of Interest</h2>
+        
+        <!-- Export to CSV Button -->
+        <a href="{% url 'export_users_to_csv' %}" class="btn btn-primary">Export to CSV</a>
+        
         <table>
             <thead>
                 <tr>
                     <th>Username</th>
                     <th>Email</th>
                     <th>Area of Interest</th>
+                    <th>Joining Date</th>
                 </tr>
             </thead>
             <tbody>
@@ -17,10 +22,11 @@
                         <td>{{ profile.user.username }}</td>
                         <td>{{ profile.user.email }}</td>
                         <td>{{ profile.area_of_interest }}</td>
+                        <td>{{ profile.date_joined|date:"D, d M Y H:i:s" }}</td>
                     </tr>
                 {% empty %}
                     <tr>
-                        <td colspan="3">No users found.</td>
+                        <td colspan="4">No users found.</td>
                     </tr>
                 {% endfor %}
             </tbody>

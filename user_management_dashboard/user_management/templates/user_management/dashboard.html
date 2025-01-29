@@ -1,111 +1,347 @@
 {% extends "user_management/base.html" %}
 
 {% block content %}
-    <h1>Hello {{ request.user.username }}</h1>
+  <div class="home-container">
+    <!-- Form to create a new blog post -->
+    <h3 class="text-center mb-4">Share Your Thoughts</h3>
 
-    {% if posts %}
-        <ul class="posts-list">
-            {% for post in posts %}
-                <li class="post-item">
-                    <h2 class="post-title">{{ post.title }}</h2>
-                    <p class="post-description">{{ post.description }}</p>
-                    <p><small>Posted on: {{ post.created_at }}</small></p>
-                    
-                    {% if post.blog_image %}
-                        <div class="post-image">
-                            <img src="{{ post.blog_image.url }}" alt="{{ post.title }} image" />
-                        </div>
-                    {% endif %}
-                </li>
+    <!-- Display form errors if there are any -->
+    {% if form.errors %}
+      <div class="alert alert-danger">
+        <ul>
+          {% for field in form %}
+            {% for error in field.errors %}
+              <li>{{ error }}</li>
             {% endfor %}
+          {% endfor %}
         </ul>
-    {% else %}
-        <p>No posts available.</p>
+      </div>
     {% endif %}
+
+    <!-- Create Post Form -->
+<div class="card shadow-sm p-4 mb-5 bg-white rounded">
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      
+      <div class="form-group mb-4">
+        <label for="id_title" class="form-label">Title</label>
+        {{ form.title }}
+      </div>
+  
+      <div class="form-group mb-4">
+        <label for="id_description" class="form-label">Description</label>
+        {{ form.description }}
+      </div>
+  
+      <div class="form-group mb-4">
+        <label for="id_blog_image" class="form-label">Image</label>
+        {{ form.blog_image }}
+      </div>
+  
+      <div class="form-group mb-4">
+        <label for="id_is_active" class="form-label">Is Active?</label>
+        {{ form.is_active }}
+      </div>
+  
+      <button type="submit" class="btn btn-primary btn-lg w-100">Post</button>
+    </form>
+  </div>
+  
+
+    <hr class="my-5">
+
+    <!-- Display existing blog posts -->
+    <h3 class="text-center mb-4">Recent Activity</h3>
+
+    <div class="posts-list">
+        {% for post in posts %}
+          <div class="row mb-4">
+            <div class="col-12">
+              <div class="post-item shadow-sm p-3 bg-white rounded">
+                <div class="d-flex align-items-center mb-3">
+                  <!-- User Avatar -->
+                  <div class="post-user-avatar">
+                    {% if post.user.profile_pic %}
+                      <img src="{{ post.user.profile_pic.url }}" height="50px" alt="{{ post.user.username }}" class="avatar-img">
+                    {% else %}
+                      <span class="avatar-placeholder">{{ post.user.username|slice:":1" }}</span>
+                    {% endif %}
+                  </div>
+                  <!-- User Name and Time -->
+                  <div class="ms-3">
+                    <p class="mb-0 text-primary">{{ post.user.username }}</p>
+                    <p class="mb-0 text-muted">{{ post.created_at|date:"F d, Y" }}</p>
+                  </div>
+                </div>
+      
+                <h4 class="post-title text-dark">{{ post.title }}</h4>
+                <p class="post-description text-muted">{{ post.description|truncatewords:30 }}</p>
+      
+                {% if post.blog_image %}
+                  <div class="post-image mb-3">
+                    <img src="{{ post.blog_image.url }}" alt="{{ post.title }}" class="img-fluid rounded">
+                  </div>
+                {% endif %}
+      
+                <!-- Like and Dislike Buttons -->
+                <div class="post-actions d-flex justify-content-start">
+                  <a href="{% url 'like_post' post.id %}" class="btn btn-outline-success btn-sm me-2">
+                    Like ({{ post.likes.count }})
+                  </a>
+                  <a href="{% url 'dislike_post' post.id %}" class="btn btn-outline-danger btn-sm">
+                    Dislike ({{ post.dislikes.count }})
+                  </a>
+                </div>
+              </div>
+            </div>
+        </div>
+      {% empty %}
+        <p class="no-posts text-center">No blog posts available. Create one now!</p>
+      {% endfor %}
+    </div>
+  </div>
 {% endblock %}
 
 {% block extra_css %}
 <style>
+    /* General Container Styling */
     .home-container {
-        max-width: 800px;
+        max-width: 1200px;
         margin: 0 auto;
-        padding: 20px;
-        font-family: Arial, sans-serif;
-        background-color: #f9f9f9;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 40px 20px;
+        background-color: #f7f7f7;
+        font-family: 'Arial', sans-serif;
     }
 
-    .greeting {
-        text-align: center;
-        font-size: 2em;
-        margin-bottom: 20px;
+    /* Title Styling */
+    h3 {
+        font-size: 2.4em;
         color: #333;
+        font-weight: bold;
     }
 
-    .posts-list {
-        list-style: none;
-        padding: 0;
+    /* Card styling for the form */
+    .card {
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
 
+    /* Input fields and labels */
+    .form-group label {
+        font-size: 1.1em;
+        color: #555;
+    }
+
+    .form-control {
+        border-radius: 5px;
+        padding: 10px;
+        font-size: 1em;
+        width: 100%;
+        margin-top: 5px;
+    }
+
+    .form-control:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    }
+
+    /* Post item card styling */
     .post-item {
         background-color: #fff;
         border-radius: 8px;
-        margin-bottom: 20px;
-        padding: 20px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s;
     }
 
+    .post-item:hover {
+        transform: translateY(-5px);
+    }
+
+    /* Post Title Styling */
     .post-title {
-        font-size: 1.8em;
+        font-size: 1.6em;
         color: #333;
-        margin-bottom: 10px;
+        margin-bottom: 15px;
     }
 
+    /* Post Description Styling */
     .post-description {
         font-size: 1.1em;
-        color: #555;
-        margin-bottom: 10px;
+        color: #666;
+        margin-bottom: 15px;
     }
 
-    .post-image img {
+    /* Avatar Image Styling */
+    .post-user-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        overflow: hidden;
+        background-color: #007bff;
+    }
+
+    .avatar-img {
         width: 100%;
-        height: auto;
-        border-radius: 8px;
-        margin-top: 15px;
+        height: 100%;
+        object-fit: cover;
     }
 
+    .avatar-placeholder {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+        font-size: 20px;
+        font-weight: bold;
+        height: 100%;
+    }
+
+    /* Post Date Styling */
     .post-date {
         font-size: 0.9em;
-        color: #999;
-    }
-
-    .no-posts {
-        text-align: center;
-        font-size: 1.2em;
         color: #888;
     }
 
-    /* Mobile-friendly styling */
+    /* Buttons Styling */
+    .btn {
+        padding: 8px 20px;
+        border-radius: 20px;
+    }
+
+    .btn-outline-success {
+        border: 1px solid #28a745;
+        color: #28a745;
+    }
+
+    .btn-outline-success:hover {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .btn-outline-danger {
+        border: 1px solid #dc3545;
+        color: #dc3545;
+    }
+
+    .btn-outline-danger:hover {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    /* No Posts Message */
+    .no-posts {
+        font-size: 1.2em;
+        color: #888;
+        text-align: center;
+    }
+
+    /* Styling for Create Post Form */
+.card {
+    border: 1px solid #e1e4e8; /* Subtle light border */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    border-radius: 8px;
+}
+
+.card form {
+    padding: 20px;
+}
+
+/* Form Group Styling */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    font-size: 1.1em;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+/* Input Fields Styling */
+.form-control {
+    border-radius: 5px;
+    border: 1px solid #ccc; /* Light gray border */
+    padding: 10px;
+    font-size: 1em;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.form-control:focus {
+    border-color: #0073b1; /* LinkedIn Blue */
+    box-shadow: 0 0 4px rgba(0, 115, 177, 0.2);
+}
+
+/* File Upload and Image Input */
+input[type="file"] {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 1em;
+}
+
+input[type="file"]:focus {
+    border-color: #0073b1; /* LinkedIn Blue */
+    box-shadow: 0 0 4px rgba(0, 115, 177, 0.2);
+}
+
+/* Button Styling */
+.btn-primary {
+    background-color: #0073b1; /* LinkedIn Blue */
+    border-color: #0073b1;
+    color: white;
+    padding: 12px;
+    font-size: 1.1em;
+    border-radius: 25px;
+    font-weight: 600;
+}
+
+.btn-primary:hover {
+    background-color: #005f8c; /* Darker LinkedIn Blue */
+    border-color: #005f8c;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:focus {
+    box-shadow: 0 0 4px rgba(0, 115, 177, 0.5);
+}
+
+/* Add some margin and spacing for form components */
+.mb-4 {
+    margin-bottom: 24px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .card {
+        padding: 15px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .btn-primary {
+        font-size: 1em;
+        padding: 10px;
+    }
+}
+
+
+    /* Responsive Styling */
     @media (max-width: 768px) {
         .home-container {
-            padding: 15px;
+            padding: 20px;
         }
 
-        .greeting {
-            font-size: 1.5em;
+        .post-item {
+            margin-bottom: 20px;
         }
 
-        .post-title {
-            font-size: 1.6em;
-        }
-
-        .post-description {
-            font-size: 1em;
-        }
-
-        .post-date {
-            font-size: 0.8em;
+        .posts-list {
+            padding: 0;
         }
     }
 </style>

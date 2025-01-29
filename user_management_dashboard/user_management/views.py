@@ -43,11 +43,12 @@ def register(request):
 def user_login(request):
     if request.method == 'POST':
         form = CustomAuthenticationForm(data=request.POST)
+        next_url = request.GET.get('next', 'dashboard')  # Default to 'dashboard' if no next is specified
         if form.is_valid():
             user = form.get_user()
-            if user.is_approved:  # Check if the user is approved
+            if user.is_approved:
                 login(request, user)
-                return redirect('dashboard')  # Redirect to dashboard after successful login
+                return redirect(next_url)  # Redirect to the next URL after successful login
             else:
                 form.add_error(None, "Your account is not approved yet. Please wait for admin verification.")
     else:
@@ -132,6 +133,39 @@ def export_attendance_csv(request):
         writer.writerow([record.user.username, record.date.strftime('%Y-%m-%d'), record.status])
 
     return response
+
+def export_users_to_csv(request):
+    # Fetch all users excluding superusers and their associated UserProfile
+    users = CustomUser.objects.exclude(is_superuser=True)
+    user_profiles = []
+
+    for user in users:
+        try:
+            user_profile = user.userprofile
+            user_profiles.append({
+                'username': user.username,
+                'email': user.email,
+                'area_of_interest': user_profile.area_of_interest,
+                'date_joined': user.date_joined
+            })
+        except UserProfile.DoesNotExist:
+            user_profiles.append({
+                'username': user.username,
+                'email': user.email,
+                'area_of_interest': 'No profile found',
+                'date_joined': user.date_joined
+            })
+
+    # Prepare HTTP response with CSV content type
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="users.csv"'
+
+    writer = csv.DictWriter(response, fieldnames=['username', 'email', 'area_of_interest', 'date_joined'])
+    writer.writeheader()
+    writer.writerows(user_profiles)
+
+    return response
+
 
 def topic_videos(request, topic_name, subtopic_name):
     # Get the topic and subtopic objects
@@ -236,7 +270,7 @@ def quiz_detail(request, quiz_id):
     quiz = get_object_or_404(Quiz, id=quiz_id)
     questions = quiz.question_set.all()
     
-    paginator = Paginator(questions, 5)  # 5 questions per page
+    paginator = Paginator(questions, 15)  # 5 questions per page
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     
@@ -402,12 +436,14 @@ def view_users_and_area_of_interest(request):
             user_profile = user.userprofile
             user_profiles.append({
                 'user': user,
-                'area_of_interest': user_profile.area_of_interest
+                'area_of_interest': user_profile.area_of_interest,
+                'date_joined': user.date_joined
             })
         except UserProfile.DoesNotExist:
             user_profiles.append({
                 'user': user,
-                'area_of_interest': 'No profile found'
+                'area_of_interest': 'No profile found',
+                'date_joined': user.date_joined
             })
 
     return render(request, 'user_management/view_users_and_area_of_interest.html', {
@@ -466,9 +502,55 @@ def message_sent(request):
     return render(request, 'user_management/message_sent.html')
 
 def dashboard(request):
+    if request.method == 'POST':
+        form = BlogPostForm(request.POST, request.FILES)  # Handle file uploads if needed
+        if form.is_valid():
+            blog_post = form.save(commit=False)
+            blog_post.user = request.user  # Associate the post with the current user
+            blog_post.save()  # Save the post to the database
+            return redirect('dashboard')  # Redirect to the dashboard after creating the post
+    else:
+        form = BlogPostForm()  # Initialize an empty form for GET requests
+
+    # Fetch all active posts to display on the dashboard
     posts = BlogPost.objects.filter(is_active=True).order_by('-created_at')  # Show only active posts
-    #return render(request, 'user_management/all_blog_posts.html', {'posts': posts})
-    return render(request, 'user_management/dashboard.html', {'posts': posts})
+
+    return render(request, 'user_management/dashboard.html', {'posts': posts, 'form': form})
+
+def like_post(request, post_id):
+    try:
+        post = BlogPost.objects.get(id=post_id)
+    except BlogPost.DoesNotExist:
+        raise Http404("Post does not exist")
+
+    if request.user in post.likes.all():
+        post.likes.remove(request.user)  # Remove like if the user already liked the post
+    else:
+        post.likes.add(request.user)  # Add like if the user hasn't liked the post yet
+    
+    post.save()  # Save the post after updating likes
+
+    # Redirect back to the same page to update the like count
+    
+    return redirect('dashboard')  # Redirect back to the dashboard
+
+@login_required
+def dislike_post(request, post_id):
+    try:
+        post = BlogPost.objects.get(id=post_id)
+    except BlogPost.DoesNotExist:
+        raise Http404("Post does not exist")
+
+    if request.user in post.dislikes.all():
+        post.dislikes.remove(request.user)  # Remove dislike if the user already disliked the post
+    else:
+        post.dislikes.add(request.user)  # Add dislike if the user hasn't disliked the post yet
+    
+    post.save()  # Save the post after updating dislikes
+
+    # Redirect back to the same page to update the dislike count
+    
+    return redirect('dashboard')  # Redirect back to the dashboard
 
 def myresume(request):
     resumes = Resume.objects.filter(user=request.user)
@@ -486,7 +568,7 @@ def create_resume(request):
         form = ResumeForm()
 
     return render(request, 'user_management/create_resume.html', {'form': form})
-
+ 
 def edit_resume(request, resume_id):
     resume = get_object_or_404(Resume, id=resume_id)
     if request.method == 'POST':
@@ -497,7 +579,7 @@ def edit_resume(request, resume_id):
     else:
         form = ResumeForm(instance=resume)
     return render(request, 'user_management/create_resume.html', {'form': form})
-
+ 
 def view_resume(request, resume_id):
     # Fetch the resume by ID and handle the case where the resume does not exist
     resume = get_object_or_404(Resume, id=resume_id)
@@ -535,7 +617,17 @@ def download_pdf(request, resume_id):
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = f'attachment; filename="{resume.name}_resume.pdf"'
     
-    pisa_status = pisa.CreatePDF(html_content, dest=response)
+    options = {
+    'margin-top': 5,
+    'margin-right': 5,
+    'margin-bottom': 5,
+    'margin-left': 5,
+    'page-size': 'A4',  # You can use 'Letter' or 'A4' depending on preference
+    'no-outline': True,  # Optional: to remove outline around the page
+    'disable-smart-shrinking': True  # Prevent shrinking of content
+    }
+    
+    pisa_status = pisa.CreatePDF(html_content, dest=response,options=options)
 
     if pisa_status.err:
         return HttpResponse("Error generating PDF")
@@ -544,18 +636,17 @@ def download_pdf(request, resume_id):
 
 
 
-
 def resume_success(request):
     return render(request, 'user_management/resume_success.html')
 
 def create_blog_post(request):
-    if not request.user.is_superuser:
-        return redirect('home')  # Redirect non-admin users to home page or another appropriate page
-
     if request.method == 'POST':
-        form = BlogPostForm(request.POST)
+        form = BlogPostForm(request.POST, request.FILES)  # Handle file uploads if required
         if form.is_valid():
-            form.save()  # Save the post to the database
+            # You may want to associate the user with the post, if applicable
+            blog_post = form.save(commit=False)
+            blog_post.user = request.user  # Associate the post with the current user
+            blog_post.save()  # Save the post to the database
             return redirect('dashboard')  # Redirect to the page showing all posts after successful creation
     else:
         form = BlogPostForm()

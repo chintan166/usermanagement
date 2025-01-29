@@ -27,6 +27,7 @@ class CustomUser(AbstractUser):
     screenshot = models.ImageField(upload_to='screenshots/', null=True, blank=True)
     profile_pic = models.ImageField(upload_to='profile_pic/', null=True, blank=True)
     is_approved = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True,null=True, blank=True)
 
 
 class AttendanceRecord(models.Model):
@@ -183,6 +184,8 @@ class Message(models.Model):
 TEMPLATE_CHOICES = [
     ('simple_layout', 'Simple Layout'),
     ('creative_layout', 'Creative Layout'),
+    ('professional','professional'),
+    ('attractive','attractive'),
     # Add more templates here as needed
 ]
 
@@ -196,16 +199,22 @@ class Resume(models.Model):
     experience = models.TextField()
     skills = models.TextField()
     template = models.CharField(max_length=50, choices=TEMPLATE_CHOICES,null=True)  # Add this line
+    location = models.CharField(max_length=255, blank=True, null=True)
+    website = models.URLField(blank=True, null=True)  # New field for personal website
+    linkedin = models.URLField(blank=True, null=True)  # New field for LinkedIn profile
 
     def __str__(self):
         return self.name
     
 class BlogPost(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
     title = models.CharField(max_length=200)
     description = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     blog_image = models.ImageField(upload_to='blog_img/', null=True, blank=True)
     is_active = models.BooleanField(default=True)  # Make the post visible to everyone
+    likes = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='liked_posts', blank=True)
+    dislikes = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='disliked_posts', blank=True)
 
     def __str__(self):
         return self.title

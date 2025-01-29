@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ resume.name }}'s Resume</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start; /* Align items vertically in the center */
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 36px;
+            color: #2c3e50;
+            margin: 0;
+            flex: 1; /* Ensure h1 takes up available space */
+        }
+
+        .header .contact-info {
+            font-size: 16px;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+
+        .header p {
+            margin: 0;  /* Remove margin between p elements */
+            padding: 0;  /* Remove padding between p elements */
+        }
+
+        .contact-info p {
+            margin-bottom: 5px;  /* Optional: adds a little space between the contact info items */
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+        .section h2 {
+            font-size: 26px;
+            color: #2980b9;
+            margin-bottom: 10px;
+            font-weight: bold;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 5px;
+        }
+
+        .section p {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        /* Skills Section - CSS Grid Layout */
+        .skills {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);  /* Creates 3 equal-width columns */
+            gap: 15px;  /* Adds space between the skill items */
+            margin: 0;
+        }
+
+        .skills p {
+            background-color: #ecf0f1;
+            padding: 10px;
+            font-size: 1.1rem;
+            color: #2980b9;
+            text-align: center;
+            font-weight: bold;
+            border-radius: 5px;
+            margin: 0;
+        }
+
+        .links a {
+            color: #2980b9;
+            font-size: 1.1rem;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        .links a:hover {
+            text-decoration: underline;
+        }
+
+        .experience, .education {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+
+        .experience p, .education p {
+            font-size: 1rem;
+            margin: 0;
+            color: #333;
+        }
+
+        .experience .date, .education .date {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Layout */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .section {
+                margin-bottom: 20px;
+            }
+
+            .skills {
+                grid-template-columns: 1fr 1fr;  /* 2 columns on small screens */
+                gap: 10px;
+            }
+
+            .experience, .education {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- Header Section -->
+        <div class="header">
+            <div>
+                <h1>{{ resume.name }}</h1>
+                <p style="font-size: 18px; color: #2980b9;">{{ resume.title }}</p>
+            </div>
+            <div class="contact-info">
+                <p><strong>Email:</strong> {{ resume.email }}</p>
+                <p><strong>Phone:</strong> {{ resume.phone }}</p>
+                <p><strong>Location:</strong> {{ resume.location }}</p>
+            </div>
+        </div>
+
+        <!-- About Me Section -->
+        <div class="section">
+            <h2>About Me</h2>
+            <p>{{ resume.about }}</p>
+        </div>
+
+        <!-- Education Section -->
+        <div class="section">
+            <h2>Education</h2>
+            <p>{{ resume.education }}</p>
+        </div>
+
+        <!-- Experience Section -->
+        <div class="section">
+            <h2>Experience</h2>
+            <p>{{ resume.experience }}</p>
+        </div>
+
+        <!-- Skills Section -->
+        <div class="section">
+            <h2>Skills</h2>
+            <div class="skills">
+                {% for skill in resume.skills %}
+                    <p>{{ skill }}</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Website Section -->
+        <div class="section links">
+            <h2>Website</h2>
+            <a href="{{ resume.website }}" target="_blank">{{ resume.website }}</a>
+        </div>
+
+        <!-- LinkedIn Section -->
+        <div class="section links">
+            <h2>LinkedIn</h2>
+            <a href="{{ resume.linkedin }}" target="_blank">{{ resume.linkedin }}</a>
+        </div>
+
+    </div>
+
+</body>
+</html>

@@ -5,7 +5,9 @@ from .models import CustomUser,BlogPost,Video,Submission,Project,Message,Resume
 TEMPLATE_CHOICES = [
     ('simple_layout', 'Simple Layout'),
     ('creative_layout', 'Creative Layout'),
-]
+    ('professional','professional'),
+    ('attractive','attractive'),
+] 
 
 class CustomUserCreationForm(UserCreationForm):
     area_of_interest = forms.ChoiceField(choices=[
@@ -66,7 +68,7 @@ class ResumeForm(forms.ModelForm):
     template = forms.ChoiceField(choices=TEMPLATE_CHOICES, required=True)
     class Meta:
         model = Resume
-        fields = ['name', 'email', 'phone', 'about', 'education', 'experience', 'skills','template']
+        fields = ['name', 'email', 'phone', 'about', 'education', 'experience', 'skills','template','location','website','linkedin']
         
 class BlogPostForm(forms.ModelForm):
     class Meta:

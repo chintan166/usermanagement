@@ -1,59 +1,166 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ resume.name }}'s Resume</title>
     <style>
         body {
             font-family: 'Helvetica', sans-serif;
             margin: 0;
             padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
         }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+        }
+
         .header {
-            background-color: #f2f2f2;
-            text-align: center;
-            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #2980b9;
+            color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 20px;
         }
+
         .header h1 {
             font-size: 36px;
+            margin: 0;
         }
+
         .contact-info {
-            margin-top: 10px;
+            text-align: right;
             font-size: 18px;
+            margin-top: 5px;
         }
+
+        .contact-info p {
+            margin: 0;
+        }
+
         .section {
-            margin-top: 20px;
+            margin-top: 30px;
         }
+
         .section h2 {
-            background-color: #e6e6e6;
+            background-color: #ecf0f1;
+            padding: 10px;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            border-left: 5px solid #2980b9;
+        }
+
+        .section p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #555;
+        }
+
+        /* Grid Layout for Skills Section */
+        .skills {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
+        .skills p {
+            background-color: #f7f7f7;
             padding: 10px;
             border-radius: 5px;
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #2980b9;
         }
+
+        /* Section for Links like Website & LinkedIn */
+        .links a {
+            color: #2980b9;
+            font-size: 1.2rem;
+            text-decoration: none;
+        }
+
+        .links a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive Layout */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .contact-info {
+                text-align: left;
+            }
+        }
+
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <h1>{{ resume.name }}</h1>
-        <p class="contact-info">{{ resume.email }} | {{ resume.phone }}</p>
-    </div>
+    <div class="container">
 
-    <div class="section">
-        <h2>About Me</h2>
-        <p>{{ resume.about }}</p>
-    </div>
+        <!-- Header Section -->
+        <div class="header">
+            <div>
+                <h1>{{ resume.name }}</h1>
+                <p>{{ resume.title }}</p>
+            </div>
+            <div class="contact-info">
+                <p>{{ resume.email }} | {{ resume.phone }} | <a href="{{ resume.linkedin }}" target="_blank">{{ resume.linkedin }}</a> | <a href="{{ resume.website }}" target="_blank">{{ resume.website }}</a> </p>
+            </div>
+        </div>
 
-    <div class="section">
-        <h2>Education</h2>
-        <p>{{ resume.education }}</p>
-    </div>
+        <!-- About Me Section -->
+        <div class="section">
+            <h2>About Me</h2>
+            <p>{{ resume.about }}</p>
+        </div>
 
-    <div class="section">
-        <h2>Experience</h2>
-        <p>{{ resume.experience }}</p>
-    </div>
+        <!-- Education Section -->
+        <div class="section">
+            <h2>Education</h2>
+            <p>{{ resume.education }}</p>
+        </div>
 
-    <div class="section">
-        <h2>Skills</h2>
-        <p>{{ resume.skills }}</p>
+        <!-- Experience Section -->
+        <div class="section">
+            <h2>Experience</h2>
+            <p>{{ resume.experience }}</p>
+        </div>
+
+        <!-- Skills Section -->
+        <div class="section">
+            <h2>Skills</h2>
+            <div class="skills">
+                <p>HTML</p>
+                <p>CSS</p>
+                <p>JavaScript</p>
+                <p>React</p>
+                <p>Node.js</p>
+                <p>Git</p>
+            </div>
+        </div>
+
+        <!-- Location Section -->
+        <div class="section">
+            <h2>Location</h2>
+            <p>{{ resume.location }}</p>
+        </div>
+
     </div>
 
 </body>

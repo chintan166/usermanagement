@@ -17,11 +17,15 @@ class CustomUserAdmin(admin.ModelAdmin):
     
 class AnswerAdmin(admin.ModelAdmin):
     list_display = ('question','text')
+
+class QuestionAdmin(admin.ModelAdmin):
+    list_display = ('quiz','text')
+    
     
 
 admin.site.register(AttendanceRecord)
 admin.site.register(Quiz)
-admin.site.register(Question)
+admin.site.register(Question,QuestionAdmin)
 admin.site.register(Answer,AnswerAdmin)
 admin.site.register(Topic)
 admin.site.register(Video)

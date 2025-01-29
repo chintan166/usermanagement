@@ -1,0 +1,1596 @@
+composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition=2.4.1 mage241
+
+
+composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition=2.4.6 marketplace
+
+composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition=2.3.5 m235
+
+composer create-project --repository-url=https://repo.magento.com/ project-community-edition=2.4.6 marketplace
+
+---------------------------------------------------------------------------------------------------------------------------------
+
+magento commerce key
+http-basic": {
+        "repo.magento.com": {   
+            "username": "73b1fd1488d86379629d74d1e6b04760",
+            "password": "3549637956b16ec5ed4d2bf7d331d710"
+        }
+    }
+}
+---------------------------------------------------------------------------------------------------------------------------------
+
+
+84ebfa370388007136cdc0fc4963acd2
+36738d502624f5860623ac68174027cf
+
+
+5cc647838379eb63371d3d17c6cafdd1
+da4b49e2d0002245a24d63c267ac6317
+
+
+b1ad2100d8384142880b7a2fda41940f
+cb336cfcfdea5b1d6c06a33925e783e4
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------
+
+sudo chown -R biren: /var/www/html/m243/
+cd /var/www/html/m2372/
+chmod 777 -R var
+chmod 777 -R generated
+chmod 777 -R app/etc
+chmod 777 -R pub/media/
+rm -rf var/cache/* var/page_cache/* var/generation/*
+
+php bin/magento s:up
+php bin/magento s:s:d -f
+php bin/magento c:c
+
+
+php bin/magento s:up && php bin/magento s:s:d -f
+---------------------------------------------------------------------------------------------------------------------------------
+
+mysql -u user_5n294ucx3io -p
+chintan@123
+
+mysqldump -h chintan -p m1934 > testdatabase.sql
+
+
+
+
+---------------------------------------------------------------------------------------------------------------------------------
+
+php bin/magento setup:install
+--base-url=http://local.marketplace.com/
+--db-host=localhost
+--db-name=marketplace
+--db-user=root
+--db-password=root
+--admin-firstname=admin
+--admin-lastname=admin 
+--admin-email=chintans@digiteon.com
+--admin-user=admin
+--admin-password=admin@123
+--language=en_US
+--currency=USD
+--timezone=America/Chicago
+--use-rewrites=1
+
+
+
+
+php bin/magento setup:install \
+--base-url=http://local.latestmagento.com/ \
+--db-host=localhost \
+--db-name=latestmagento \
+--db-user=root \
+--db-password=root \
+--admin-firstname=admin \
+--admin-lastname=admin \
+--admin-email=admin@admin.com \
+--admin-user=admin \
+--admin-password=admin@123 \
+--language=en_US \
+--currency=USD \
+--timezone=America/Chicago \
+--use-rewrites=1 \
+--search-engine=elasticsearch7 \
+--elasticsearch-host=localhost \
+--elasticsearch-port=9200 \
+--elasticsearch-index-prefix=magento2 \
+--elasticsearch-timeout=15
+
+
+
+---------------------------------------------------------------------------------
+
+new magento 2.4.2 installation 
+admin url : http://localhost/m242/admin_2sn7te
+front url : http://localhost/m242/
+
+
+----------------------------------------------------------------------------
+gitlab
+
+chintan_etrellis1
+Chintan@9714
+
+------------------------------------------------------------
+
+
+SHA256:wA0ON9HHHHfenKWGDp4G33gBbvLBU/jELddvuzNGlm4 chintan@chintan-Latitude-E6540
+
+
+-----------------------------------------------------------------------------
+
+smpt 
+username : chintan@etrellis.com
+password : ldmlmbfprepqtpmf
+
+
+
+-----------------------------------------------------------------
+
+> "vendor/bin/phpcs" --config-set installed_paths ../../..
+Using config file: /var/www/html/m2372/magento-coding-standard/vendor/squizlabs/php_codesniffer/CodeSniffer.conf
+
+
+
+
+-------------------------------------------------------------
+magento2 check coding standard command
+vendor/bin/phpcs --standard=Magento2 app/code/Chintan/Crud/
+ -------------------------------------------------------------
+
+create custom field inside sales/order/order_id/shipping_method/field
+-> to must be entry in below table
+
+'customer_address_edit',
+'customer_register_address',
+'customer_address',
+
+
+---------------------------------------------------------------
+
+https://cis.titan.dotcomweavers.net/admin/admin/index/index/key/da1cf2ed53e74ee0104e9c97f387516b9b1d673a960b011964caa2cfa6efcaaa/
+admin / Dotcom@321
+
+Host :  titando.dotcomweavers.net
+User :  cis
+Password:  Dotcom@123
+SSH : ssh cis@titando.dotcomweavers.net
+
+
+----------------------------------------------------------------
+
+https://cs.mounikaa.asgard.dotcomweavers.net/admin/
+dcwadmin
+Dotcom@123
+
+Host:asgard.dotcomweavers.net
+Username:mounikaa
+password:Dotcom@123
+ssh : mounikaa@asgard.dotcomweavers.net
+
+--------------------------------------------------------------
+
+github
+
+email : chintan@etrellis.com
+username : Chintan9714
+pass : Chintan@9714
+token : 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
+
+
+-------------------------------------------------------------
+
+slack
+
+https://dotcomweavers.slack.com/
+chintanp.v@dotcomweavers.com
+Chintan@9714
+
+teamworks
+https://dotcomweavers.teamwork.com/
+chintanp.v@dotcomweavers.com
+Chintan@9714
+
+---------------------------------------------------------------
+
+git command 
+
+git clone git@github.com:bhautikjethva/Custom_Shipping.git Custom
+ssh-keygen 
+cat /home/chintan/.ssh/id_rsa.pub 
+git status  
+git add .
+git commit -m "Changes"
+git config --global user.email "chintan@etrellis.com"
+git config --global user.name "Chintan"
+git commit -m "Changes"
+git push
+
+
+------------------------------------------
+
+slack etreliis channel - etrellis.slack.com
+slack dotcomweaver channel - dotcomweavers.slack.com
+
+---------------------------------------------------------------------
+
+hweiss live sftp credentialsav
+username : a61e42cd_3
+host : 12cac21ae6.nxcli.net
+password : TotalsAgeingSludgePanda
+
+https://my.nexcess.net/
+kuldip.v@dotcomweavers.com
+Kuldip123#
+
+
+https://www.hweiss.com/index.php/hwadm
+dcwadmin
+Dotcom@123
+
+SSH :
+
+ssh a61e42cd_3@12cac21ae6.nxcli.net
+password : TotalsAgeingSludgePanda
+
+--------------------------------------------------------------------
+
+hweiss staging site
+
+http://staging.hweiss.com/
+
+http://staging.hweiss.com/hwadm
+dcwadmin
+Dotcom@123
+
+
+ssh a61e42cd_3@12cac21ae6.nxcli.net
+password : TotalsAgeingSludgePanda
+
+cd staging.hweiss.com
+----------------------------------------------------------------------
+
+morag hweiss
+
+SSH : ssh hweiss@morag.dotcomweavers.net
+Password: Dotcom@123
+
+https://hweiss.morag.dotcomweavers.net/hwadm
+dcwadmin
+Dotcom@123
+
+https://hweiss.morag.dotcomweavers.net:10000/
+user:hweiss
+password:Dotcom@123
+
+DB Access:  https://morag.dotcomweavers.net/pma/index.php
+Db user: hweiss
+DB name: hweiss
+Password: Dotcom@123
+
+
+----------------------------------------------------------------------
+ terminal through move file command
+
+ mv oldfile.csv newfile.csv
+
+ -------------------------------------------------------=---------------
+
+ download any file through ssh server
+
+ scp betastore@storenthrive.dotcomweavers.net:/home/betastore/public_html/var/log/payment.log .
+
+ scp testproduct.log mymagento@ssh.us-5.magento.cloud:/home/chintan/Desktop/
+
+ scp var/log/testproduct.log  mymagento@ssh.us-5.magento.cloud:/var/www/html/contactfill
+
+scp web@mymagento.0:var/log/testproduct.log /var/www/html/contactfill/testproduct.log
+
+scp paypal-express.log-20221020 chintan.suthar@yoogis-closet-m2-staging-nfs:/var/www/html/yoogiscloset/app/code/Kensium
+
+
+scp /var/www/shared/stgbackend.yoogiscloset.com/var/log/paypal-express.log-20221020 chintan.suthar@yoogis-closet-m2-staging-nfs:/var/www/html/yoogiscloset/app/code/Kensium
+
+scp chintan.suthar@yoogis-closet-m2-staging-nfs:/var/www/shared/stgbackend.yoogiscloset.com/var/log/paypal-express.log-20221020 /var/www/html/yoogiscloset/app/code/Kensium
+---------------------------------------------------------------------------
+
+SAV Project
+
+
+SAV DEV SSH:
+
+Host: ssh.79bt9vbep5wgndpg.mojostratus.io
+Port: 21710
+User: savdevstratus
+Pass: Dotcom@123
+
+Admin detail :- 
+
+https://dev.saveyewear.com/savadm
+admin
+S3l3cT@123
+
+
+ssh savdevstratus@ssh.79bt9vbep5wgndpg.mojostratus.io -p21710
+
+
+Live site Admin
+
+Host : ssh.3k9vqkj6vir539nt.mojostratus.io
+Port : 21354
+User : vijay
+Pass : Vijay@123#
+
+
+ssh vijay@ssh.3k9vqkj6vir539nt.mojostratus.io -p21354
+
+www.saveyewear.com/savadm
+Username - admin
+Password - S3l3cT@123
+new pass : UGEbVSU4IyNU9N
+ 
+
+magemojo credential
+shradha@dotcomweavers.com
+Dotcom@321
+
+
+----------------------------------------------------------------------------------------
+
+CES project
+
+Webmin Access
+https://ces.asgard.dotcomweavers.net:10000/
+User Name: ces
+Password: Dotcom@123
+
+SSH : ssh ces@asgard.dotcomweavers.net
+Password: K55^R!#Mz_fRS!@A
+
+
+DB Access:
+https://asgard.dotcomweavers.net/pma
+Db user: ces
+DB name: ces
+Password: Dotcom@123
+
+https://ces.asgard.dotcomweavers.net/admin_m23/
+user: etrellis
+pass: Admin@123
+
+-------------------------------------------------------------------------
+
+ssh -p 21354 chintan@ssh.3k9vqkj6vir539nt.mojostratus.io
+password: 0nnyo9hkmnj5
+
+-------------------------------------------------------------------------
+
+i98commerce
+
+Server Details:
+
+CPanel URL
+http://www.i98commerce.com/cpanel
+http://wwwaz1-ts1.a2hosting.com/cpanel
+
+SSH Port
+7822
+
+Hostname
+(SSH/FTP/POP/IMAP)
+az1-ts1.a2hosting.com
+
+Username
+(cPanel/SSH/FTP)
+icommerc
+
+Password
+(cPanel/SSH/FTP)
+b+1V0]uSly4XE7
+
+
+cPanel Redirect
+http://www.i98commerce.com
+
+cPanel Redirect
+http://wwwaz1-ts1.a2hosting.com
+ssh icommerc@az1-ts1.a2hosting.com -p7822
+b+1V0]uSly4XE7
+
+
+demo.i98commerce.com/admin/
+admin detail
+username : chintan
+password : chintan@123
+Chintan@123
+
+https://i98commerce.com/stage
+ajit
+ajit@123
+
+https://demo.i98commerce.com/index.php/admin/
+chintan
+Digiteon@123
+
+------------------------------------------------------------------------
+
+https://dev.cuttingedgestencils.com/
+
+https://dev.cuttingedgestencils.com/admin_m23
+user: etrellis
+pass: Admin@123
+
+site access 
+user: mayank@dotcomweavers.com
+Pass: CosignAngryCabinsGround	
+
+
+
+
+ssh a75718cd_1@811434c69a.nxcli.net
+EruptTwistsEmceesAerate
+dev site : cd /chroot/home/a75718cd/4da1707f8a.nxcli.net/app
+
+git branch
+
+
+php bin/magento setup:upgrade
+php bin/magento s:s:d -f
+php bin/magento c:f
+
+
+
+https://www.cuttingedgestencils.com/admin_m23
+user: etrellis
+pass: Admin@123
+
+
+
+-----------------------------------------------------------------------
+
+and whenever they asked for diskspace connect to ssh and run below commands
+11:51
+and then run command : df -h
+then change directory : public_html/var/log
+and run command : du -h --max-depth=1
+                  ls -l
+
+-------------------------------------------------------------------------
+
+https://www.contactfill.com/cfadmin/
+user: etrellis
+pass: Dotcom@123
+----------------------------------------
+
+
+QA admin contactfill
+https://cfm2.vormir.dotcomweavers.net/cfadmin/
+user: etrellis
+pass: Dotcom@123
+
+
+QA FTP contactfill
+host : vormirdo.dotcomweavers.net
+user : cfm2
+pass : Dotcom@123
+
+
+ssh user@host
+ssh cfm2@vormirdo.dotcomweavers.net
+pass : Dotcom@123
+------------------------------------------
+
+Your Store Address: https://cf.asgard.dotcomweavers.net/
+
+
+https://cf.asgard.dotcomweavers.net/cfadmin
+user: etrellis
+pass: Dotcom@123
+
+
+Webmin Access
+https://cf.asgard.dotcomweavers.net:10000/
+User Name: cf
+Password: Dotcom@123
+
+
+SSH : ssh cf@asgard.dotcomweavers.net
+Password: Dotcom@123
+
+
+----------------------------------------------
+
+live ssh : Contact fill project
+ssh 7pfs3smp3cngw-master-7rqtwti--mymagento@ssh.us-5.magento.cloud
+pwd : fGTzqKwDuX2Y.BD1
+
+
+live Contact fill project 
+database : mysql -h database.internal -u user -p main;
+
+https://us-5.magento.cloud/projects/7pfs3smp3cngw/environments/dev
+renukam.v@dotcomweavers.com
+fGTzqKwDuX2Y.BD11
+fGTzqKwDuX2Y.BD11
+
+--------------------------------
+renuma
+etrellis@123
+-----------
+
+Contact Fill staging
+
+
+staging admin
+https://staging-5em2ouy-7pfs3smp3cngw.us-5.magentosite.cloud/cfadmin/
+htaccess
+user: devsite
+pass: Dotcom@123
+user: etrellis
+pass: Dotcom@123
+
+
+
+staging site ssh:
+ssh 7pfs3smp3cngw-staging-5em2ouy--mymagento@ssh.us-5.magento.cloud
+
+
+staging site db
+mysql -hdatabase.internal -uuser -p
+
+
+
+
+----------------------------------------------------------------------
+
+https://admin.wallingtonplumbingsupply.com:10941/wpsadm
+user: admin
+Password: Dotcom@123
+
+ssh -p 20941 wpsstaging@ssh.9u40cv5kiwj2effl.mojostratus.io
+host: ssh.9u40cv5kiwj2effl.mojostratus.io
+User: wpsstaging
+password:Dotcom@123
+
+----------------------------------------------------------------------
+pump product (PP project)
+
+git lab access
+user_name : chintan_etrellis1
+email : chintanp.v@dotcomweavers.com
+password : Chintan@9714
+
+-------------------------------------------------------------
+
+braintee sandbox account
+username : chintan001
+email : chintan@etrellis.com
+password : Chintan@9714
+
+Sandbox Merchant ID : jjwyk5f6fqx2cqz2
+Sandbox Merchant Account ID : etrellisR
+Sandbox Public Key : bb9b996pzzms2cj6
+Sandbox Private Key : 9909c20b5aa7736630cc3e0eb9dc1fe7
+
+------------------------------------------------------
+
+iphone check in browser use : browserstack
+
+
+paid account for browserstack
+ipm@dotcomweavers.com
+Dotcom@123
+
+
+----------------------------------------------------------
+
+pumpproduct
+
+
+SSH:
+HOst: pumpproducts.morag.dotcomweavers.net
+user: pumpproducts
+Password: Dotcom@123
+
+ssh pumpproducts@morag.dotcomweavers.net
+Dotcom@123
+
+
+PHPMyAdmin link:  https://morag.dotcomweavers.net/pma
+DB:
+DB user: pumpproducts
+DB name : pumpproducts
+Password: Dotcom@123
+
+mysqldump -u YourUser -p YourDatabaseName > wantedsqlfile.sql
+
+mysqldump -u icommerc_demo -p icommerc_demo2 > latestdb.sql
+
+mysql -h localhost -u pp -p
+Dotcom@123
+
+---------------------------------------------------------------
+
+
+PP live site project path : home/a7e1ff86/931c90ca31.nxcli.net
+PP dev site project path : /chroot/home/a7e1ff86/9f6653f360.nxcli.net
+
+dev site link:
+frontend: https://9f6653f360.nxcli.net/
+admin: https://9f6653f360.nxcli.net/ppadmin/
+login: pp-dcwadmin
+password: Dotcom@123
+
+Live site link
+frontend: https://www.pumpproducts.com/
+admin: https://www.pumpproducts.com/afe4a0af96_admin/
+login: pp-dcwadmin
+password: Dotcom@123
+
+
+ssh a7e1ff86_6@931c90ca31.nxcli.net
+StreakMongerInureOnly
+
+ 
+cpanel : 
+https://my.nexcess.net/
+kuldip.v@dotcomweavers.com
+Kuldip123#
+
+host: 931c90ca31.nxcli.net
+use: a7e1ff86_6
+password: StreakMongerInureOnly
+port: 22
+
+
+fraudlabs pro access for client
+Username - Pumpproducts35
+Password - Media@123!!
+
+
+wordpress login 
+https://www.pumpproducts.com/blog/wp-login.php
+username: mwest@pumpproducts.com
+password: Pumps@123
+
+
+m2epro account login
+Username - jbogush@pumpproducts.com
+Password - Media@123
+
+-------------------------------------------------------------
+
+
+braintree sandbox account
+
+Username: nchippa@dotcomweavers.com
+Password: Dotcom@123
+Merchant ID: 4vnxxgs8tr7ppgk2
+Public Key: h6dyzz6qcxfq7myb
+Private Key: f70338d5c6b5c2b4c2dcf4a479c08a60
+Merchant Account ID: dotcomweavers
+
+----------------------------------------------------------------
+
+chintanp.v@dotcomweavers.com
+Chintan$9714
+
+---------------------------------------------------------------
+
+spp adobe userid and password
+
+chintanp.v@dotcomweavers.com
+Harshu@9714
+
+-------------------------------------------------------------
+
+htss live site
+
+Host:ssh.aconhn2tpdat4uul.mojostratus.io
+ssh user:hottub
+password:Dotcom@123
+port : 21362
+
+ssh hottub@ssh.aconhn2tpdat4uul.mojostratus.io -p 21362
+Dotcom@123
+
+mysql -u user_aconhn2tpda -p
+be2bf3a0-b818-4a71-9aaa-3a3ef24f0968
+ 
+use db_aconhn2tpda;
+
+SELECT * FROM `core_config_data` WHERE `path` LIKE '%tax/taxjar/last_update%';
+update core_config_data set value  = "11-23-2021" WHERE `path` LIKE '%tax/taxjar/last_update%';
+SELECT * FROM `cron_schedule` where `job_code` = "taxjar_backup_rates";
+SELECT *  FROM `core_config_data` WHERE `path` LIKE 'tax/taxjar/last_update';
+delete from cron_schedule where `job_code` = "taxjar_backup_rates"; 
+
+/usr/share/stratus/cli cache.all.clear
+/usr/share/stratus/cli autoscaling.reinit
+/usr/share/stratus/cli zerodowntime.init 
+/usr/share/stratus/cli zerodowntime.switch
+
+https://www.priscohottubsvip.com/customer/account/
+
+https://www.hottubspasupplies.com/htadmin
+User: etrellisadmin
+Password: Etrellis@123
+
+mailchimp login
+Username: Priscom
+Password: 092205mP!
+
+
+-------------------------------------------------------------
+
+htss staging site
+
+host : ssh.cfngb9fk8ksodfbc.mojostratus.io
+user : htssm2support
+port : 22060
+password : Dotcom@123 
+
+https://cfngb9fk8ksodfbc.mojostratus.io/htadmin
+Username: etrellisadmin
+password: Etrellis@123
+
+
+ssh htssm2support@ssh.cfngb9fk8ksodfbc.mojostratus.io -p 22060
+Dotcom@123
+02cp2lti977jp	
+
+mysql -u user_cfngb9fk8ks -p 
+7bc25678-48bb-4420-84c6-989cad8c6a91
+
+use db_20aug_cfngb9fk8ks;
+
+SELECT * FROM `core_config_data` WHERE `path` LIKE '%tax/taxjar/last_update%';
+update core_config_data set value  = "11-23-2021" WHERE `path` LIKE '%tax/taxjar/last_update%';
+SELECT * FROM `cron_schedule` where `job_code` = "taxjar_backup_rates";
+SELECT *  FROM `core_config_data` WHERE `path` LIKE 'tax/taxjar/last_update';
+delete from cron_schedule where `job_code` = "taxjar_backup_rates"; 
+
+php bin/magento cron:run --group="taxjar_crongroup"
+  
+
+'host' => 'mysql',
+                'dbname' => 'db_20aug_cfngb9fk8ks',
+                'username' => 'user_cfngb9fk8ks',
+                'password' => '7bc25678-48bb-4420-84c6-989cad8c6a91',
+
+-----------------------------------------------------------------------
+
+htss morag
+
+webmin URL: https://htss.morag.dotcomweavers.net/
+user: htss
+Password: Dotcom@123
+
+https://htss.morag.dotcomweavers.net/htadmin
+Username: etrellisadmin
+password: Etrellis@123
+
+DB:
+https://morag.dotcomweavers.net/pma/index.php
+DB user: htss
+DB name : htss
+Password: Dotcom@123
+
+SSH:
+HOst: htss.morag.dotcomweavers.net
+user: htss
+Password: Dotcom@123
+
+ssh htss@htss.morag.dotcomweavers.net
+
+
+
+--------------------------------------------------
+
+beta site morag nthrive
+
+Magento Admin beta
+https://betastore.nthrive.com/admin
+admin
+Dotcom@123
+
+SSH Access of beta site
+ssh betastore@storenthrive.dotcomweavers.net
+host: storenthrive.dotcomweavers.net:2083
+user: betastore
+pass: Dotcom@123
+
+-----------------------------------------------------------------------
+ 
+AAE staging site
+
+Dev Site Details: https://newsite.aaeglass.com/
+
+https://newsite.aaeglass.com/aaeadm/admin
+Username: admin
+Password: Dotcom@123
+
+SSH Details:
+ssh aaedevstratus2@ssh.d0s678o1r8q7p0j6.mojostratus.io -p21801
+Host: ssh.d0s678o1r8q7p0j6.mojostratus.io
+Username: aaedevstratus2
+Password: Dotcom@123
+Port: 21801
+
+------------------------------------------------------------------
+
+AAE Live site
+
+LIVE site details: www.aaeglass.com
+
+Admin Details:
+https://admin.aaeglass.com:11269/aaeadm/
+username: admin
+Password: D0tc0m@123
+
+SSH Details:
+
+ssh aaestratus@ssh.42doooe9fdx6r09l.mojostratus.io -p21269
+
+Host: ssh.42doooe9fdx6r09l.mojostratus.io
+Username: aaestratus
+Password: Dotcom@123
+Port: 21269
+
+Magemojo details
+https://magemojo.com/magento/customer/account/
+kuldip.v@dotcomweavers.com
+Mynewlife2020
+
+-----------------------------------------------------------------------
+
+
+At local :  your master should be up to date
+Note :  if you dont have clone of project, you need to do it first
+git checkout master
+git branch
+git pull origin master
+Create new branch :  git checkout -b ADA_complaint
+Ex : git checkout -b Speedoptimization
+Put your changes into new branch
+git all files
+git commit -m "mes"
+git push origin branchname
+Ex : git push origin Speedoptimization
+FOR DEV
+go to gitlab and merge your current branch (Speedoptimization) left side with devsite branch (which is right side)
+go to ssh and connect server
+git pull origin devsite
+bin/magento setup:upgrade
+bin/magento s:s:d -f
+bin/magento c:f
+For Live
+go to gitlab and merge your current branch (Speedoptimization) left side with master branch (which is right side)
+git pull origin master
+bin/magento setup:upgrade
+bin/magento s:s:d -f
+bin/magento c:f (edited) 
+
+
+-------------------------------------------------------------------
+git clone https://gitlab.com/dotcomweavers/htss_m24.git 
+git branch
+git pull origin master
+git status app/
+branch create : git branch -b branch_name
+
+to check the changes we did in file : git diff file_name
+add files into git : git add file_name
+git status app/
+
+add message : git commit -m "message"
+
+--------------------------------------
+
+paypal sandbox buyer account : 
+
+API Username : chintan_api1.etrellis.com
+API Password : ZL9CMZQ743G3C5G4
+signature : A-T3EWqhPvCnB0C-9NxvyZy1wuTOA5TeAJYR5KkyW2NeesZYbZiyzDPX
+
+
+sender account
+
+pavani@dotcomweavers.com
+Dotcom@123
+
+
+7224 Waterston
+New Albany, Ohio, 43054
+United States
+T: 4195123860
+---------------------------------------
+
+taxjar htss client access
+
+priscom@aol.com
+!!Hottub1031!
+
+------------------------------------
+
+http://wps2.morag.dotcomweavers.net/wpsadm
+user: admin
+Password: Dotcom@123
+
+SSH details
+SSH : ssh wps2@morag.dotcomweavers.net
+Password: Dotcom@123
+
+-----------------------------------------------------
+
+Webmin Access:
+https://med.morag.dotcomweavers.net:10000/
+User Name: med
+Password: Dotcom@123
+
+
+domain name: https://med.morag.dotcomweavers.net/
+Domain Path : /home/med/public_html
+
+SSH : ssh med@morag.dotcomweavers.net
+Password: Dotcom@123
+
+DB Access:  https://morag.dotcomweavers.net/pma/index.php
+Db user: med
+DB name: med
+Password: Dotcom@123
+
+----------------------------------------------------
+Admin link
+
+https://dev.med.equipment/medadm
+ID : dcw_med
+Password : Weavers@123
+
+CWA Link
+https://dev.med.equipment
+
+
+Zoho live:
+Email:test@medicalequipmentdynamics.com
+Password: zoholive@123
+
+ZOHO dev:
+Email:test@medicalequipmentdynamics.com
+Password: Dotcom@123
+
+
+Ebay Test Account Credentials
+User: medevtest
+Password: 4T3sting9005
+Updated password as of 1/5/2022: Li15B27!   
+
+Staging site
+https://staging.med.equipment/
+
+LIVE
+https://med.equipment/medadm_m22
+ruhi/Dotcom@123
+
+DEV
+https://staging.med.equipment/medadm_m22
+Naveen/Dotcom@123
+
+MAIL CHIMP
+med@medicalequipmentdynamics.com
+P%13rRq@
+
+
+NEXUS SERVER
+Hostname: 9b2666a6c0.nxcli.net
+Port: 22
+Username: afa98cc8_2
+pass: ZerosSideGlazedCabby
+Command: ssh afa98cc8_2@9b2666a6c0.nxcli.net
+
+--------------------------------------------------
+
+
+Morag Server
+====================
+	webmin URL: https://colonial.morag.dotcomweavers.net/
+	user: colonial
+	Password: Dotcom@123
+	
+	Admin Panel 
+	---------------------
+	http://colonial.morag.dotcomweavers.net/admin_colonial/
+	Username : etrellis
+	Password : etrellis123123
+
+    new usename: dcwnew
+    new password: dcwnew@123
+
+    user : dcw_admin
+    pass : dcw@123
+
+	DB
+	---------------
+	DB user: colonial
+	DB name : colonial
+	Password: 	
+
+	SSH
+	-----------------------
+	host: colonial.morag.dotcomweavers.net
+	user: colonial
+	Password: Dotcom@123
+	ssh colonial@colonial.morag.dotcomweavers.net
+
+	FTP
+	---------------
+	host: colonial.morag.dotcomweavers.net
+	user: colonial
+	Password: Dotcom@123
+ 
+
+-------------------------------------------------------------
+
+https://us-5.magento.cloud/projects/5g75d42ehpls4
+kuldip.v@dotcomweavers.com
+Iloveluv1234#
+
+?-Xfx$KZk!95U8i
+
+
+Live
+============================
+https://www.colonialpowerandsport.com/mageadmin/
+ruhi / Dotcom@123
+
+
+ssh -i /var/www/html/id_rsa 1.ent-5g75d42ehpls4-production-vohbr3y@ssh.us-5.magento.cloud
+
+mysql -h 127.0.0.1 -u 5g75d42ehpls4 -p
+zw14OmWuigSnshp
+
+
+shipstation login
+username : mbihary@colonialpowerandsport.com
+password : Colps480!
+-------------------------------------------------------------
+
+
+staging colonial
+
+https://mcstaging.colonialpowerandsport.com/mageadmin/
+ruhi / Dotcom@123
+
+
+ssh -i /var/www/html/id_rsa 1.ent-5g75d42ehpls4-staging-5em2ouy@ssh.us-5.magento.cloud
+
+mysql -h 127.0.0.1 -u 5g75d42ehpls4_stg -p
+tWXFWH4tjrVaeYf
+
+database : 5g75d42ehpls4_stg
+
+
+hostnane and password :
+
+ssh.us-5.magento.cloud
+3.ent-m4yxwkweanazy-staging-5em2ouy
+
+-------------------------------------------------------------
+
+	
+https://www.lancasterfarminglocator.com/index.php/admin/
+dcw_admin
+Dotcom@123
+
+username : livesite
+host : ssh.5n294ucx3iozq1ac.mojostratus.io
+port : 22188
+pass : 0at990exq37u
+
+ssh -p 22188 livesite@ssh.5n294ucx3iozq1ac.mojostratus.io
+0at990exq37u
+
+--------------------------------------------------------------
+
+
+Staging
+https://stratusdev.lancasterfarminglocator.com/
+https://stratusdev.lancasterfarminglocator.com/admin
+dcw_admin
+Dotcom@123
+
+Host : ssh.aq33qn53w348k7vs.mojostratus.io
+Port : 22320
+User : stratusdev
+Pass : Dotcom@123
+
+ssh -p 22320 stratusdev@ssh.aq33qn53w348k7vs.mojostratus.io
+
+
+https://magemojo.com/magento/customer/account/login/
+naveenkumar@dotcomweavers.com
+Dotcom@123
+
+-------------------------------
+
+microsoft team and email login
+
+chintans@digiteon.com
+Vaj53802
+
+--------------------------------------------------
+
+https://nthrive.morag.dotcomweavers.net/knowledgesource/
+
+SSH detail
+SSH : ssh nthrive@morag.dotcomweavers.net
+Password: Dotcom@123
+
+https://nthrive.morag.dotcomweavers.net/adm_nthrive/
+user: kuldip
+Pass: Weavers@123
+
+Email: mahemuddcw@gmail.com
+pass: mahemud@123
+
+=================================================
+
+how to set elastic search value in using terminal
+
+php bin/magento config:show catalog/search/engine
+php bin/magento config:set catalog/search/elasticsearch7_server_hostname localhost
+php bin/magento config:set catalog/search/elasticsearch7_server_port 9200
+
+sudo systemctl start elasticsearch
+sudo systemctl enable elasticsearch
+
+
+=====================================================================
+
+ssh root@rppdcw.dotcomweavers.net
+Password : D0tc0mWe@vers
+Project folder : /var/www/uidev.rppdcw.dotcomweavers.net/
+
+
+https://uidev.rppdcw.dotcomweavers.net/
+https://uidev.rppdcw.dotcomweavers.net/dashboard
+etradmin
+Dotcom@123
+
+https://my.sirv.com/#/browse/magento/pQ-C-Folder
+gayathrim@dotcomweavers.com
+Gayu@12345
+
+==============================================================
+
+localhost directly run crone using this command
+
+n98-magerun2.phar sys:cron:run
+
+
+=============================================================
+
+php bin/magento module:disable Bss_CustomOptionCore --clear-static-content
+php bin/magento module:disable Bss_CustomOptionImage --clear-static-content
+
+php bin/magento setup:upgrade
+cd app/code/Bss
+rm -rf OwlCarouselSlider
+
+
+====================================================
+
+
+magento2.4.3 to magento 2.4.4 upgrade command
+
+php bin/magento maintenance:enable
+sudo apt update
+sudo systemctl restart apache2
+cp composer.json composer.json.bak
+composer require magento/product-community-edition=2.4.4 --no-update
+composer update
+composer show magento/product-community-edition 2.4.* --available | grep -m 1 versions
+rm -rf var/cache/*
+rm -rf var/page_cache/*
+rm -rf generated/code/*
+sudo chmod -R 777 pub/static/ generated/ var/log/ var/page_cache/ var/cache/
+php bin/magento setup:upgrade
+composer require magento/composer-root-update-plugin ~2.0 --no-update
+composer require magento/product-community-edition 2.4.4 --no-update
+composer update
+php bin/magento setup:upgrade
+php bin/magento setup:di:compile
+php bin/magento setup:static-content:deploy -f
+php bin/magento cache:clean
+sudo chmod -R 777 pub/static/ generated/ var/log/ var/page_cache/ var/cache/
+
+
+=======================================================
+
+
+php version switch command
+
+sudo a2dismod php8.1
+sudo a2enmod php8.2
+sudo service apache2 restart
+
+sudo update-alternatives --set php /usr/bin/php8.2
+sudo update-alternatives --set phar /usr/bin/phar8.2
+sudo update-alternatives --set phar.phar /usr/bin/phar.phar8.2
+sudo update-alternatives --set phpize /usr/bin/phpize8.2
+sudo update-alternatives --set php-config /usr/bin/php-config8.2
+
+======================================================
+
+magento1 login detail
+
+magento1945 id and password
+admin
+6S%@2u5uT^45NO
+
+
+===================================================
+
+magento1 to magento2 migrate blog
+
+https://devdocs.magento.com/guides/v2.3/migration/migration-tool-configure.html
+https://meetanshi.com/blog/migrate-from-magento-1-to-magento-2/
+https://www.cloudways.com/blog/migrate-from-magento-1-to-magento-2/
+https://www.mgt-commerce.com/tutorial/how-to-migrate-magento-1-to-magento-2/
+
+
+command for : 
+
+composer config repositories.magento composer https://repo.magento.com
+
+composer require magento/data-migration-tool:2.4.3
+
+php bin/magento migrate:settings --reset vendor/magento/data-migration-tool/etc/opensource-to-opensource/1.9.4.5/config.xml
+
+php bin/magento migrate:data --reset vendor/magento/data-migration-tool/etc/opensource-to-opensource/1.9.4.5/config.xml
+
+
+==================================================
+
+first open a github and going into repository wise
+take a clone using this command : git clone git@github.com:Chintan9714/CustomShipping.git
+generate ssh key using command : ssh-keygen
+adding this key into github ssh key
+
+
+================================================
+
+gumbrand staging
+
+https://stage-gumbrand.nextmp.net/gbadmin
+lisa / Y7oxc@N9g8JTZr
+
+
+ssh stagingg@192.240.160.35
+Password : aU40EUzXSRFQ
+
+cd /home/stagingg/public_html
+
+host' => 'gpc102-dev1-int',
+'dbname' => 'stagingg_m2stage',
+'username' => 'stagingg_m2stage',
+'password' => 'OhsAcornStormyFora52',
+
+
+=============================================
+
+digiteon outlook mail
+chintans@digiteon.com
+Harshu@123
+
+kensium mail
+csuthar@kensium.com
+Harshu@123
+
+bitbucket 
+username : chintansuthar61
+password : ATBBxK75pZvrs7JsFBRPwpMXEDd24B8432ED
+
+==================================================
+
+yoogicloset project 
+
+magento1 admin detail
+
+https://access.kensium.com:10444/proxy/58606f9a/https/admin.yoogiscloset.com/index.php/yoogiscl_admin/sales_creditmemo/
+user : kensiumadmin
+pass : $admin8temp2
+
+
+
+
+magento2 staging admin detail
+
+https://stgbackend.yoogiscloset.com/yc_admin
+csuthar
+csken$1um
+
+
+
+https://backend.yoogiscloset.com/yc_admin/
+csuthar
+csken$1um
+
+
+https://www.algolia.com/users/sign_in 
+User - shan@yoogiscloset.com 
+Pass - $YCsearch4me 
+
+merge step for yoogiscloset project
+
+git pull origin development
+git branch
+    development
+git branch -b fix-ycms-ticket-name
+git branch
+git status
+sudo git checkout .
+git status
+git add file[name]
+git commit -m "message"
+git push origin fix-ycms-ticket-name
+git checkout development
+git branch
+git pull origin development
+git branch
+git pull origin fix-ycms-ticket-name    
+git push origin development
+
+----------------------------------------------
+
+https://support.webscalenetworks.com/
+csuthar@kensium.com
+Harshu@123
+
+----------------------------------------------
+
+https://access.kensium.com:10444/remote/login?lang=en
+
+Username: csuthar
+Password: CSken$1um@2k2211123
+Harshu@1234
+
+----------------------------------------------
+
+all part staging
+
+http://a018223686.nxcli.net/allpart1_admin/admin/
+sainadhm
+Mannem@121
+
+ssh a50aea66_14@0026a26cec.nxcli.net
+ValleyDungGaffeSowing
+
+/home/a50aea66/dev.allpartsinc.com/html
+
+---------------------------------
+
+new integration link all parts
+
+https://integration-5ojmyuq-y3lxubbi5ylju.us-5.magentosite.cloud/admin
+sainadhm
+Mannem@121
+
+
+staging site allpart old version
+
+http://a018223686.nxcli.net/allpart1_admin/
+sainadhm / Mannem@121
+
+staging new site
+
+https://mcstaging.allpartsinc.com/allpart1_admin/
+sainadhm / Mannem@121
+
+
+---------------------------------------------------
+
+https://staging.verilife.com/pcadmin
+
+Sainadh
+Pc@12345
+
+-------------------------------------------
+
+
+node -v
+nvm use 10.14.2
+node -v
+npm start
+yarn install
+yarn dev
+node -v
+lsof -i tcp:3009
+kill -9 12109
+lsof -i tcp:3009
+yarn install
+yarn dev
+
+----------------------------
+
+test smtp
+
+MAIL_HOST=smtp.mailtrap.io
+
+MAIL_PORT=2525 or 25
+
+MAIL_USERNAME=ced4a813c3dbb2
+
+MAIL_PASSWORD=e53dfc87b8b893
+
+MAIL_ENCRYPTION=tls
+
+=================================================
+
+payroll login
+
+3661-ADC005
+Harshu@123
+
+================================
+
+kensium github account
+username : csuthar001
+email : csuthar@kensium.com
+password : csuthar@123
+
+=======================================
+
+magento 2.4.4-p2 
+https://mcstaging2.idn-inc.com/idnsafe/
+csuthar
+csken$1um
+
+
+magento 2.4.2-p2
+https://mcstaging.idn-inc.com/idnsafe/admin/
+csuthar
+csken$1um
+
+-----------------------------------
+
+Mageplaza Extensions:LayeredNavigation - 
+composer require mageplaza/layered-navigation-m2Keys
+
+Public: 52srhnjlhs9i8lom562mqsyty3up4hrm9vlnqcs0
+Private: lz17mfvluprv96nsy9jixps1y7tnxew6p6es9kbj
+
+==================================================
+
+https://dss24.morag.dotcomweavers.net/admingopal/gopal@1234
+Magento Admin
+
+
+https://dss24.morag.dotcomweavers.net/
+
+SSH
+ssh dss24@morag.dotcomweavers.net
+Password: Dotcom@123
+
+==================================================
+
+
+https://cableranch.asgard.dotcomweavers.net/
+
+https://confluent.asgard.dotcomweavers.net/admin
+username: dcwadmin
+password : Dotcom@1234
+
+SSH/SFTP detail
+ssh confluent@asgard.dotcomweavers.net
+host : asgard.dotcomweavers.net
+user: confluent
+Password: Dotcom@123
+
+============================================
+
+https://mcstaging.confluentgroup.com
+
+https://mcstaging.cableranch.com/Admin
+
+https://mcstaging.confluentgroup.com/admin_ccn1910dcw
+username: dcwadmin
+password: Dotcom@321
+
+=============================================
+
+https://magnetscopy.titan.dotcomweavers.net
+
+https://magnetscopy.titan.dotcomweavers.net/admin_1ac46c/
+User : Dotcom
+Pass : Dotcom@123
+
+SSH Detail
+ssh magnetscopy@magnetscopy.titan.dotcomweavers.net
+Dotcom@123
+
+==============================================
+
+Admin Detail
+
+https://www.confluentgroup.com/admin_ccn1910dcw/
+username: dcwadmin
+password : Dotcom@1234
+
+
+
+=======================================
+
+test smtp
+
+aarkeshkabraj@gmail.com
+wjcnszpmdbmidwdu
+
+
+========================================
+
+https://thetennisdepot.com/admin/admin/
+
+https://thetennisdepot.com/
+
+https://my.nexcess.net/
+groenewold@me.com
+McAllenAntonGro51
+
+ssh thetenni@thetennisdepot.com
+Host : thetennisdepot.com 
+User : thetenni 
+Pass : uyNPKLy15imd
+
+
+https://sip2-180.nexcess.net:2443/
+info@thetennisdepot.com
+OwesLoftedRajahsFenced83
+
+
+=================================================================
+
+user: root
+Host: 67.227.251.178
+Pass: .Z71La]ch5*(C6
+
+ssh root@67.227.251.178
+.Z71La]ch5*(C6
+
+
+
+=================================
+
+sudo composer self-update 2.2.4
+sudo composer self-update 2.2.24
+composer self-update --rollback
+sudo composer self-update --preview
+
+
+
+-------------------------------------------
+
+smtp gmail
+
+username : chintansuthar61@gmail.com
+password : gszi dknk vivu gyar
+
+------------------------------------
+
+my personal github
+
+
+user email : chintansuthar61@gmail.com
+
+username : chintan166
+
+password : ChinHars@123
+
+git remote set-url origin https://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@github.com/chintan166/dj_react_project
+
+git remote set-url origin https://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@github.com/chintan166/dj_react_project

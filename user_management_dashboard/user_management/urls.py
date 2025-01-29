@@ -1,4 +1,5 @@
 from django.urls import path
+from django.shortcuts import redirect
 from . import views
 from django.contrib.auth.views import LogoutView
 from django.contrib.auth.decorators import login_required
@@ -7,7 +8,8 @@ from django.contrib.auth.decorators import login_required
 urlpatterns = [
     path('register/', views.register, name='register'),
     path('login/', views.user_login, name='login'),
-    path('', views.dashboard, name='dashboard'),
+    path('', lambda request: redirect('login/')),
+    #path('', login_required(views.dashboard), name='dashboard'),
     path('dashboard/', login_required(views.dashboard), name='dashboard'),
     path('mark_attendance/', views.mark_attendance, name='mark_attendance'),
     path('view_attendance/', views.view_attendance, name='view_attendance'),
@@ -46,5 +48,8 @@ urlpatterns = [
     path('resume/<int:resume_id>/edit/', views.edit_resume, name='edit_resume'),  # Add Edit Resume URL
     path('create_blog_post/', views.create_blog_post, name='create_blog_post'),  # Admin-only view to create a post
     path('all-blog-posts/', views.all_blog_posts, name='all_blog_posts'),
+    path('like_post/<int:post_id>/', views.like_post, name='like_post'),
+    path('dislike_post/<int:post_id>/', views.dislike_post, name='dislike_post'),
+    path('users/export/', views.export_users_to_csv, name='export_users_to_csv'),
     
 ]

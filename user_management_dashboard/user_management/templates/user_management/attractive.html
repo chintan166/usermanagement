@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ resume.name }}'s Resume</title>
+    <style>
+        /* Global styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 50px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Header Section */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 3.5rem; /* Increased font size */
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.3rem; /* Increased font size */
+            color: #7f8c8d;
+            margin: 5px 0;
+        }
+
+        .header p span {
+            font-weight: bold;
+            color: #2980b9;
+        }
+
+        /* Section Styling */
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section h2 {
+            font-size: 26px;
+            color: #2980b9;
+            margin-bottom: 10px;
+            font-weight: bold;
+            border-bottom: 2px solid #2980b9;
+            padding-bottom: 5px;
+        }
+
+        .section p {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        /* Layout for Skills, Education, Experience, etc. */
+        .section ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .section ul li {
+            font-size: 1.3rem; /* Increased font size */
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .section ul li span {
+            color: #2980b9;
+            font-weight: bold;
+        }
+
+        /* Contact Info Section */
+        .contact-info {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .contact-info p {
+            font-size: 1.3rem; /* Increased font size */
+            color: #555;
+        }
+
+        /* Footer Section */
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #7f8c8d;
+            font-size: 1.1rem; /* Slightly increased font size */
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 2.5rem; /* Adjusted for smaller screens */
+            }
+
+            .section h2 {
+                font-size: 1.6rem;
+            }
+
+            .section p,
+            .section ul li {
+                font-size: 1.2rem; /* Adjusted for smaller screens */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- Header -->
+        <div class="header">
+            <h1>{{ resume.name }}</h1>
+            <p><span>Email:</span> {{ resume.email }} | <span>Phone:</span> {{ resume.phone }}</p>
+        </div>
+
+        <!-- About Me Section -->
+        <div class="section">
+            <h2>About Me</h2>
+            <p>{{ resume.about }}</p>
+        </div>
+
+        <!-- Education Section -->
+        <div class="section">
+            <h2>Education</h2>
+            <ul>
+                <li><span>Degree:</span> {{ resume.education.degree }}</li>
+                <li><span>Institution:</span> {{ resume.education.institution }}</li>
+                <li><span>Year:</span> {{ resume.education.year }}</li>
+            </ul>
+        </div>
+
+        <!-- Experience Section -->
+        <div class="section">
+            <h2>Experience</h2>
+            <ul>
+                <li><span>Job Title:</span> fhfghfg</li>
+                <li><span>Company:</span> dfgdfgdf</li>
+                <li><span>Duration:</span> gerterter</li>
+                <li><span>Key Responsibilities:</span> dsfsdfsdf</li>
+            </ul>
+        </div>
+
+        <!-- Skills Section -->
+        <div class="section">
+            <h2>Skills</h2>
+            <ul>
+                <li>php</li>
+                <li>php</li>
+                <!-- Add more skills as needed -->
+            </ul>
+        </div>
+
+        <!-- Location Section -->
+        <div class="section">
+            <h2>Location</h2>
+            <p>{{ resume.location }}</p>
+        </div>
+
+        <!-- Website Section -->
+        <div class="section">
+            <h2>Website</h2>
+            <p>{{ resume.website }}</p>
+        </div>
+
+        <!-- LinkedIn Section -->
+        <div class="section">
+            <h2>LinkedIn</h2>
+            <p>{{ resume.linkedin }}</p>
+        </div>
+
+    </div>
+
+</body>
+</html>
