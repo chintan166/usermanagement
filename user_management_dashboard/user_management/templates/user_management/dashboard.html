@@ -2,9 +2,7 @@
 
 {% block content %}
   <div class="home-container">
-    <!-- Form to create a new blog post -->
-    
-
+    <!-- Button to trigger modal for creating a new post -->
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#sharePostModal">
       Start a Post
     </button>
@@ -22,7 +20,7 @@
       </div>
     {% endif %}
 
-    <!-- Modal -->
+    <!-- Modal to create a new blog post -->
     <div class="modal fade" id="sharePostModal" tabindex="-1" aria-labelledby="sharePostModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -31,7 +29,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <!-- Form to create a new blog post (same form as in the main page) -->
+            <!-- Form to create a new blog post -->
             <form method="POST" enctype="multipart/form-data">
               {% csrf_token %}
               <div class="form-group mb-4">
@@ -56,61 +54,82 @@
       </div>
     </div>
     
-
     <hr class="my-5">
 
     <!-- Display existing blog posts -->
-    
-
     <div class="posts-list">
-        {% for post in posts %}
-          <div class="row mb-4">
-            <div class="col-12">
-              <div class="post-item shadow-sm p-3 bg-white rounded">
-                <div class="d-flex align-items-center mb-3">
-                  <!-- User Avatar -->
-                  <div class="post-user-avatar">
-                    {% if post.user.profile_pic %}
-                      <img src="{{ post.user.profile_pic.url }}" height="50px" alt="{{ post.user.username }}" class="avatar-img">
-                    {% else %}
-                      <span class="avatar-placeholder">{{ post.user.username|slice:":1" }}</span>
-                    {% endif %}
-                  </div>
-                  <!-- User Name and Time -->
-                  <div class="ms-3">
-                    <p class="mb-0 text-primary">        
-                      <a href="{% url 'user_profile' post.user.username %}">{{ post.user.username }}</a>
-                    </p>
-                    <p class="mb-0 text-muted">{{ post.created_at|date:"F d, Y h:i A" }}</p>
-                  </div>
+      {% for item in posts_with_comments %}
+        <div class="row mb-4">
+          <div class="col-12">
+            <div class="post-item shadow-sm p-3 bg-white rounded">
+              <!-- Post User and Avatar -->
+              <div class="d-flex align-items-center mb-3">
+                <div class="post-user-avatar">
+                  {% if item.post.user.profile_pic %}
+                    <img src="{{ item.post.user.profile_pic.url }}" height="50px" alt="{{ item.post.user.username }}" class="avatar-img">
+                  {% else %}
+                    <span class="avatar-placeholder">{{ item.post.user.username|slice:":1" }}</span>
+                  {% endif %}
                 </div>
-      
-                <h4 class="post-title text-dark">
-                  <a href="{% url 'post_detail' post.id %}">{{ post.title }}</a>
-                </h4>
-                <p class="post-description text-muted">{{ post.description|truncatewords:30 }}</p>
-      
-                {% if post.blog_image %}
-                  <div class="post-image mb-3">
-                    <img src="{{ post.blog_image.url }}" alt="{{ post.title }}" class="img-fluid rounded">
-                  </div>
-                {% endif %}
-      
-                <!-- Like and Dislike Buttons -->
-                <div class="post-actions d-flex justify-content-start">
-                  <a href="{% url 'like_post' post.id %}" class="btn btn-outline-success btn-sm me-2">
-                    Like ({{ post.likes.count }})
-                  </a>
-                  <a href="{% url 'dislike_post' post.id %}" class="btn btn-outline-danger btn-sm">
-                    Dislike ({{ post.dislikes.count }})
-                  </a>
+                <div class="ms-3">
+                  <p class="mb-0 text-primary">        
+                    <a href="{% url 'user_profile' item.post.user.username %}">{{ item.post.user.username }}</a>
+                  </p>
+                  <p class="mb-0 text-muted">{{ item.post.created_at|date:"F d, Y h:i A" }}</p>
                 </div>
+              </div>
+      
+              <!-- Post Title and Description -->
+              <h4 class="post-title text-dark">
+                <a href="{% url 'post_detail' item.post.id %}">{{ item.post.title }}</a>
+              </h4>
+              <p class="post-description text-muted">{{ item.post.description|truncatewords:30 }}</p>
+      
+              {% if item.post.blog_image %}
+                <div class="post-image mb-3">
+                  <img src="{{ item.post.blog_image.url }}" alt="{{ item.post.title }}" class="img-fluid rounded">
+                </div>
+              {% endif %}
+              
+              <!-- Like and Dislike Buttons -->
+              <div class="post-actions d-flex justify-content-start">
+                <a href="{% url 'like_post' item.post.id %}" class="btn btn-outline-success btn-sm me-2">
+                  Like ({{ item.post.likes.count }})
+                </a>
+                <a href="{% url 'dislike_post' item.post.id %}" class="btn btn-outline-danger btn-sm">
+                  Dislike ({{ item.post.dislikes.count }})
+                </a>
+              </div>
+
+              <!-- Comments Section -->
+              <div class="comments-section">
+                {% for comment in item.comments %}
+                  <div class="comment-item mb-3 p-3 bg-light rounded">
+                    <div class="d-flex justify-content-between">
+                      <p class="mb-0"><strong>{{ comment.user.username }}</strong></p>
+                      <p class="mb-0 text-muted">{{ comment.created_at|date:"F d, Y h:i A" }}</p>
+                    </div>
+                    <p>{{ comment.content }}</p>
+                  </div>
+                {% empty %}
+                  <p>No comments yet. Be the first to comment!</p>
+                {% endfor %}
+              </div>
+
+              <!-- Comment Form -->
+              <div class="comment-form">
+                <form method="POST" action="{% url 'post_detail' item.post.id %}">
+                  {% csrf_token %}
+                  {{ comment_form.as_p }}
+                  <button type="submit" class="btn btn-outline-primary btn-sm">Post Comment</button>
+                </form>
               </div>
             </div>
           </div>
-        {% empty %}
-          <p class="no-posts text-center">No blog posts available. Create one now!</p>
-        {% endfor %}
+        </div>
+      {% empty %}
+        <p class="no-posts text-center">No blog posts available. Create one now!</p>
+      {% endfor %}
     </div>
   </div>
 {% endblock %}

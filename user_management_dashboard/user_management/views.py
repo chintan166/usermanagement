@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib.auth import login, authenticate, logout,get_user_model
-from .forms import CustomUserCreationForm,BlogPostForm,ResumeForm,MessageForm,ReplyForm,EditProfileForm,ProjectForm,PasswordResetRequestForm,CustomAuthenticationForm,VideoUploadForm,SubmissionForm
-from .models import CustomUser,BlogPost,Post,Resume,Message,AttendanceRecord,Subtopic,Quiz,UserProfile, Question, Answer,Video, Topic,Project, Submission
+from .forms import CustomUserCreationForm,BlogPostForm,CommentForm,ResumeForm,MessageForm,ReplyForm,EditProfileForm,ProjectForm,PasswordResetRequestForm,CustomAuthenticationForm,VideoUploadForm,SubmissionForm
+from .models import CustomUser,BlogPost,Comment,Post,Resume,Message,AttendanceRecord,Subtopic,Quiz,UserProfile, Question, Answer,Video, Topic,Project, Submission
 from django.utils.timezone import now
 from django.contrib.auth.decorators import login_required, user_passes_test
 from datetime import datetime
@@ -524,8 +524,17 @@ def dashboard(request):
 
     # Fetch all active posts to display on the dashboard
     posts = BlogPost.objects.filter(is_active=True).order_by('-created_at')  # Show only active posts
+    posts_with_comments = [
+        {
+            'post': post,
+            'comments': post.comments.all(),  # Fetch comments related to each post
+            'comment_form': CommentForm()
+        }
+        for post in posts
+    ]
 
-    return render(request, 'user_management/dashboard.html', {'posts': posts, 'form': form})
+    return render(request, 'user_management/dashboard.html', {'posts_with_comments': posts_with_comments, 'form': form})
+
 
 def like_post(request, post_id):
     try:
@@ -533,6 +542,10 @@ def like_post(request, post_id):
     except BlogPost.DoesNotExist:
         raise Http404("Post does not exist")
 
+    if post.user == request.user:
+        # Prevent the user from liking their own post
+        return redirect('dashboard')  # Or display a message telling them they can't like their own post
+    
     if request.user in post.likes.all():
         post.likes.remove(request.user)  # Remove like if the user already liked the post
     else:
@@ -540,8 +553,6 @@ def like_post(request, post_id):
     
     post.save()  # Save the post after updating likes
 
-    # Redirect back to the same page to update the like count
-    
     return redirect('dashboard')  # Redirect back to the dashboard
 
 @login_required
@@ -551,6 +562,10 @@ def dislike_post(request, post_id):
     except BlogPost.DoesNotExist:
         raise Http404("Post does not exist")
 
+    if post.user == request.user:
+        # Prevent the user from disliking their own post
+        return redirect('dashboard')  # Or display a message telling them they can't dislike their own post
+    
     if request.user in post.dislikes.all():
         post.dislikes.remove(request.user)  # Remove dislike if the user already disliked the post
     else:
@@ -558,8 +573,6 @@ def dislike_post(request, post_id):
     
     post.save()  # Save the post after updating dislikes
 
-    # Redirect back to the same page to update the dislike count
-    
     return redirect('dashboard')  # Redirect back to the dashboard
 
 def my_posts(request):
@@ -573,9 +586,24 @@ def my_posts(request):
 def post_detail(request, post_id):
     # Fetch the post using its ID or return 404 if not found
     post = get_object_or_404(BlogPost, id=post_id)
+    comments = post.comments.all()
+
+    if request.method == 'POST':
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.user = request.user
+            comment.post = post
+            comment.save()
+            messages.success(request, 'Your comment has been posted successfully!')
+            return redirect('post_detail', post_id=post.id)  # Redirect to the same post after submitting the comment
+    else:
+        comment_form = CommentForm()
 
     return render(request, 'user_management/post_detail.html', {
-        'post': post,  # Pass the post to the template
+        'post': post,
+        'comments': comments,
+        'comment_form': comment_form,
     })
 
 def delete_post(request, post_id):

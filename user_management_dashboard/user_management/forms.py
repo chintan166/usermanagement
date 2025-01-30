@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from .models import CustomUser,BlogPost,Video,Submission,Project,Message,Resume
+from .models import CustomUser,BlogPost,Video,Submission,Project,Message,Resume,Comment
 
 TEMPLATE_CHOICES = [
     ('simple_layout', 'Simple Layout'),
@@ -74,3 +74,13 @@ class BlogPostForm(forms.ModelForm):
     class Meta:
         model = BlogPost
         fields = ['title', 'description','blog_image','is_active']
+        
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['content']
+    def clean_text(self):
+        content = self.cleaned_data.get('content')
+        if not content:
+            raise forms.ValidationError("This field is required.")
+        return content

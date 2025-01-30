@@ -27,6 +27,45 @@
           <img src="{{ post.blog_image.url }}" alt="{{ post.title }}" class="img-fluid rounded">
         </div>
       {% endif %}
+      
+      <!-- Like and Dislike Buttons on Detail Page -->
+      <div class="post-actions d-flex justify-content-start">
+        {% if post.user != request.user %}
+          <a href="{% url 'like_post' post.id %}" class="btn btn-outline-success btn-sm me-2">
+            Like ({{ post.likes.count }})
+          </a>
+          <a href="{% url 'dislike_post' post.id %}" class="btn btn-outline-danger btn-sm">
+            Dislike ({{ post.dislikes.count }})
+          </a>
+        {% else %}
+          <span class="text-muted">You can't like or dislike your own post</span>
+        {% endif %}
+      </div>
+
+      <hr>
+
+      <div class="comments-section">
+        <h3>Comments:</h3>
+
+        {% for comment in comments %}
+          <div class="comment">
+            <p><strong>{{ comment.user.username }}</strong> ({{ comment.created_at|date:"F d, Y h:i A" }}):</p>
+            <p>{{ comment.content }}</p>
+          </div>
+        {% empty %}
+          <p>No comments yet. Be the first to comment!</p>
+        {% endfor %}
+
+        <hr>
+
+        <!-- Comment Form -->
+        <h4>Add a Comment:</h4>
+        <form method="POST">
+          {% csrf_token %}
+          {{ comment_form.as_p }}
+          <button type="submit" class="">Post Comment</button>
+        </form>
+      </div>
     </div>
   </div>
 {% endblock %}
