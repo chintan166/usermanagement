@@ -93,16 +93,19 @@
               
               <!-- Like and Dislike Buttons -->
               <div class="post-actions d-flex justify-content-start">
-                <a href="{% url 'like_post' item.post.id %}" class="btn btn-outline-success btn-sm me-2">
+                <button class="btn btn-outline-success btn-sm me-2 like-btn" data-post-id="{{ item.post.id }}">
                   Like ({{ item.post.likes.count }})
-                </a>
-                <a href="{% url 'dislike_post' item.post.id %}" class="btn btn-outline-danger btn-sm">
+                </button>
+                <button class="btn btn-outline-danger btn-sm dislike-btn" data-post-id="{{ item.post.id }}">
                   Dislike ({{ item.post.dislikes.count }})
-                </a>
+                </button>
+                <button style="--bs-btn-padding-x: 27.5rem !;--bs-btn-padding-x: 0.5rem !important;" class="btn btn-outline toggle-comments-btn" data-post-id="{{ item.post.id }}">Show Comments ({{ item.post.comments.count }})</button>  
               </div>
 
+              
+
               <!-- Comments Section -->
-              <div class="comments-section">
+              <div class="comments-section" id="comments-section-{{ item.post.id }}" style="display: none;">
                 {% for comment in item.comments %}
                   <div class="comment-item mb-3 p-3 bg-light rounded">
                     <div class="d-flex justify-content-between">
@@ -117,13 +120,7 @@
               </div>
 
               <!-- Comment Form -->
-              <div class="comment-form">
-                <form method="POST" action="{% url 'post_detail' item.post.id %}">
-                  {% csrf_token %}
-                  {{ comment_form.as_p }}
-                  <button type="submit" class="btn btn-outline-primary btn-sm">Post Comment</button>
-                </form>
-              </div>
+              
             </div>
           </div>
         </div>
@@ -132,10 +129,79 @@
       {% endfor %}
     </div>
   </div>
+<script>
+    // AJAX for liking and disliking
+    document.querySelectorAll('.like-btn').forEach(button => {
+      button.addEventListener('click', function(event) {
+        event.preventDefault();
+        const postId = this.getAttribute('data-post-id');
+        fetch(`/like/${postId}/`, {
+          method: 'GET',
+          headers: {
+            'X-CSRFToken': '{{ csrf_token }}',
+          },
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.liked !== undefined) {
+            this.textContent = `Like (${data.like_count})`;
+            this.classList.toggle('btn-outline-success', !data.liked);
+            this.classList.toggle('btn-success', data.liked);
+          }
+        });
+      });
+    });
+
+    document.querySelectorAll('.dislike-btn').forEach(button => {
+      button.addEventListener('click', function(event) {
+        event.preventDefault();
+        const postId = this.getAttribute('data-post-id');
+        fetch(`/dislike/${postId}/`, {
+          method: 'GET',
+          headers: {
+            'X-CSRFToken': '{{ csrf_token }}',
+          },
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.disliked !== undefined) {
+            // Update button text with the updated dislike count
+            this.textContent = `Dislike (${data.dislike_count})`;
+    
+            // Toggle the button styles based on whether it's disliked or not
+            this.classList.toggle('btn-outline-danger', !data.disliked);
+            this.classList.toggle('btn-danger', data.disliked);
+          } else if (data.error) {
+            alert(data.error);  // Show an alert if there's an error (e.g., disliking own post)
+          }
+        })
+        .catch(error => console.error('Error:', error));
+      });
+    });
+
+
+    document.querySelectorAll('.toggle-comments-btn').forEach(button => {
+      button.addEventListener('click', function() {
+        const postId = this.getAttribute('data-post-id');
+        const commentsSection = document.getElementById(`comments-section-${postId}`);
+        
+        if (commentsSection.style.display === 'none' || commentsSection.style.display === '') {
+          commentsSection.style.display = 'block';
+          this.textContent = 'Hide Comments';
+        } else {
+          commentsSection.style.display = 'none';
+          this.textContent = 'Show Comments';
+        }
+      });
+    });
+  </script>
 {% endblock %}
 
 {% block extra_css %}
 <style>
+  .comments-section {
+    transition: all 0.3s ease-in-out;
+  }
   .btn-primary:not(.btn-light)
   {
     color: black;

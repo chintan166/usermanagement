@@ -79,7 +79,8 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ['content']
-    def clean_text(self):
+        
+    def clean_content(self):
         content = self.cleaned_data.get('content')
         if not content:
             raise forms.ValidationError("This field is required.")

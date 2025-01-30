@@ -31,12 +31,12 @@
       <!-- Like and Dislike Buttons on Detail Page -->
       <div class="post-actions d-flex justify-content-start">
         {% if post.user != request.user %}
-          <a href="{% url 'like_post' post.id %}" class="btn btn-outline-success btn-sm me-2">
+          <button class="btn btn-outline-success btn-sm me-2 like-btn" data-post-id="{{ post.id }}">
             Like ({{ post.likes.count }})
-          </a>
-          <a href="{% url 'dislike_post' post.id %}" class="btn btn-outline-danger btn-sm">
+          </button>
+          <button class="btn btn-outline-danger btn-sm dislike-btn" data-post-id="{{ post.id }}">
             Dislike ({{ post.dislikes.count }})
-          </a>
+          </button>
         {% else %}
           <span class="text-muted">You can't like or dislike your own post</span>
         {% endif %}
@@ -63,9 +63,58 @@
         <form method="POST">
           {% csrf_token %}
           {{ comment_form.as_p }}
-          <button type="submit" class="">Post Comment</button>
+          <button type="submit" class="btn btn-outline-primary btn-sm">Post Comment</button>
         </form>
       </div>
     </div>
   </div>
+
+  <script>
+    // Handle Like Button Click
+    document.querySelectorAll('.like-btn').forEach(button => {
+      button.addEventListener('click', function(event) {
+        event.preventDefault();
+        const postId = this.getAttribute('data-post-id');
+        fetch(`/like/${postId}/`, {
+          method: 'GET',
+          headers: {
+            'X-CSRFToken': '{{ csrf_token }}',
+          },
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.liked !== undefined) {
+            this.textContent = `Like (${data.like_count})`;
+            this.classList.toggle('btn-outline-success', !data.liked);
+            this.classList.toggle('btn-success', data.liked);
+          }
+        })
+        .catch(error => console.error('Error:', error));
+      });
+    });
+
+    // Handle Dislike Button Click
+    document.querySelectorAll('.dislike-btn').forEach(button => {
+      button.addEventListener('click', function(event) {
+        event.preventDefault();
+        const postId = this.getAttribute('data-post-id');
+        fetch(`/dislike/${postId}/`, {
+          method: 'GET',
+          headers: {
+            'X-CSRFToken': '{{ csrf_token }}',
+          },
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.disliked !== undefined) {
+            this.textContent = `Dislike (${data.dislike_count})`;
+            this.classList.toggle('btn-outline-danger', !data.disliked);
+            this.classList.toggle('btn-danger', data.disliked);
+          }
+        })
+        .catch(error => console.error('Error:', error));
+      });
+    });
+  </script>
+
 {% endblock %}

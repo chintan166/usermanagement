@@ -6,7 +6,7 @@ from django.utils.timezone import now
 from django.contrib.auth.decorators import login_required, user_passes_test
 from datetime import datetime
 from django.utils.dateparse import parse_date
-from django.http import HttpResponse,Http404
+from django.http import HttpResponse,Http404,JsonResponse
 from django.template.loader import render_to_string
 import csv
 import pytz
@@ -540,32 +540,34 @@ def like_post(request, post_id):
     try:
         post = BlogPost.objects.get(id=post_id)
     except BlogPost.DoesNotExist:
-        raise Http404("Post does not exist")
+        return JsonResponse({'error': 'Post not found'}, status=404)
 
     if post.user == request.user:
-        # Prevent the user from liking their own post
-        return redirect('dashboard')  # Or display a message telling them they can't like their own post
-    
-    if request.user in post.likes.all():
-        post.likes.remove(request.user)  # Remove like if the user already liked the post
-    else:
-        post.likes.add(request.user)  # Add like if the user hasn't liked the post yet
-    
-    post.save()  # Save the post after updating likes
+        return JsonResponse({'error': 'You cannot like your own post'}, status=400)
 
-    return redirect('dashboard')  # Redirect back to the dashboard
+    if request.user in post.likes.all():
+        post.likes.remove(request.user)
+        liked = False
+    else:
+        post.likes.add(request.user)
+        liked = True
+
+    post.save()
+    return JsonResponse({
+        'liked': liked,
+        'like_count': post.likes.count(),
+        'dislike_count': post.dislikes.count(),
+    })
 
 @login_required
 def dislike_post(request, post_id):
-    try:
-        post = BlogPost.objects.get(id=post_id)
-    except BlogPost.DoesNotExist:
-        raise Http404("Post does not exist")
+    post = get_object_or_404(BlogPost, id=post_id)
 
     if post.user == request.user:
-        # Prevent the user from disliking their own post
-        return redirect('dashboard')  # Or display a message telling them they can't dislike their own post
-    
+        return JsonResponse({
+            'error': 'You cannot dislike your own post'
+        }, status=400)
+
     if request.user in post.dislikes.all():
         post.dislikes.remove(request.user)  # Remove dislike if the user already disliked the post
     else:
@@ -573,7 +575,10 @@ def dislike_post(request, post_id):
     
     post.save()  # Save the post after updating dislikes
 
-    return redirect('dashboard')  # Redirect back to the dashboard
+    return JsonResponse({
+        'disliked': request.user in post.dislikes.all(),  # Whether the user has disliked the post
+        'dislike_count': post.dislikes.count()  # Updated dislike count
+    })
 
 def my_posts(request):
     # Fetch the user's own posts
