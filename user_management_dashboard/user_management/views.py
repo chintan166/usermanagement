@@ -377,6 +377,15 @@ def list_projects(request):
 
     return render(request, 'user_management/list_projects.html', {'projects': projects})
 
+def user_profile(request, username):
+    # Fetch the user object by username, or return 404 if not found
+    user = get_object_or_404(CustomUser, username=username)
+
+    # Render the user profile template and pass the user data to the template
+    return render(request, 'user_management/user_profile.html', {
+        'user': user,
+    })
+
 def admin_list_projects(request):
     # Retrieve all projects
     projects = Project.objects.all()
@@ -507,6 +516,7 @@ def dashboard(request):
         if form.is_valid():
             blog_post = form.save(commit=False)
             blog_post.user = request.user  # Associate the post with the current user
+            blog_post.is_active = True
             blog_post.save()  # Save the post to the database
             return redirect('dashboard')  # Redirect to the dashboard after creating the post
     else:
@@ -551,6 +561,22 @@ def dislike_post(request, post_id):
     # Redirect back to the same page to update the dislike count
     
     return redirect('dashboard')  # Redirect back to the dashboard
+
+def my_posts(request):
+    # Fetch the user's own posts
+    user_posts = BlogPost.objects.filter(user=request.user).order_by('-created_at')
+
+    return render(request, 'user_management/my-posts.html', {
+        'user_posts': user_posts,  # Pass user's posts to the template
+    })
+    
+def post_detail(request, post_id):
+    # Fetch the post using its ID or return 404 if not found
+    post = get_object_or_404(BlogPost, id=post_id)
+
+    return render(request, 'user_management/post_detail.html', {
+        'post': post,  # Pass the post to the template
+    })
 
 def myresume(request):
     resumes = Resume.objects.filter(user=request.user)

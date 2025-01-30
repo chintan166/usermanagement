@@ -1,0 +1,44 @@
+{% extends "user_management/base.html" %}
+
+{% block content %}
+  <div class="home-container">
+    <h3 class="text-center mb-4">My Posts</h3>
+    
+    <div class="posts-list">
+      {% for post in user_posts %}
+        <div class="row mb-4">
+          <div class="col-12">
+            <div class="post-item shadow-sm p-3 bg-white rounded">
+              <div class="d-flex align-items-center mb-3">
+                <!-- User Avatar -->
+                <div class="post-user-avatar">
+                  {% if post.user.profile_pic %}
+                    <img src="{{ post.user.profile_pic.url }}" height="50px" alt="{{ post.user.username }}" class="avatar-img">
+                  {% else %}
+                    <span class="avatar-placeholder">{{ post.user.username|slice:":1" }}</span>
+                  {% endif %}
+                </div>
+                <!-- User Name and Time -->
+                <div class="ms-3">
+                  <p class="mb-0 text-primary"><a href="{% url 'user_profile' post.user.username %}">{{ post.user.username }}</a></p>
+                  <p class="mb-0 text-muted">{{ post.created_at|date:"F d, Y h:i A" }}</p>
+                </div>
+              </div>
+              <h4 class="post-title text-dark">
+                <a href="{% url 'post_detail' post.id %}">{{ post.title }}</a>
+              </h4>
+              <p class="post-description text-muted">{{ post.description|truncatewords:30 }}</p>
+              {% if post.blog_image %}
+                <div class="post-image mb-3">
+                  <img src="{{ post.blog_image.url }}" alt="{{ post.title }}" class="img-fluid rounded">
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      {% empty %}
+        <p class="no-posts text-center">You haven't shared any posts yet. Create one now!</p>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}

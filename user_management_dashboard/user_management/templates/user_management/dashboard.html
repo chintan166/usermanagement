@@ -19,34 +19,34 @@
     {% endif %}
 
     <!-- Create Post Form -->
-<div class="card shadow-sm p-4 mb-5 bg-white rounded">
-    <form method="POST" enctype="multipart/form-data">
-      {% csrf_token %}
-      
-      <div class="form-group mb-4">
-        <label for="id_title" class="form-label">Title</label>
-        {{ form.title }}
-      </div>
-  
-      <div class="form-group mb-4">
-        <label for="id_description" class="form-label">Description</label>
-        {{ form.description }}
-      </div>
-  
-      <div class="form-group mb-4">
-        <label for="id_blog_image" class="form-label">Image</label>
-        {{ form.blog_image }}
-      </div>
-  
-      <div class="form-group mb-4">
-        <label for="id_is_active" class="form-label">Is Active?</label>
-        {{ form.is_active }}
-      </div>
-  
-      <button type="submit" class="btn btn-primary btn-lg w-100">Post</button>
-    </form>
-  </div>
-  
+    <div class="card shadow-sm p-4 mb-5 bg-white rounded">
+      <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div class="form-group mb-4">
+          <label for="id_title" class="form-label">Title</label>
+          {{ form.title }}
+        </div>
+
+        <div class="form-group mb-4">
+          <label for="id_description" class="form-label">Write Something...</label>
+          {{ form.description }}
+        </div>
+
+        <div class="form-group mb-4">
+          <label for="id_blog_image" class="form-label">Add an Image</label>
+          {{ form.blog_image }}
+        </div>
+
+        <!--<div class="form-group mb-4">
+          <label for="id_is_active" class="form-label">Is Active?</label>
+          {{ form.is_active }}
+        </div>-->
+
+        <button type="submit" class="btn btn-primary btn-lg w-100">Post</button>
+      </form>
+    </div>
+    
 
     <hr class="my-5">
 
@@ -69,12 +69,16 @@
                   </div>
                   <!-- User Name and Time -->
                   <div class="ms-3">
-                    <p class="mb-0 text-primary">{{ post.user.username }}</p>
-                    <p class="mb-0 text-muted">{{ post.created_at|date:"F d, Y" }}</p>
+                    <p class="mb-0 text-primary">        
+                      <a href="{% url 'user_profile' post.user.username %}">{{ post.user.username }}</a>
+                    </p>
+                    <p class="mb-0 text-muted">{{ post.created_at|date:"F d, Y h:i A" }}</p>
                   </div>
                 </div>
       
-                <h4 class="post-title text-dark">{{ post.title }}</h4>
+                <h4 class="post-title text-dark">
+                  <a href="{% url 'post_detail' post.id %}">{{ post.title }}</a>
+                </h4>
                 <p class="post-description text-muted">{{ post.description|truncatewords:30 }}</p>
       
                 {% if post.blog_image %}
@@ -94,255 +98,188 @@
                 </div>
               </div>
             </div>
-        </div>
-      {% empty %}
-        <p class="no-posts text-center">No blog posts available. Create one now!</p>
-      {% endfor %}
+          </div>
+        {% empty %}
+          <p class="no-posts text-center">No blog posts available. Create one now!</p>
+        {% endfor %}
     </div>
   </div>
 {% endblock %}
 
 {% block extra_css %}
 <style>
-    /* General Container Styling */
-    .home-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 40px 20px;
-        background-color: #f7f7f7;
-        font-family: 'Arial', sans-serif;
-    }
+  /* General Container Styling */
+  .home-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    background-color: #f7f7f7;
+    font-family: 'Arial', sans-serif;
+  }
 
-    /* Title Styling */
-    h3 {
-        font-size: 2.4em;
-        color: #333;
-        font-weight: bold;
-    }
-
-    /* Card styling for the form */
-    .card {
-        border: 1px solid #ddd;
-        border-radius: 10px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
-
-    /* Input fields and labels */
-    .form-group label {
-        font-size: 1.1em;
-        color: #555;
-    }
-
-    .form-control {
-        border-radius: 5px;
-        padding: 10px;
-        font-size: 1em;
-        width: 100%;
-        margin-top: 5px;
-    }
-
-    .form-control:focus {
-        border-color: #007bff;
-        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-    }
-
-    /* Post item card styling */
-    .post-item {
-        background-color: #fff;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s;
-    }
-
-    .post-item:hover {
-        transform: translateY(-5px);
-    }
-
-    /* Post Title Styling */
-    .post-title {
-        font-size: 1.6em;
-        color: #333;
-        margin-bottom: 15px;
-    }
-
-    /* Post Description Styling */
-    .post-description {
-        font-size: 1.1em;
-        color: #666;
-        margin-bottom: 15px;
-    }
-
-    /* Avatar Image Styling */
-    .post-user-avatar {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        overflow: hidden;
-        background-color: #007bff;
-    }
-
-    .avatar-img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    .avatar-placeholder {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: #fff;
-        font-size: 20px;
-        font-weight: bold;
-        height: 100%;
-    }
-
-    /* Post Date Styling */
-    .post-date {
-        font-size: 0.9em;
-        color: #888;
-    }
-
-    /* Buttons Styling */
-    .btn {
-        padding: 8px 20px;
-        border-radius: 20px;
-    }
-
-    .btn-outline-success {
-        border: 1px solid #28a745;
-        color: #28a745;
-    }
-
-    .btn-outline-success:hover {
-        background-color: #28a745;
-        color: white;
-    }
-
-    .btn-outline-danger {
-        border: 1px solid #dc3545;
-        color: #dc3545;
-    }
-
-    .btn-outline-danger:hover {
-        background-color: #dc3545;
-        color: white;
-    }
-
-    /* No Posts Message */
-    .no-posts {
-        font-size: 1.2em;
-        color: #888;
-        text-align: center;
-    }
-
-    /* Styling for Create Post Form */
-.card {
-    border: 1px solid #e1e4e8; /* Subtle light border */
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Soft shadow */
-    border-radius: 8px;
-}
-
-.card form {
-    padding: 20px;
-}
-
-/* Form Group Styling */
-.form-group {
-    margin-bottom: 20px;
-}
-
-.form-group label {
-    font-size: 1.1em;
-    font-weight: 600;
+  /* Title Styling */
+  h3 {
+    font-size: 2.4em;
     color: #333;
-    margin-bottom: 8px;
-}
+    font-weight: bold;
+  }
 
-/* Input Fields Styling */
-.form-control {
+  /* Card styling for the form */
+  .card {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Input fields and labels */
+  .form-group label {
+    font-size: 1.1em;
+    color: #555;
+  }
+
+  .form-control {
     border-radius: 5px;
-    border: 1px solid #ccc; /* Light gray border */
     padding: 10px;
     font-size: 1em;
     width: 100%;
-    box-sizing: border-box;
-}
+    margin-top: 5px;
+  }
 
-.form-control:focus {
-    border-color: #0073b1; /* LinkedIn Blue */
-    box-shadow: 0 0 4px rgba(0, 115, 177, 0.2);
-}
+  .form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  }
 
-/* File Upload and Image Input */
-input[type="file"] {
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    font-size: 1em;
-}
+  /* Textarea specific styling */
+  .form-group textarea.form-control {
+    height: 150px;
+    resize: vertical;
+  }
 
-input[type="file"]:focus {
-    border-color: #0073b1; /* LinkedIn Blue */
-    box-shadow: 0 0 4px rgba(0, 115, 177, 0.2);
-}
+  /* Post item card styling */
+  .post-item {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+  }
 
-/* Button Styling */
-.btn-primary {
-    background-color: #0073b1; /* LinkedIn Blue */
+  .post-item:hover {
+    transform: translateY(-5px);
+  }
+
+  /* Post Title Styling */
+  .post-title {
+    font-size: 1.6em;
+    color: #333;
+    margin-bottom: 15px;
+  }
+
+  /* Post Description Styling */
+  .post-description {
+    font-size: 1.1em;
+    color: #666;
+    margin-bottom: 15px;
+  }
+
+  /* Avatar Image Styling */
+  .post-user-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: #007bff;
+  }
+
+  .avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .avatar-placeholder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-size: 20px;
+    font-weight: bold;
+    height: 100%;
+  }
+
+  /* Post Date Styling */
+  .post-date {
+    font-size: 0.9em;
+    color: #888;
+  }
+
+  /* Buttons Styling */
+  .btn {
+    padding: 8px 20px;
+    border-radius: 20px;
+  }
+
+  .btn-outline-success {
+    border: 1px solid #28a745;
+    color: #28a745;
+  }
+
+  .btn-outline-success:hover {
+    background-color: #28a745;
+    color: white;
+  }
+
+  .btn-outline-danger {
+    border: 1px solid #dc3545;
+    color: #dc3545;
+  }
+
+  .btn-outline-danger:hover {
+    background-color: #dc3545;
+    color: white;
+  }
+
+  /* No Posts Message */
+  .no-posts {
+    font-size: 1.2em;
+    color: #888;
+    text-align: center;
+  }
+
+  /* Button Styling */
+  .btn-primary {
+    background-color: #0073b1;
     border-color: #0073b1;
     color: white;
     padding: 12px;
     font-size: 1.1em;
     border-radius: 25px;
     font-weight: 600;
-}
+  }
 
-.btn-primary:hover {
-    background-color: #005f8c; /* Darker LinkedIn Blue */
+  .btn-primary:hover {
+    background-color: #005f8c;
     border-color: #005f8c;
     transition: background-color 0.3s ease;
-}
+  }
 
-.btn-primary:focus {
+  .btn-primary:focus {
     box-shadow: 0 0 4px rgba(0, 115, 177, 0.5);
-}
+  }
 
-/* Add some margin and spacing for form components */
-.mb-4 {
-    margin-bottom: 24px;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .card {
-        padding: 15px;
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .home-container {
+      padding: 20px;
     }
 
-    .form-group {
-        margin-bottom: 15px;
+    .post-item {
+      margin-bottom: 20px;
     }
 
-    .btn-primary {
-        font-size: 1em;
-        padding: 10px;
+    .posts-list {
+      padding: 0;
     }
-}
-
-
-    /* Responsive Styling */
-    @media (max-width: 768px) {
-        .home-container {
-            padding: 20px;
-        }
-
-        .post-item {
-            margin-bottom: 20px;
-        }
-
-        .posts-list {
-            padding: 0;
-        }
-    }
+  }
 </style>
 {% endblock %}
