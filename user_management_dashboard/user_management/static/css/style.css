@@ -8540,6 +8540,21 @@
   box-sizing: border-box;
 }
 
+.btn-primary:not(.btn-light)
+  {
+    color: black;
+    margin: .4rem 0;
+    font-size: 1.4rem;
+    width: 600px;
+    flex-grow: 1;
+    max-width: none;
+    justify-content: left;
+    line-height: 1.5;
+    border: 1px solid var(--color-border-low-emphasis);
+    border-radius: 35px !important;
+    padding-left: 1.6rem !important;
+  }
+
 @media (prefers-reduced-motion: no-preference) {
   :root {
     scroll-behavior: smooth;
@@ -11351,7 +11366,7 @@ textarea.is-invalid.tt-hint, .select2-container--default .select2-selection--sin
 }
 
 .btn, .ajax-upload-dragdrop .ajax-file-upload {
-  --bs-btn-padding-x: 2.5rem;
+  --bs-btn-padding-x: 27.5rem;
   --bs-btn-padding-y: 0.875rem;
   --bs-btn-font-family: ;
   --bs-btn-font-size: 0.875rem;
@@ -22282,7 +22297,17 @@ code {
 }
 
 .btn-primary:not(.btn-light) {
-  color: #ffffff;
+  color: black;
+  margin: .4rem 0;
+  font-size: 1.4rem;
+  width: 600px;
+  flex-grow: 1;
+  max-width: none;
+  justify-content: left;
+  line-height: 1.5;
+  border: 1px solid var(--color-border-low-emphasis);
+  border-radius: 35px !important;
+  padding-left: 1.6rem !important;
 }
 .btn-primary:not(.btn-light):hover, .btn-primary:not(.btn-light):focus, .btn-primary:not(.btn-light):active {
   color: #ffffff;
@@ -25285,9 +25310,9 @@ dl li {
   border: 2px solid #ffffff;
 }
 .navbar .navbar-menu-wrapper .count-indicator .count-symbol {
-  top: 17px;
-  right: -3px;
-  width: 10px;
+  top: 19px;
+  right: 5px;
+  width: 16px;
   height: 10px;
 }
 .navbar .navbar-menu-wrapper .count-indicator .count-number {

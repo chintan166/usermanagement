@@ -2,7 +2,7 @@
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
     <ul class="nav">
       <li class="nav-item nav-profile">
-        <a href="{% url 'dashboard' %}" class="nav-link">
+        <a href="{% url 'user_profile' request.user.username %}" class="nav-link">
           <div class="nav-profile-image">
             {% if request.user.profile_pic %}
           <img src="{{ request.user.profile_pic.url }}" alt="profile" />
@@ -15,8 +15,8 @@
           <div class="nav-profile-text d-flex flex-column">
             <span class="font-weight-bold mb-2">{% if request.user.is_authenticated %}
                 <p>Welcome, {{ request.user.username }}</p>
-                <p>{{ request.user.college_name }}</p>
-                <p>{{request.user.address}}
+                <p>Attended {{ request.user.college_name }}</p>
+                
                 {% endif %}
             </span>
           </div>
@@ -24,19 +24,32 @@
         </a>
       </li>
       {% if not request.user.is_superuser %}
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'mark_attendance' %}">
-          <span class="menu-title">Mark Attendance</span>
-          <i class="mdi mdi-home menu-icon"></i>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'view_attendance' %}">
-          <span class="menu-title">View Attendance</span>
-          <i class="mdi mdi-home menu-icon"></i>
-        </a>
-      </li>
      
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+          <span class="menu-title">Attendance</span>
+          <i class="menu-arrow"></i>
+          <i class="mdi mdi-crosshairs-gps menu-icon"></i>
+        </a>
+        <div class="collapse" id="ui-basic" style="">
+          <ul class="nav flex-column sub-menu">
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'mark_attendance' %}">
+                <span class="menu-title">Mark Attendance</span>
+                <i class="mdi mdi-home menu-icon"></i>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'view_attendance' %}">
+                <span class="menu-title">View Attendance</span>
+                <i class="mdi mdi-home menu-icon"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </li>
+
       <li class="nav-item">
         <a class="nav-link" href="{% url 'my_posts' %}">
           <span class="menu-title">My Post</span>
@@ -62,36 +75,38 @@
           <i class="mdi mdi-home menu-icon"></i>
         </a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'jobs_by_area' %}">
-          <span class="menu-title">Job Listing</span>
-          <i class="mdi mdi-home menu-icon"></i>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'create_resume' %}">
-          <span class="menu-title">Create Resume</span>
-          <i class="mdi mdi-home menu-icon"></i>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'myresume' %}">
-          <span class="menu-title">My Resume</span>
-          <i class="mdi mdi-home menu-icon"></i>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'send_message' %}">
-          <span class="menu-title">Send Message to Admin</span>
-          <i class="mdi mdi-home menu-icon"></i>
-        </a>
-      </li>
+
 
       <li class="nav-item">
-          <a class="nav-link" href="{% url 'view_messages' %}">
-              <span class="menu-title">View Messages</span>
-              <i class="mdi mdi-home menu-icon"></i>
-          </a>
+        <a class="nav-link collapsed" data-bs-toggle="collapse" href="#ui-resume" aria-expanded="false" aria-controls="ui-resume">
+          <span class="menu-title">Resume</span>
+          <i class="menu-arrow"></i>
+          <i class="mdi mdi-crosshairs-gps menu-icon"></i>
+        </a>
+        <div class="collapse" id="ui-resume" style="">
+          <ul class="nav flex-column sub-menu">
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'create_resume' %}">
+                <span class="menu-title">Create Resume</span>
+                <i class="mdi mdi-home menu-icon"></i>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'myresume' %}">
+                <span class="menu-title">View/Download Resume</span>
+                <i class="mdi mdi-home menu-icon"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </li>
+
+      
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'send_message' %}">
+          <span class="menu-title">HelpDesk</span>
+          <i class="mdi mdi-home menu-icon"></i>
+        </a>
       </li>
       
       
@@ -146,12 +161,5 @@
         </a>
       </li>
       {% endif %}
-      
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'logout' %}">
-          <span class="menu-title">Logout</span>
-          <i class="mdi mdi-home menu-icon"></i>
-        </a>
-      </li>
     </ul>
   </nav>

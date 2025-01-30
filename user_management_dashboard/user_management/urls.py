@@ -52,6 +52,7 @@ urlpatterns = [
     path('dislike_post/<int:post_id>/', views.dislike_post, name='dislike_post'),
     path('users/export/', views.export_users_to_csv, name='export_users_to_csv'),
     path('my-posts/', views.my_posts, name='my_posts'),
+    path('delete-post/<int:post_id>/', views.delete_post, name='delete_post'),
     path('post/<int:post_id>/', views.post_detail, name='post_detail'),
     path('profile/<str:username>/', views.user_profile, name='user_profile'),  # New URL for user profile
     

@@ -578,6 +578,17 @@ def post_detail(request, post_id):
         'post': post,  # Pass the post to the template
     })
 
+def delete_post(request, post_id):
+    post = get_object_or_404(BlogPost, id=post_id)
+
+    # Check if the user is the owner of the post
+    if post.user == request.user:
+        post.delete()
+        return redirect('my_posts')  # Redirect to the user's posts list after deletion
+    else:
+        # Optionally, handle unauthorized access attempt
+        return redirect('my_posts')  # Redirect to user's posts if they try to delete another user's post
+
 def myresume(request):
     resumes = Resume.objects.filter(user=request.user)
     return render(request, 'user_management/myresume.html', {'resumes': resumes})

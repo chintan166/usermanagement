@@ -33,6 +33,11 @@
                   <img src="{{ post.blog_image.url }}" alt="{{ post.title }}" class="img-fluid rounded">
                 </div>
               {% endif %}
+              <!-- Delete Button -->
+              <form action="{% url 'delete_post' post.id %}" method="post" onsubmit="return confirm('Are you sure you want to delete this post?');">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+              </form>
             </div>
           </div>
         </div>
