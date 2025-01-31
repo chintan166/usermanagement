@@ -3,17 +3,67 @@
 {% block content %}
   <h2>Your Notifications</h2>
 
+  {% if unread_count %}
+    <p>You have {{ unread_count }} unread notification{% if unread_count > 1 %}s{% endif %}.</p>
+  {% else %}
+    <p>No unread notifications.</p>
+  {% endif %}
+
   {% if notifications %}
     <ul>
       {% for notification in notifications %}
-        <li>
-          <strong>{{ notification.created_at }}:</strong> {{ notification.message }}<br>
-          <strong>Status:</strong> {{ notification.get_status_display }}<br>
-          <hr>
+        <li 
+          id="notification-{{ notification.id }}"
+          {% if notification.status == 'unread' %}
+            style="background-color: #f1f8ff; border-left: 5px solid #0073b1; padding: 10px; margin-bottom: 10px;"
+          {% else %}
+            style="background-color: #e0e0e0; border-left: 5px solid #757575; padding: 10px; margin-bottom: 10px;"
+          {% endif %}
+        >
+          <strong>{{ notification.created_at|date:"Y-m-d H:i" }}:</strong> {{ notification.message }}<br>
+          
+          
+          {% if notification.status == 'unread' %}
+            <!-- Include the unread notification id as a data attribute -->
+            <button class="mark-as-read" data-id="{{ notification.id }}">Mark as Read</button>
+          {% endif %}
         </li>
+        <hr>
       {% endfor %}
     </ul>
   {% else %}
     <p>No notifications yet.</p>
   {% endif %}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function() {
+    $(".mark-as-read").click(function() {
+      var notificationId = $(this).data("id");
+  
+      $.ajax({
+        url: '{% url "mark_notification_read" %}',  // URL for marking notification as read
+        type: "POST",
+        data: {
+          'id': notificationId,
+          'csrfmiddlewaretoken': '{{ csrf_token }}'
+        },
+        success: function(response) {
+          if (response.success) {
+            // Change the background color to indicate the notification was read
+            $("#notification-" + notificationId).css("background-color", "#e0e0e0");
+            // Remove the "Mark as Read" button
+            $("button[data-id='" + notificationId + "']").remove();
+          } else {
+            console.log("Error: Notification not found.");
+          }
+        },
+        error: function(xhr, errmsg, err) {
+          console.log("Error marking notification as read:", errmsg);
+        }
+      });
+    });
+  });
+</script>
+
 {% endblock %}

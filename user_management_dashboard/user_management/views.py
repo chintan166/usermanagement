@@ -805,8 +805,35 @@ def send_notification(request):
 def view_notifications(request):
     # Get notifications for the logged-in user
     notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
-    
-    # Mark unread notifications as read
-    notifications.filter(status='unread').update(status='read')
 
-    return render(request, "user_management/view_notifications.html", {'notifications': notifications})
+    # Count unread notifications
+    unread_count = notifications.filter(status='unread').count()
+
+    # Mark unread notifications as read
+    notifications.filter(status='unread').update(status='unread')
+
+    return render(request, "user_management/view_notifications.html", {
+        'notifications': notifications,
+        'unread_count': unread_count
+    })
+    
+def mark_notification_read(request):
+    if request.method == 'POST':
+        notification_id = request.POST.get('id')
+        try:
+            notification = Notification.objects.get(id=notification_id)
+            notification.status = 'read'
+            notification.save()
+            return JsonResponse({"success": True, "notification_id": notification.id})
+        except Notification.DoesNotExist:
+            return JsonResponse({"success": False, "error": "Notification not found"})
+        
+def people_you_may_know(request):
+    # Get the current user's area of interest
+    current_user_profile = UserProfile.objects.get(user=request.user)
+    current_user_interest = current_user_profile.area_of_interest
+
+    # Fetch users who share the same area of interest, excluding the current user
+    similar_users = UserProfile.objects.filter(area_of_interest=current_user_interest).exclude(user=request.user)
+
+    return render(request, 'user_management/user_profiles_by_interest.html', {'similar_users': similar_users})

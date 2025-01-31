@@ -59,5 +59,7 @@ urlpatterns = [
     path('user_messages/', views.user_messages, name='user_messages'),
     path('send_notification/', views.send_notification, name='send_notification'),
     path('view_notifications/', views.view_notifications, name='view_notifications'),
+    path('mark_notification_read/', views.mark_notification_read, name='mark_notification_read'),
+    path('people_you_may_know/', views.people_you_may_know, name='people_you_may_know'),
     
 ]

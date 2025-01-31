@@ -1,0 +1,124 @@
+{% extends "user_management/base.html" %}
+
+{% block content %}
+<!-- People You May Know Section -->
+<div class="people-you-may-know">
+    <h3>People You May Know</h3>
+    <div class="people-list">
+        {% for profile in similar_users %}
+            <div class="profile-card">
+                <a href="{% url 'user_profile' profile.user.username %}">
+                    <div class="profile-img">
+                        <img src="{{ profile.user.profile_pic.url }}" alt="{{ profile.user.username }}'s profile picture">
+                    </div>
+                    <div class="profile-info">
+                        <h4>{{ profile.user.username }}</h4>
+                        <p>Area of Interest: {{ profile.area_of_interest }}</p>
+                    </div>
+                </a>
+            </div>
+        {% empty %}
+            <p>No one with the same interests at the moment.</p>
+        {% endfor %}
+    </div>
+</div>
+<style>
+    /* People You May Know Section */
+    .people-you-may-know {
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        margin-top: 20px;
+    }
+    
+    /* Heading for the section */
+    .people-you-may-know h3 {
+        font-size: 24px;
+        color: #333;
+        margin-bottom: 20px;
+    }
+    
+    /* Container for all profile cards */
+    .people-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: space-between;
+    }
+    
+    /* Individual profile card style */
+    .profile-card {
+        width: 30%; /* Ensures that 3 cards fit in a row */
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        text-align: center;
+        transition: all 0.3s ease-in-out;
+    }
+    
+    /* Hover effect */
+    .profile-card:hover {
+        transform: scale(1.05);
+    }
+    
+    /* Profile picture style */
+    .profile-img {
+        height: 120px;
+        width: 120px;
+        margin-top: 15px;
+        border-radius: 50%;
+        overflow: hidden;
+        margin-bottom: 10px;
+    }
+    
+    .profile-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    /* Profile info section */
+    .profile-info {
+        padding: 10px;
+    }
+    
+    .profile-info h4 {
+        font-size: 18px;
+        color: #333;
+        margin-bottom: 5px;
+    }
+    
+    .profile-info p {
+        font-size: 14px;
+        color: #666;
+    }
+    
+    /* Link styling */
+    .profile-card a {
+        text-decoration: none;
+        color: inherit;
+    }
+    
+    /* Empty message styling */
+    .people-you-may-know p {
+        text-align: center;
+        color: #888;
+    }
+    
+    /* Responsive behavior - for screens smaller than 768px */
+    @media (max-width: 768px) {
+        .profile-card {
+            width: 45%; /* Two cards per row on smaller screens */
+        }
+    }
+    
+    /* Responsive behavior - for very small screens */
+    @media (max-width: 480px) {
+        .profile-card {
+            width: 100%; /* One card per row on very small screens */
+        }
+    }
+        
+</style>
+{% endblock %}
