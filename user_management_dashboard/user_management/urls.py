@@ -54,6 +54,10 @@ urlpatterns = [
     path('my-posts/', views.my_posts, name='my_posts'),
     path('delete-post/<int:post_id>/', views.delete_post, name='delete_post'),
     path('post/<int:post_id>/', views.post_detail, name='post_detail'),
-    path('profile/<str:username>/', views.user_profile, name='user_profile'),  # New URL for user profile
+    path('profile/<str:username>/', views.user_profile, name='user_profile'),
+    path('admin_send_message_to_user/', views.admin_send_message_to_user, name='admin_send_message_to_user'),
+    path('user_messages/', views.user_messages, name='user_messages'),
+    path('send_notification/', views.send_notification, name='send_notification'),
+    path('view_notifications/', views.view_notifications, name='view_notifications'),
     
 ]

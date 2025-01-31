@@ -170,6 +170,7 @@ class Message(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)  # The user who sent the message
     subject = models.CharField(max_length=200)  # Subject of the message
     content = models.TextField()  # Message content
+    sent_by = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='admin_send_message_to_user',null=True, on_delete=models.CASCADE)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='sent')  # Message status
     reply = models.TextField(null=True, blank=True)  # Admin reply (can be empty initially)
     created_at = models.DateTimeField(auto_now_add=True)  # When the message was sent
@@ -233,3 +234,21 @@ class Comment(models.Model):
 
     class Meta:
         ordering = ['-created_at']  # Show latest comments fir
+        
+class Notification(models.Model):
+    STATUS_CHOICES = [
+        ('unread', 'Unread'),
+        ('read', 'Read'),
+    ]
+    
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)  # The user who will receive the notification
+    message = models.TextField()  # The notification content
+    created_at = models.DateTimeField(auto_now_add=True)  # When the notification was created
+    updated_at = models.DateTimeField(auto_now=True)  # When the notification was read or updated
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='unread')  # Status of the notification
+
+    def __str__(self):
+        return f"Notification for {self.user.username}: {self.message}"
+
+    class Meta:
+        ordering = ['-created_at']

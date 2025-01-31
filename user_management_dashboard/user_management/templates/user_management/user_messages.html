@@ -1,0 +1,24 @@
+{% extends "user_management/base.html" %}
+
+{% block content %}
+  <h2>Your Messages</h2>
+  {% if messages %}
+    <ul>
+      {% for msg in messages %}
+        <li>
+          <strong>{{ msg.subject }}</strong> ({{ msg.created_at }})<br>
+          {{ msg.content }}<br>
+          <strong>Status:</strong> {{ msg.get_status_display }}<br>
+          {% if msg.reply %}
+            <strong>Admin Reply:</strong> {{ msg.reply }}<br>
+          {% else %}
+            <strong>No reply yet.</strong><br>
+          {% endif %}
+        </li>
+        <hr>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No messages yet.</p>
+  {% endif %}
+{% endblock %}

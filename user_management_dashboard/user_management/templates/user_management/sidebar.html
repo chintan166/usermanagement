@@ -51,11 +51,26 @@
       </li>
 
       <li class="nav-item">
+        <a class="nav-link" href="{% url 'user_messages' %}">
+          <span class="menu-title">admin message</span>
+          <i class="mdi mdi-home menu-icon"></i>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'view_notifications' %}">
+          <span class="menu-title">view_notifications</span>
+          <i class="mdi mdi-home menu-icon"></i>
+        </a>
+      </li>
+
+      <li class="nav-item">
         <a class="nav-link" href="{% url 'my_posts' %}">
           <span class="menu-title">My Post</span>
           <i class="mdi mdi-home menu-icon"></i>
         </a>
       </li>
+      
 
       <li class="nav-item">
         <a class="nav-link" href="{% url 'quiz_list' %}">
@@ -131,6 +146,20 @@
           <i class="mdi mdi-home menu-icon"></i>
         </a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'admin_send_message_to_user' %}">
+          <span class="menu-title">admin_send_message_to_user</span>
+          <i class="mdi mdi-home menu-icon"></i>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'send_notification' %}">
+          <span class="menu-title">send_notification</span>
+          <i class="mdi mdi-home menu-icon"></i>
+        </a>
+      </li>
+
       <li class="nav-item">
         <a class="nav-link" href="{% url 'admin_view_videos' %}">
           <span class="menu-title">View Videos</span>

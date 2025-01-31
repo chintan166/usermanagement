@@ -1,0 +1,20 @@
+{% extends "user_management/base.html" %}
+
+{% block content %}
+  <h2>Send Notification to All Users</h2>
+
+  <form method="POST">
+    {% csrf_token %}
+    
+    <label for="message">Message:</label><br>
+    <textarea name="message" rows="4" cols="50" required></textarea><br><br>
+    
+    <button type="submit">Send Notification</button>
+  </form>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-success">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+{% endblock %}

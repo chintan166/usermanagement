@@ -1,0 +1,19 @@
+{% extends "user_management/base.html" %}
+
+{% block content %}
+  <h2>Your Notifications</h2>
+
+  {% if notifications %}
+    <ul>
+      {% for notification in notifications %}
+        <li>
+          <strong>{{ notification.created_at }}:</strong> {{ notification.message }}<br>
+          <strong>Status:</strong> {{ notification.get_status_display }}<br>
+          <hr>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No notifications yet.</p>
+  {% endif %}
+{% endblock %}

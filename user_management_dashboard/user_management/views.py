@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib.auth import login, authenticate, logout,get_user_model
 from .forms import CustomUserCreationForm,BlogPostForm,CommentForm,ResumeForm,MessageForm,ReplyForm,EditProfileForm,ProjectForm,PasswordResetRequestForm,CustomAuthenticationForm,VideoUploadForm,SubmissionForm
-from .models import CustomUser,BlogPost,Comment,Post,Resume,Message,AttendanceRecord,Subtopic,Quiz,UserProfile, Question, Answer,Video, Topic,Project, Submission
+from .models import CustomUser,BlogPost,Comment,Notification,Post,Resume,Message,AttendanceRecord,Subtopic,Quiz,UserProfile, Question, Answer,Video, Topic,Project, Submission
 from django.utils.timezone import now
 from django.contrib.auth.decorators import login_required, user_passes_test
 from datetime import datetime
@@ -484,7 +484,7 @@ def send_message(request):
 
 
 def view_messages(request):
-    messages = Message.objects.filter(user=request.user)  # Fetch messages that are not replied to
+    messages = Message.objects.filter(user=request.user).order_by('-created_at')  # Fetch messages that are not replied to
     return render(request, 'user_management/view_messages.html', {'messages': messages})
 
 def view_message(request, message_id):
@@ -510,6 +510,27 @@ def reply_to_message(request, message_id):
 
 def message_sent(request):
     return render(request, 'user_management/message_sent.html')
+
+def admin_send_message_to_user(request):
+    if request.method == "POST":
+        subject = request.POST.get("subject")
+        content = request.POST.get("content")
+        if subject and content:
+            # Get all users and send the message to each of them
+            users = CustomUser.objects.all()
+            for user in users:
+                Message.objects.create(user=user, subject=subject, content=content, sent_by=request.user)
+            messages.success(request, "Message successfully sent to all users.")
+            return redirect("dashboard")  # Redirect after message is sent to all users
+
+    # If GET request, render the form
+    return render(request, "user_management/admin_send_message_to_user.html")
+
+
+def user_messages(request):
+    #messages = Message.objects.filter(user=request.user).order_by('-created_at')
+    messages = Message.objects.filter(user=request.user, sent_by__is_superuser=True).order_by('-created_at')
+    return render(request, "user_management/user_messages.html", {'messages': messages})
 
 def dashboard(request):
     if request.method == 'POST' and request.headers.get('X-Requested-With') == 'XMLHttpRequest':
@@ -738,3 +759,25 @@ def create_blog_post(request):
 def all_blog_posts(request):
     posts = BlogPost.objects.filter(is_active=True).order_by('-created_at')  # Show only active posts
     return render(request, 'user_management/all_blog_posts.html', {'posts': posts})
+
+def send_notification(request):
+    if request.method == "POST":
+        message = request.POST.get("message")
+        if message:
+            # Send the notification to all users
+            users = CustomUser.objects.all()
+            for user in users:
+                Notification.objects.create(user=user, message=message)
+            messages.success(request, "Notification sent to all users.")
+            return redirect("send_notification")  # Redirect after sending notification
+
+    return render(request, "user_management/send_notification.html")
+
+def view_notifications(request):
+    # Get notifications for the logged-in user
+    notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
+    
+    # Mark unread notifications as read
+    notifications.filter(status='unread').update(status='read')
+
+    return render(request, "user_management/view_notifications.html", {'notifications': notifications})
