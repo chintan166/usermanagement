@@ -66,7 +66,10 @@
       {% for item in posts_with_comments %}
         <div class="row mb-4">
           <div class="col-12">
-            <div class="post-item shadow-sm p-3 bg-white rounded">
+            <div class="post-item shadow-sm p-3 bg-white rounded" data-post-id="{{ item.post.id }}">
+              <!-- Close Button -->
+              <button type="button" class="btn-close" style="float:right;" aria-label="Close" data-post-id="{{ item.post.id }}"></button>
+            
               <!-- Post User and Avatar -->
               <div class="d-flex align-items-center mb-3">
                 <div class="post-user-avatar">
@@ -83,13 +86,13 @@
                   <p class="mb-0 text-muted">{{ item.post.created_at|date:"F d, Y h:i A" }}</p>
                 </div>
               </div>
-      
+            
               <!-- Post Title and Description -->
               <h4 class="post-title text-dark">
                 <a href="{% url 'post_detail' item.post.id %}">{{ item.post.title }}</a>
               </h4>
               <p class="post-description text-muted">{{ item.post.description|truncatewords:30 }}</p>
-      
+            
               {% if item.post.blog_image %}
                 <div class="post-image mb-3">
                   <img src="{{ item.post.blog_image.url }}" alt="{{ item.post.title }}" class="img-fluid rounded">
@@ -97,38 +100,20 @@
               {% endif %}
               
               <!-- Like and Dislike Buttons -->
-              <!-- Like and Dislike Buttons -->
               <div class="post-actions d-flex justify-content-start">
-                <button 
-                  class="btn btn-outline-success btn-sm me-2 like-btn" 
-                  data-post-id="{{ item.post.id }}" 
-                  {% if item.post.user == request.user %}
-                    disabled
-                  {% endif %}
-                >
+                <button class="btn btn-outline-success btn-sm me-2 like-btn" data-post-id="{{ item.post.id }}" {% if item.post.user == request.user %} disabled {% endif %}>
                   Like ({{ item.post.likes.count }})
                 </button>
                 
-                <button 
-                  class="btn btn-outline-danger btn-sm dislike-btn" 
-                  data-post-id="{{ item.post.id }}" 
-                  {% if item.post.user == request.user %}
-                    disabled
-                  {% endif %}
-                >
+                <button class="btn btn-outline-danger btn-sm dislike-btn" data-post-id="{{ item.post.id }}" {% if item.post.user == request.user %} disabled {% endif %}>
                   Dislike ({{ item.post.dislikes.count }})
                 </button>
                 
-                <button 
-                  style="--bs-btn-padding-x: 27.5rem !;--bs-btn-padding-x: 0.5rem !important;" 
-                  class="btn btn-outline toggle-comments-btn" 
-                  data-post-id="{{ item.post.id }}">
-                    Show Comments ({{ item.post.comments.count }})
-                </button>  
+                <button style="--bs-btn-padding-x: 27.5rem !;--bs-btn-padding-x: 0.5rem !important;" class="btn btn-outline toggle-comments-btn" data-post-id="{{ item.post.id }}">
+                  Show Comments ({{ item.post.comments.count }})
+                </button>
               </div>
-
-              
-
+            
               <!-- Comments Section -->
               <div class="comments-section" id="comments-section-{{ item.post.id }}" style="display: none;">
                 {% for comment in item.comments %}
@@ -143,9 +128,6 @@
                   <p>No comments yet. Be the first to comment!</p>
                 {% endfor %}
               </div>
-
-              <!-- Comment Form -->
-              
             </div>
           </div>
         </div>
@@ -154,6 +136,48 @@
       {% endfor %}
     </div>
   </div>
+<script>
+  $(document).ready(function() {
+    // Ensure you're using the current user's identifier (username or user id)
+    var userIdentifier = '{{ request.user.username }}';  // You can use request.user.id as well if you prefer
+  
+    // Handle the click event for the close button
+    $('.btn-close').on('click', function() {
+      var postId = $(this).data('post-id');
+      
+      // Get the post element
+      var postElement = $('[data-post-id="' + postId + '"]');
+  
+      // Remove the post from the page (animate it to fade out and collapse)
+      postElement.closest('.row').fadeOut(300, function() {
+        // Once the fadeOut is done, completely remove it from the DOM
+        $(this).remove();
+      });
+  
+      // Save the hidden post in localStorage for the specific user
+      var hiddenPosts = JSON.parse(localStorage.getItem(userIdentifier + '-hiddenPosts')) || [];
+      if (!hiddenPosts.includes(postId)) {
+        hiddenPosts.push(postId);
+        localStorage.setItem(userIdentifier + '-hiddenPosts', JSON.stringify(hiddenPosts));
+      }
+    });
+  
+    // Hide posts based on localStorage on page load for the specific user
+    var hiddenPosts = JSON.parse(localStorage.getItem(userIdentifier + '-hiddenPosts')) || [];
+    hiddenPosts.forEach(function(postId) {
+      var postElement = $('[data-post-id="' + postId + '"]');
+      
+      // Apply the hidden effect by hiding the entire row
+      postElement.closest('.row').hide();  // This ensures the whole row (post + surrounding elements) is hidden.
+    });
+  });
+  
+  
+</script> 
+
+
+  
+
 <script>
 
   $(document).ready(function() {
@@ -343,7 +367,16 @@
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s;
+    transition: opacity 0.3s ease;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  .post-item[data-post-id] {
+    overflow: hidden;
+  }
+
+  .post-item.fadeOut {
+    opacity: 0;
   }
 
   .post-item:hover {
