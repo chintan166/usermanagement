@@ -103,11 +103,11 @@
               <div class="post-actions d-flex justify-content-start">
                 <button class="btn btn-outline-success btn-sm me-2 like-btn" data-post-id="{{ item.post.id }}" {% if item.post.user == request.user %} disabled {% endif %}>
                   Like ({{ item.post.likes.count }})
-                </button>
-                
-                <button class="btn btn-outline-danger btn-sm dislike-btn" data-post-id="{{ item.post.id }}" {% if item.post.user == request.user %} disabled {% endif %}>
+              </button>
+              
+              <button class="btn btn-outline-danger btn-sm dislike-btn" data-post-id="{{ item.post.id }}" {% if item.post.user == request.user %} disabled {% endif %}>
                   Dislike ({{ item.post.dislikes.count }})
-                </button>
+              </button>
                 
                 <button style="--bs-btn-padding-x: 27.5rem !;--bs-btn-padding-x: 0.5rem !important;" class="btn btn-outline toggle-comments-btn" data-post-id="{{ item.post.id }}">
                   Show Comments ({{ item.post.comments.count }})
@@ -135,6 +135,7 @@
         <p class="no-posts text-center">No blog posts available. Create one now!</p>
       {% endfor %}
     </div>
+
   </div>
 <script>
   $(document).ready(function() {
@@ -215,6 +216,7 @@
         });
     });
 });
+
 
     // AJAX for liking and disliking
     document.querySelectorAll('.like-btn').forEach(button => {

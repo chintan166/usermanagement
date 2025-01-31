@@ -234,7 +234,7 @@ class Comment(models.Model):
 
     class Meta:
         ordering = ['-created_at']  # Show latest comments fir
-        
+       
 class Notification(models.Model):
     STATUS_CHOICES = [
         ('unread', 'Unread'),

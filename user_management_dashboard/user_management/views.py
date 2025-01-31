@@ -19,6 +19,7 @@ from django.contrib.auth.forms import SetPasswordForm
 from django.core.paginator import Paginator
 from django.utils.safestring import mark_safe  # Import mark_safe
 from django.views.decorators.cache import cache_page
+from .signals import post_liked, post_disliked
 
 
 
@@ -584,6 +585,10 @@ def like_post(request, post_id):
         liked = True
 
     post.save()
+    
+    if liked:
+        post_liked.send(sender=BlogPost, instance=post)
+    
     return JsonResponse({
         'liked': liked,
         'like_count': post.likes.count(),
@@ -600,11 +605,16 @@ def dislike_post(request, post_id):
         }, status=400)
 
     if request.user in post.dislikes.all():
-        post.dislikes.remove(request.user)  # Remove dislike if the user already disliked the post
+        post.dislikes.remove(request.user)
+        disliked = False
     else:
         post.dislikes.add(request.user)  # Add dislike if the user hasn't disliked the post yet
+        disliked = True
     
     post.save()  # Save the post after updating dislikes
+    
+    if disliked:
+        post_disliked.send(sender=BlogPost, instance=post)
 
     return JsonResponse({
         'disliked': request.user in post.dislikes.all(),  # Whether the user has disliked the post
@@ -642,16 +652,35 @@ def post_detail(request, post_id):
         'comment_form': comment_form,
     })
 
+
 def delete_post(request, post_id):
     post = get_object_or_404(BlogPost, id=post_id)
 
     # Check if the user is the owner of the post
     if post.user == request.user:
         post.delete()
-        return redirect('my_posts')  # Redirect to the user's posts list after deletion
+
+        # Check if there are any posts left
+        user_posts = BlogPost.objects.filter(user=request.user)
+
+        if not user_posts.exists():
+            # If no posts exist, display a message in the context
+            context = {'message': 'You have no posts, please create a new post.'}
+            return redirect('my_posts')  # Redirect to 'my_posts' view to show the message
+        
+        # Check if it's an AJAX request
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return JsonResponse({'status': 'success', 'message': 'Post deleted successfully.'})
+        
+        return redirect('my_posts')  # Redirect for non-AJAX requests
     else:
         # Optionally, handle unauthorized access attempt
-        return redirect('my_posts')  # Redirect to user's posts if they try to delete another user's post
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return JsonResponse({'status': 'error', 'message': 'Unauthorized request.'})
+        
+        return redirect('my_posts')
+
+
 
 def myresume(request):
     resumes = Resume.objects.filter(user=request.user)

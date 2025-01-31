@@ -34,8 +34,23 @@
           <ul class="navbar-nav navbar-nav-right">
 
             <li class="nav-item d-none d-lg-block full-screen-link">
+              <a class="nav-link" href="{% url 'dashboard' %}">
+                <img width="35px" src="/static/images/home3.png">
+              </a>
+            </li>
+            <li class="nav-item d-none d-lg-block full-screen-link">
+              <a class="nav-link" href="{% url 'quiz_list' %}">
+                <img width="35px" src="/static/images/quiz6.png">
+              </a>
+            </li>
+            <li class="nav-item d-none d-lg-block full-screen-link">
               <a class="nav-link" href="{% url 'jobs_by_area' %}">
                 <img width="50px" src="/static/images/jobs4.jpg">
+              </a>
+            </li>
+            <li class="nav-item d-none d-lg-block full-screen-link">
+              <a class="nav-link" href="{% url 'view_notifications' %}">
+                <img width="30px" src="/static/images/notif1.png">
               </a>
             </li>
             <li class="nav-item dropdown">
@@ -54,6 +69,16 @@
 
                       <a class="nav-link" href="{% url 'view_messages' %}">
                         <span class="menu-title">View Messages</span>
+                        <i class="mdi mdi-home menu-icon"></i>
+                    </a>
+
+                    </h6>
+                  </div>
+                  <div class="preview-item-content d-flex align-items-start flex-column justify-content-center">
+                    <h6 class="preview-subject ellipsis mb-1 font-weight-normal">
+
+                      <a class="nav-link" href="{% url 'user_messages' %}">
+                        <span class="menu-title">Admin message</span>
                         <i class="mdi mdi-home menu-icon"></i>
                     </a>
 
@@ -110,7 +135,7 @@
       <!-- partial -->
       <div class="container-fluid page-body-wrapper">
         <!-- partial:../../partials/_sidebar.html -->
-        
+         
         {% include 'user_management/sidebar.html' %} 
 
         <!-- partial -->
@@ -135,9 +160,9 @@
           </footer>
           <!-- partial -->
         </div>
-        <div>
-            {% include 'user_management/newsapi.html' %}
-        </div>
+        <!--<div>
+            {% include 'user_management/newsapi.html' %} 
+        </div> -->
         <!-- main-panel ends -->
       </div>
       <!-- page-body-wrapper ends -->
