@@ -1,6 +1,10 @@
 {% extends "user_management/base.html" %}
 
 {% block content %}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
   <div class="home-container">
     <!-- Button to trigger modal for creating a new post -->
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#sharePostModal">
@@ -23,34 +27,35 @@
     <!-- Modal to create a new blog post -->
     <div class="modal fade" id="sharePostModal" tabindex="-1" aria-labelledby="sharePostModalLabel" aria-hidden="true">
       <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="sharePostModalLabel">Share Your Thoughts</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title" id="sharePostModalLabel">Share Your Thoughts</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                  <!-- Form to create a new blog post -->
+                  <form id="blogPostForm" method="POST" enctype="multipart/form-data">
+                      {% csrf_token %}
+                      <div class="form-group mb-4">
+                          <label for="id_title" class="form-label">Title</label>
+                          {{ form.title }}
+                      </div>
+
+                      <div class="form-group mb-4">
+                          <label for="id_description" class="form-label">Write Something...</label>
+                          {{ form.description }}
+                      </div>
+
+                      <div class="form-group mb-4">
+                          <label for="id_blog_image" class="form-label">Add an Image</label>
+                          {{ form.blog_image }}
+                      </div>
+
+                      <button type="submit" class="btn btn-primary btn-lg w-100">Post</button>
+                  </form>
+                  <div id="message"></div>
+              </div>
           </div>
-          <div class="modal-body">
-            <!-- Form to create a new blog post -->
-            <form method="POST" enctype="multipart/form-data">
-              {% csrf_token %}
-              <div class="form-group mb-4">
-                <label for="id_title" class="form-label">Title</label>
-                {{ form.title }}
-              </div>
-
-              <div class="form-group mb-4">
-                <label for="id_description" class="form-label">Write Something...</label>
-                {{ form.description }}
-              </div>
-
-              <div class="form-group mb-4">
-                <label for="id_blog_image" class="form-label">Add an Image</label>
-                {{ form.blog_image }}
-              </div>
-
-              <button type="submit" class="btn btn-primary btn-lg w-100">Post</button>
-            </form>
-          </div>
-        </div>
       </div>
     </div>
     
@@ -92,14 +97,34 @@
               {% endif %}
               
               <!-- Like and Dislike Buttons -->
+              <!-- Like and Dislike Buttons -->
               <div class="post-actions d-flex justify-content-start">
-                <button class="btn btn-outline-success btn-sm me-2 like-btn" data-post-id="{{ item.post.id }}">
+                <button 
+                  class="btn btn-outline-success btn-sm me-2 like-btn" 
+                  data-post-id="{{ item.post.id }}" 
+                  {% if item.post.user == request.user %}
+                    disabled
+                  {% endif %}
+                >
                   Like ({{ item.post.likes.count }})
                 </button>
-                <button class="btn btn-outline-danger btn-sm dislike-btn" data-post-id="{{ item.post.id }}">
+                
+                <button 
+                  class="btn btn-outline-danger btn-sm dislike-btn" 
+                  data-post-id="{{ item.post.id }}" 
+                  {% if item.post.user == request.user %}
+                    disabled
+                  {% endif %}
+                >
                   Dislike ({{ item.post.dislikes.count }})
                 </button>
-                <button style="--bs-btn-padding-x: 27.5rem !;--bs-btn-padding-x: 0.5rem !important;" class="btn btn-outline toggle-comments-btn" data-post-id="{{ item.post.id }}">Show Comments ({{ item.post.comments.count }})</button>  
+                
+                <button 
+                  style="--bs-btn-padding-x: 27.5rem !;--bs-btn-padding-x: 0.5rem !important;" 
+                  class="btn btn-outline toggle-comments-btn" 
+                  data-post-id="{{ item.post.id }}">
+                    Show Comments ({{ item.post.comments.count }})
+                </button>  
               </div>
 
               
@@ -130,6 +155,43 @@
     </div>
   </div>
 <script>
+
+  $(document).ready(function() {
+    $('#blogPostForm').on('submit', function(event) {
+        event.preventDefault();  // Prevent the default form submission
+
+        var formData = new FormData(this);  // Create a new FormData object to include the form data
+
+        $.ajax({
+            url: '{% url "dashboard" %}',  // Replace with your actual URL
+            type: 'POST',
+            data: formData,
+            processData: false,  // Don't process the data
+            contentType: false,  // Let jQuery handle the content type for file uploads
+            success: function(response) {
+                if (response.success) {
+                    $('#message').html('<div class="alert alert-success">Post created successfully!</div>');
+                    $('#blogPostForm')[0].reset();  // Reset the form
+                    $('#sharePostModal').modal('hide');  // Close the modal
+                    location.reload();
+                    // Optionally, you can update the posts on the page or reload the page
+                } else {
+                    // Handle errors returned from the server
+                    var errorMessages = '<div class="alert alert-danger"><ul>';
+                    $.each(response.errors, function(index, error) {
+                        errorMessages += '<li>' + error + '</li>';
+                    });
+                    errorMessages += '</ul></div>';
+                    $('#message').html(errorMessages);  // Display error messages
+                }
+            },
+            error: function() {
+                $('#message').html('<div class="alert alert-danger">Error occurred while posting. Please try again.</div>');
+            }
+        });
+    });
+});
+
     // AJAX for liking and disliking
     document.querySelectorAll('.like-btn').forEach(button => {
       button.addEventListener('click', function(event) {

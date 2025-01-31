@@ -18,6 +18,7 @@ from django.contrib import messages
 from django.contrib.auth.forms import SetPasswordForm
 from django.core.paginator import Paginator
 from django.utils.safestring import mark_safe  # Import mark_safe
+from django.views.decorators.cache import cache_page
 
 
 
@@ -511,30 +512,39 @@ def message_sent(request):
     return render(request, 'user_management/message_sent.html')
 
 def dashboard(request):
-    if request.method == 'POST':
-        form = BlogPostForm(request.POST, request.FILES)  # Handle file uploads if needed
+    if request.method == 'POST' and request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+
+        form = BlogPostForm(request.POST, request.FILES)
+        
         if form.is_valid():
             blog_post = form.save(commit=False)
-            blog_post.user = request.user  # Associate the post with the current user
+            blog_post.user = request.user
             blog_post.is_active = True
-            blog_post.save()  # Save the post to the database
-            return redirect('dashboard')  # Redirect to the dashboard after creating the post
-    else:
-        form = BlogPostForm()  # Initialize an empty form for GET requests
+            blog_post.save()
+            return JsonResponse({'success': True})  # Send success response
+        else:
+            # Collect all form errors and return as JSON response
+            errors = []
+            for field in form:
+                for error in field.errors:
+                    errors.append(f"{field.label}: {error}")
+            return JsonResponse({'success': False, 'errors': errors})  # Return errors
 
-    # Fetch all active posts to display on the dashboard
-    posts = BlogPost.objects.filter(is_active=True).order_by('-created_at')  # Show only active posts
+    else:
+        form = BlogPostForm()
+        
+    posts = BlogPost.objects.filter(is_active=True).order_by('-created_at').prefetch_related('comments')
+
     posts_with_comments = [
         {
             'post': post,
-            'comments': post.comments.all(),  # Fetch comments related to each post
+            'comments': post.comments.all(),
             'comment_form': CommentForm()
         }
         for post in posts
     ]
-
+    
     return render(request, 'user_management/dashboard.html', {'posts_with_comments': posts_with_comments, 'form': form})
-
 
 def like_post(request, post_id):
     try:
