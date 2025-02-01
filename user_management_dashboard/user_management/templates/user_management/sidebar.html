@@ -1,8 +1,20 @@
 {% load static %}
+<style>
+  #sidebar {
+    position: sticky;
+    top: 0;
+    width: 250px;
+    background-color: #f8f9fa;
+    height: 100vh;
+    z-index: 1000;
+    overflow-y: auto;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+</style>
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
     <ul class="nav">
       <li class="nav-item nav-profile">
-        <a href="{% url 'user_profile' request.user.username %}" class="nav-link">
+        <a href="" class="nav-link">
           <div class="nav-profile-image">
             {% if request.user.profile_pic %}
           <img src="{{ request.user.profile_pic.url }}" alt="profile" />

@@ -1,0 +1,177 @@
+<div class="posts-list">
+    {% for item in posts_with_comments %}
+      <div class="row mb-4">
+        <div class="col-12">
+          <div class="post-item shadow-sm p-3 bg-white rounded" data-post-id="{{ item.post.id }}">
+            <!-- Close Button -->
+            <button type="button" class="btn-close" style="float:right;" aria-label="Close" data-post-id="{{ item.post.id }}"></button>
+          
+            <!-- Post User and Avatar -->
+            <div class="d-flex align-items-center mb-3">
+              <div class="post-user-avatar">
+                {% if item.post.user.profile_pic %}
+                  <img src="{{ item.post.user.profile_pic.url }}" height="50px" alt="{{ item.post.user.username }}" class="avatar-img">
+                {% else %}
+                  <span class="avatar-placeholder">{{ item.post.user.username|slice:":1" }}</span>
+                {% endif %}
+              </div>
+              <div class="ms-3">
+                <p class="mb-0 text-primary">        
+                  <a href="{% url 'user_profile' item.post.user.username %}">{{ item.post.user.username }}</a>
+                </p>
+                <p class="mb-0 text-muted">{{ item.post.created_at|date:"F d, Y h:i A" }}</p>
+              </div>
+            </div>
+          
+            <!-- Post Title and Description -->
+            <h4 class="post-title text-dark">
+              <a href="{% url 'post_detail' item.post.id %}">{{ item.post.title }}</a>
+            </h4>
+            <p class="post-description text-muted">{{ item.post.description|truncatewords:30 }}</p>
+          
+            {% if item.post.blog_image %}
+              <div class="post-image mb-3">
+                <img src="{{ item.post.blog_image.url }}" alt="{{ item.post.title }}" class="img-fluid rounded">
+              </div>
+            {% endif %}
+            
+            <!-- Like and Dislike Buttons -->
+            <div class="post-actions d-flex justify-content-start">
+              <button class="btn btn-outline-success btn-sm me-2 like-btn" data-post-id="{{ item.post.id }}" {% if item.post.user == request.user %} disabled {% endif %}>
+                Like ({{ item.post.likes.count }})
+            </button>
+            
+            <button class="btn btn-outline-danger btn-sm dislike-btn" data-post-id="{{ item.post.id }}" {% if item.post.user == request.user %} disabled {% endif %}>
+                Dislike ({{ item.post.dislikes.count }})
+            </button>
+              
+              <button style="--bs-btn-padding-x: 27.5rem !;--bs-btn-padding-x: 0.5rem !important;" class="btn btn-outline toggle-comments-btn" data-post-id="{{ item.post.id }}">
+                Show Comments ({{ item.post.comments.count }})
+              </button>
+            </div>
+          
+            <!-- Comments Section -->
+            <div class="comments-section" id="comments-section-{{ item.post.id }}" style="display: none;">
+              {% for comment in item.comments %}
+                <div class="comment-item mb-3 p-3 bg-light rounded">
+                  <div class="d-flex justify-content-between">
+                    <p class="mb-0"><strong>{{ comment.user.username }}</strong></p>
+                    <p class="mb-0 text-muted">{{ comment.created_at|date:"F d, Y h:i A" }}</p>
+                  </div>
+                  <p>{{ comment.content }}</p>
+                </div>
+              {% empty %}
+                <p>No comments yet. Be the first to comment!</p>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <p class="no-posts text-center">No blog posts available. Create one now!</p>
+    {% endfor %}
+  </div>
+  
+
+  <script>
+    $(document).ready(function() {
+      // Ensure you're using the current user's identifier (username or user id)
+      var userIdentifier = '{{ request.user.username }}';  // You can use request.user.id as well if you prefer
+    
+      // Handle the click event for the close button
+      $('.btn-close').on('click', function() {
+        var postId = $(this).data('post-id');
+        
+        // Get the post element
+        var postElement = $('[data-post-id="' + postId + '"]');
+    
+        // Remove the post from the page (animate it to fade out and collapse)
+        postElement.closest('.row').fadeOut(300, function() {
+          // Once the fadeOut is done, completely remove it from the DOM
+          $(this).remove();
+        });
+    
+        // Save the hidden post in localStorage for the specific user
+        var hiddenPosts = JSON.parse(localStorage.getItem(userIdentifier + '-hiddenPosts')) || [];
+        if (!hiddenPosts.includes(postId)) {
+          hiddenPosts.push(postId);
+          localStorage.setItem(userIdentifier + '-hiddenPosts', JSON.stringify(hiddenPosts));
+        }
+      });
+    
+      // Hide posts based on localStorage on page load for the specific user
+      var hiddenPosts = JSON.parse(localStorage.getItem(userIdentifier + '-hiddenPosts')) || [];
+      hiddenPosts.forEach(function(postId) {
+        var postElement = $('[data-post-id="' + postId + '"]');
+        
+        // Apply the hidden effect by hiding the entire row
+        postElement.closest('.row').hide();  // This ensures the whole row (post + surrounding elements) is hidden.
+      });
+    });
+
+    document.querySelectorAll('.like-btn').forEach(button => {
+        button.addEventListener('click', function(event) {
+          event.preventDefault();
+          const postId = this.getAttribute('data-post-id');
+          fetch(`/like/${postId}/`, {
+            method: 'GET',
+            headers: {
+              'X-CSRFToken': '{{ csrf_token }}',
+            },
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (data.liked !== undefined) {
+              this.textContent = `Like (${data.like_count})`;
+              this.classList.toggle('btn-outline-success', !data.liked);
+              this.classList.toggle('btn-success', data.liked);
+            }
+          });
+        });
+      });
+  
+      document.querySelectorAll('.dislike-btn').forEach(button => {
+        button.addEventListener('click', function(event) {
+          event.preventDefault();
+          const postId = this.getAttribute('data-post-id');
+          fetch(`/dislike/${postId}/`, {
+            method: 'GET',
+            headers: {
+              'X-CSRFToken': '{{ csrf_token }}',
+            },
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (data.disliked !== undefined) {
+              // Update button text with the updated dislike count
+              this.textContent = `Dislike (${data.dislike_count})`;
+      
+              // Toggle the button styles based on whether it's disliked or not
+              this.classList.toggle('btn-outline-danger', !data.disliked);
+              this.classList.toggle('btn-danger', data.disliked);
+            } else if (data.error) {
+              alert(data.error);  // Show an alert if there's an error (e.g., disliking own post)
+            }
+          })
+          .catch(error => console.error('Error:', error));
+        });
+      });
+  
+  
+      document.querySelectorAll('.toggle-comments-btn').forEach(button => {
+        button.addEventListener('click', function() {
+          const postId = this.getAttribute('data-post-id');
+          const commentsSection = document.getElementById(`comments-section-${postId}`);
+          
+          if (commentsSection.style.display === 'none' || commentsSection.style.display === '') {
+            commentsSection.style.display = 'block';
+            this.textContent = 'Hide Comments';
+          } else {
+            commentsSection.style.display = 'none';
+            this.textContent = 'Show Comments';
+          }
+        });
+      });
+    
+    
+  </script>

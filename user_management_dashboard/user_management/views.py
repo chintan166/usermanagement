@@ -8,6 +8,7 @@ from datetime import datetime
 from django.utils.dateparse import parse_date
 from django.http import HttpResponse,Http404,JsonResponse
 from django.template.loader import render_to_string
+from django.middleware.csrf import get_token
 import csv
 import pytz
 import requests
@@ -535,27 +536,29 @@ def user_messages(request):
 
 def dashboard(request):
     if request.method == 'POST' and request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-
+        # Handle the form submission
         form = BlogPostForm(request.POST, request.FILES)
-        
         if form.is_valid():
             blog_post = form.save(commit=False)
             blog_post.user = request.user
             blog_post.is_active = True
             blog_post.save()
-            return JsonResponse({'success': True})  # Send success response
+            return JsonResponse({'success': True})
         else:
-            # Collect all form errors and return as JSON response
             errors = []
             for field in form:
                 for error in field.errors:
                     errors.append(f"{field.label}: {error}")
-            return JsonResponse({'success': False, 'errors': errors})  # Return errors
+            return JsonResponse({'success': False, 'errors': errors})
 
-    else:
-        form = BlogPostForm()
-        
+    # Normal view when the page is first loaded
+    form = BlogPostForm()
     posts = BlogPost.objects.filter(is_active=True).order_by('-created_at').prefetch_related('comments')
+
+    # Implement pagination: Show 10 posts per page
+    paginator = Paginator(posts, 30)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
 
     posts_with_comments = [
         {
@@ -563,10 +566,32 @@ def dashboard(request):
             'comments': post.comments.all(),
             'comment_form': CommentForm()
         }
-        for post in posts
+        for post in page_obj
     ]
-    
-    return render(request, 'user_management/dashboard.html', {'posts_with_comments': posts_with_comments, 'form': form})
+
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        csrf_token = get_token(request)
+        rendered_posts = render_to_string('user_management/posts_list.html', {
+            'posts_with_comments': posts_with_comments,
+            'page_obj': page_obj,
+            'form': form,
+        })
+        
+        # Return only the new posts and pagination information
+        return JsonResponse({
+            'posts': rendered_posts,
+            'has_next': page_obj.has_next(),
+            'next_page': page_obj.next_page_number() if page_obj.has_next() else None,
+        })
+        
+        # Include the pagination data
+
+    return render(request, 'user_management/dashboard.html', {
+        'posts_with_comments': posts_with_comments,
+        'form': form,
+        'page_obj': page_obj,
+    })
+
 
 def like_post(request, post_id):
     try:
