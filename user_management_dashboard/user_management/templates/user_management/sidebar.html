@@ -3,42 +3,120 @@
   #sidebar {
     position: sticky;
     top: 0;
-    width: 250px;
+    width: 300px;
     background-color: #f8f9fa;
     height: 100vh;
     z-index: 1000;
     overflow-y: auto;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
 }
-</style>
-<nav class="sidebar sidebar-offcanvas" id="sidebar">
-    <ul class="nav">
-      <li class="nav-item nav-profile">
-        <a href="" class="nav-link">
-          <div class="nav-profile-image">
-            {% if request.user.profile_pic %}
-            
-            <img src="{{ request.user.profile_pic.url }}" alt="profile" />
-        {% else %}
-          <img src="{% static 'images/faces/face1.jpg' %}" alt="default profile" />
-        {% endif %}
-            <span class="login-status online"></span>
-            <!--change to offline or busy as needed-->
-          </div>
-          <div class="nav-profile-text d-flex flex-column">
-            <span class="font-weight-bold mb-2">{% if request.user.is_authenticated %}
-                <p>Welcome, {{ request.user.username }}</p>
-                <p>Attended {{ request.user.college_name }}</p>
-                
-                {% endif %}
-            </span>
-          </div>
-          <i class="mdi mdi-bookmark-check text-success nav-profile-badge"></i>
-        </a>
-      </li>
-      {% if not request.user.is_superuser %}
-     
+/* Sidebar Profile Image and Text Styling */
+.nav-profile-image img, .avatar-placeholder {
+    object-fit: cover;
+    border-radius: 50%;
+}
 
+.nav-profile-text p {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.nav-profile-text .font-weight-bold {
+    font-size: 16px;
+    color: #333;
+}
+
+.nav-profile-text .text-muted {
+    font-size: 13px;
+}
+
+.nav-profile-text p {
+  white-space: normal; /* Allows text to wrap */
+  overflow-wrap: break-word; /* Breaks words if necessary */
+  word-wrap: break-word; /* Ensures words can break if they are too long */
+}
+
+.nav-profile-text {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.font-weight-bold {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.text-muted {
+  font-size: 14px;
+  color: #6c757d;
+}
+
+.nav-profile-text p strong {
+  font-weight: bold;
+}
+
+/* Avatar Placeholder */
+.avatar-placeholder {
+    background-color: #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.avatar-placeholder span {
+    font-size: 24px;
+    color: white;
+}
+
+/* Login Status */
+.login-status {
+    position: absolute;
+    bottom: auto;
+    width: 12px;
+    height: 12px;
+    background-color: green; /* Default online color */
+    border-radius: 52%;
+    border: 2px solid white;
+}
+
+.login-status.offline {
+    background-color: red;
+}
+</style>
+
+<nav class="sidebar sidebar-offcanvas" id="sidebar">
+  <ul class="nav">
+    <!-- Profile Section -->
+    <li class="nav-item nav-profile">
+      <a href="{% url 'user_profile' request.user.username %}" class="nav-link">
+        <div class="nav-profile-image">
+          {% if request.user.profile_pic %}
+            <img src="{{ request.user.profile_pic.url }}" alt="profile" class="rounded-circle" width="80px" height="80px" />
+          {% else %}
+            <div class="avatar-placeholder rounded-circle" style="width: 80px; height: 80px; display: flex; justify-content: center; align-items: center; background-color: #ccc;">
+              <span class="text-white" style="font-size: 24px;">{{ request.user.username|slice:":1" }}</span>
+            </div>
+          {% endif %}
+          <span class="login-status online"></span>
+          <!-- Change to offline or busy as needed -->
+        </div>
+        <div class="nav-profile-text d-flex flex-column">
+          <span class="font-weight-bold mb-2">
+            {% if request.user.is_authenticated %}
+              <p class="mb-0">Welcome, <strong>{{ request.user.username }}</strong></p>
+              <p class="mb-0 text-muted"> {{ request.user.userprofile.area_of_interest }}</p>
+              
+            {% endif %}
+          </span>
+        </div>
+        <i class="mdi mdi-bookmark-check text-success nav-profile-badge"></i>
+      </a>
+    </li>
+
+    <!-- Non-Superuser Links -->
+    {% if not request.user.is_superuser %}
       <li class="nav-item">
         <a class="nav-link" href="{% url 'mark_attendance' %}">
           <span class="menu-title">Attendance</span>

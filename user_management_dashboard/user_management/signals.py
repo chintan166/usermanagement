@@ -32,10 +32,6 @@ def create_like_notification(sender, instance, **kwargs):
             message = f"Your post '{instance.title}' was liked by {user.username}."
             Notification.objects.create(user=instance.user, message=message)
             
-    # Optional: Notify the user who liked the post (if you want to notify them too)
-    for user in instance.likes.all():
-        message = f"You liked the post '{instance.title}'."
-        Notification.objects.create(user=user, message=message)
     
 @receiver(post_disliked)
 def create_dislike_notification(sender, instance, **kwargs):

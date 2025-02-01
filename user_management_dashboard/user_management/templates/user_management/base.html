@@ -102,6 +102,16 @@
             <li class="nav-item d-none d-lg-block full-screen-link">
               <a class="nav-link" href="{% url 'view_notifications' %}">
                 <img width="30px" src="/static/images/notif1.png">
+                
+                {% if unread_count %}
+                  <span id="unread-count-badge" style="position: absolute;
+                            padding: 5px 5px 5px 5px;
+                            margin: -8px 12px 17px 13px;" 
+                  class="badge badge-pill badge-danger">{{ unread_count }}</span>
+                {% else %}
+                  <span id="unread-count-badge" style="display: none;"></span>
+                {% endif %}
+                
               </a>
             </li>
             <li class="nav-item dropdown">

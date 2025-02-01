@@ -841,15 +841,30 @@ def view_notifications(request):
     })
     
 def mark_notification_read(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         notification_id = request.POST.get('id')
+
+        # Ensure the current user is logged in
+        user = request.user
+
         try:
-            notification = Notification.objects.get(id=notification_id)
+            # Get the notification for the current user by id
+            notification = Notification.objects.get(id=notification_id, user=user)
+            
+            # Mark the notification as read
             notification.status = 'read'
             notification.save()
-            return JsonResponse({"success": True, "notification_id": notification.id})
+
+            # Get the updated unread notification count for the current user
+            unread_count = Notification.objects.filter(status='unread', user=user).count()
+
+            # Return the updated unread count
+            return JsonResponse({
+                'success': True,
+                'new_unread_count': unread_count
+            })
         except Notification.DoesNotExist:
-            return JsonResponse({"success": False, "error": "Notification not found"})
+            return JsonResponse({'success': False, 'error': 'Notification not found.'})
         
 def people_you_may_know(request):
     # Get the current user's area of interest

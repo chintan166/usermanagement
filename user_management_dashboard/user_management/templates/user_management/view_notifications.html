@@ -3,12 +3,6 @@
 {% block content %}
   <h2>Your Notifications</h2>
 
-  {% if unread_count %}
-    <p>You have {{ unread_count }} unread notification{% if unread_count > 1 %}s{% endif %}.</p>
-  {% else %}
-    <p>No unread notifications.</p>
-  {% endif %}
-
   {% if notifications %}
     <ul>
       {% for notification in notifications %}
@@ -22,9 +16,7 @@
         >
           <strong>{{ notification.created_at|date:"Y-m-d H:i" }}:</strong> {{ notification.message }}<br>
           
-          
           {% if notification.status == 'unread' %}
-            <!-- Include the unread notification id as a data attribute -->
             <button class="mark-as-read" data-id="{{ notification.id }}">Mark as Read</button>
           {% endif %}
         </li>
@@ -54,6 +46,16 @@
             $("#notification-" + notificationId).css("background-color", "#e0e0e0");
             // Remove the "Mark as Read" button
             $("button[data-id='" + notificationId + "']").remove();
+  
+            // Update unread notification count
+            var newUnreadCount = response.new_unread_count;
+            
+            // Update the unread count in the header
+            if (newUnreadCount > 0) {
+              $('#unread-count-badge').text(newUnreadCount).show();
+            } else {
+              $('#unread-count-badge').hide();
+            }
           } else {
             console.log("Error: Notification not found.");
           }
