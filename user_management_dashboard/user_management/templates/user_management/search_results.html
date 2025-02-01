@@ -1,0 +1,156 @@
+{% extends "user_management/base.html" %}
+
+{% block content %}
+    <div class="search-results-container">
+        <h1>Search Results</h1>
+        
+        {% if query %}
+            <h2>Results for "{{ query }}"</h2>
+        {% endif %}
+
+        <!-- Quizzes Section -->
+        <div class="section">
+            <h3>Quizzes</h3>
+            <ul class="result-list">
+                {% for quiz in quizzes %}
+                    <li>
+                        <a href="{{ quiz.get_absolute_url }}" class="result-item">{{ quiz.title }}</a>
+                    </li>
+                {% empty %}
+                    <li>No quizzes found.</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- Projects Section -->
+        <div class="section">
+            <h3>Projects</h3>
+            <ul class="result-list">
+                {% for project in projects %}
+                    <li>
+                        <a href="{{ project.get_absolute_url }}" class="result-item">{{ project.title }}</a>
+                    </li>
+                {% empty %}
+                    <li>No projects found.</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- Posts Section -->
+        <div class="section">
+            <h3>Posts</h3>
+            <ul class="result-list">
+                {% for post in blog_posts %}
+                    <li>
+                        <a href="{% url 'post_detail' post_id=post.id %}" class="result-item">{{ post.title }}</a>
+                    </li>
+                {% empty %}
+                    <li>No posts found.</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- User Profiles Section -->
+        <div class="section">
+            <h3>User Profiles</h3>
+            <ul class="result-list">
+                {% for profile in user_profiles %}
+                    <li>
+                        <a href="{% url 'user_profile' profile.user.username %}" class="result-item">
+                            <span class="user-name">{{ profile.user.username }}</span> 
+                            <span class="area-of-interest">- Area of Interest: {{ profile.area_of_interest }}</span>
+                        </a>
+                    </li>
+                {% empty %}
+                    <li>No user profiles found.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+<style>
+    .search-results-container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 20px;
+        font-family: Arial, sans-serif;
+        background-color: #f9f9f9;
+    }
+    
+    h1, h2, h3 {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #333;
+    }
+    
+    h1 {
+        font-size: 2.5em;
+        margin-bottom: 10px;
+    }
+    
+    h2 {
+        font-size: 1.8em;
+        color: #0073b1; /* LinkedIn Blue */
+        margin-bottom: 20px;
+    }
+    
+    .section {
+        margin-bottom: 30px;
+    }
+    
+    .result-list {
+        list-style: none;
+        padding: 0;
+    }
+    
+    .result-item {
+        display: block;
+        padding: 10px;
+        font-size: 1.1em;
+        color: #0073b1; /* LinkedIn Blue */
+        text-decoration: none;
+        margin-bottom: 10px;
+        border-radius: 4px;
+        background-color: #fff;
+        border: 1px solid #e1e1e1;
+        transition: background-color 0.3s ease;
+    }
+    
+    .result-item:hover {
+        background-color: #f0f2f5; /* Hover effect similar to LinkedIn */
+    }
+    
+    .result-item span {
+        display: inline-block;
+    }
+    
+    .user-name {
+        font-weight: bold;
+    }
+    
+    .area-of-interest {
+        font-style: italic;
+        color: #555;
+    }
+    
+    .result-list li {
+        margin-bottom: 12px;
+    }
+    
+    @media (max-width: 768px) {
+        .search-results-container {
+            padding: 10px;
+        }
+    
+        h1 {
+            font-size: 2em;
+        }
+    
+        h2 {
+            font-size: 1.5em;
+        }
+    
+        .result-item {
+            font-size: 1em;
+        }
+    }    
+</style>
+{% endblock %}

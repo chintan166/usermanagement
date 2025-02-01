@@ -17,7 +17,8 @@
         <a href="" class="nav-link">
           <div class="nav-profile-image">
             {% if request.user.profile_pic %}
-          <img src="{{ request.user.profile_pic.url }}" alt="profile" />
+            
+            <img src="{{ request.user.profile_pic.url }}" alt="profile" />
         {% else %}
           <img src="{% static 'images/faces/face1.jpg' %}" alt="default profile" />
         {% endif %}
@@ -39,27 +40,10 @@
      
 
       <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+        <a class="nav-link" href="{% url 'mark_attendance' %}">
           <span class="menu-title">Attendance</span>
-          <i class="menu-arrow"></i>
-          <i class="mdi mdi-crosshairs-gps menu-icon"></i>
+          <i class="mdi mdi-home menu-icon"></i>
         </a>
-        <div class="collapse" id="ui-basic" style="">
-          <ul class="nav flex-column sub-menu">
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'mark_attendance' %}">
-                <span class="menu-title">Mark Attendance</span>
-                <i class="mdi mdi-home menu-icon"></i>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'view_attendance' %}">
-                <span class="menu-title">View Attendance</span>
-                <i class="mdi mdi-home menu-icon"></i>
-              </a>
-            </li>
-          </ul>
-        </div>
       </li>
 
       <li class="nav-item">

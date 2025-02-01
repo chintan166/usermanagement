@@ -85,3 +85,6 @@ class CommentForm(forms.ModelForm):
         if not content:
             raise forms.ValidationError("This field is required.")
         return content
+    
+class SearchForm(forms.Form):
+    query = forms.CharField(required=False, label='Search')

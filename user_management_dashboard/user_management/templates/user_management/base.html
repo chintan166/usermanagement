@@ -5,7 +5,47 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Purple Admin</title>
+    <title>DhvenTech CRM</title>
+    <style>
+      .navbar .navbar-brand-wrapper .navbar-brand img {
+        width: calc(230px - 170px) !important;
+        max-width: 100% !important;
+        height: 60px !important;
+        margin: auto !important;
+        vertical-align: middle !important;
+    }
+    .navbar .navbar-brand-wrapper .navbar-brand
+    {
+      width: 40% !important;
+    }
+    .search-form {
+      display: flex;
+      align-items: center;
+      margin-right: 20px; /* Adjust as needed */
+  }
+  
+  .search-input {
+      padding: 5px 10px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      width: 200px; /* Adjust width as needed */
+  }
+  
+  .search-button {
+      padding: 6px 12px;
+      margin-left: 10px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+  }
+  
+  .search-button:hover {
+      background-color: #0056b3;
+  }
+    </style>
     <!-- plugins:css -->
     <link rel="stylesheet" href="{% static 'css/materialdesignicons.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/themify-icons.css' %}">
@@ -27,10 +67,14 @@
       <!-- partial:../../partials/_navbar.html -->
       <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
         <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-start">
-          <a class="navbar-brand brand-logo" href="{% url 'dashboard' %}"><img src="{% static 'images/logo.svg'%}" alt="logo" /></a>
+          <a class="navbar-brand brand-logo" href="{% url 'dashboard' %}"><img src="{% static 'images/logo7.png'%}" alt="logo" /></a>
           <a class="navbar-brand brand-logo-mini" href="{% url 'dashboard' %}"><img src="{% static 'images/logo-mini.svg'%}" alt="logo" /></a>
         </div>
         <div class="navbar-menu-wrapper d-flex align-items-stretch">
+          <form method="get" action="{% url 'search' %}" class="search-form">
+            <input type="text" name="query" placeholder="Search..." value="{{ request.GET.query }}" required class="search-input">
+            <button type="submit" class="search-button">Search</button>
+        </form>
           <ul class="navbar-nav navbar-nav-right">
 
             <li class="nav-item d-none d-lg-block full-screen-link">
@@ -41,13 +85,13 @@
 
             <li class="nav-item d-none d-lg-block full-screen-link">
               <a class="nav-link" href="{% url 'people_you_may_know' %}">
-                <img width="38px" src="/static/images/user5.jpeg">
+                <img width="38px" src="/static/images/user6.png">
               </a>
             </li>
 
             <li class="nav-item d-none d-lg-block full-screen-link">
               <a class="nav-link" href="{% url 'quiz_list' %}">
-                <img width="35px" src="/static/images/quiz6.png">
+                <img width="30px" src="/static/images/quiz13.png">
               </a>
             </li>
             <li class="nav-item d-none d-lg-block full-screen-link">
@@ -121,13 +165,6 @@
                 <a class="dropdown-item" href="{% url 'logout' %}">
                   <i class="mdi mdi-logout me-2 text-primary"></i> Signout </a>
               </div>
-            </li>
-            <li class="nav-item d-none d-lg-block full-screen-link">
-              <a class="nav-link">
-                <i class="mdi mdi-fullscreen" id="fullscreen-button">
-                  <img width="20px" src="{% static 'images/fullscreen.svg'%}">
-                </i>
-              </a>
             </li>
             
             

@@ -13,4 +13,19 @@
   <button type="submit">Mark Attendance</button>
 </form>
 {% endif %}
+
+<h2>Your Attendance Records</h2>
+<table style="width: 100%; border-collapse: collapse;">
+  <tr>
+    <th style="border: 1px solid #ddd; padding: 8px;">Date</th>
+    <th style="border: 1px solid #ddd; padding: 8px;">Status</th>
+  </tr>
+  {% for record in attendance_records %}
+    <tr>
+      <td style="border: 1px solid #ddd; padding: 8px;">{{ record.date|date:"F j, Y" }}</td>
+      <td style="border: 1px solid #ddd; padding: 8px;">{{ record.status }}</td>
+    </tr>
+  {% endfor %}
+</table>
+
 {% endblock %}

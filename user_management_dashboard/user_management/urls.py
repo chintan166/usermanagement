@@ -12,7 +12,6 @@ urlpatterns = [
     #path('', login_required(views.dashboard), name='dashboard'),
     path('dashboard/', login_required(views.dashboard), name='dashboard'),
     path('mark_attendance/', views.mark_attendance, name='mark_attendance'),
-    path('view_attendance/', views.view_attendance, name='view_attendance'),
     path('quizzes/', views.quiz_list, name='quiz_list'),
     path('quizzes/<int:quiz_id>/', views.quiz_detail, name='quiz_detail'),
     path('quizzes/<int:quiz_id>/submit/', views.quiz_submit, name='quiz_submit'),
@@ -61,5 +60,6 @@ urlpatterns = [
     path('view_notifications/', views.view_notifications, name='view_notifications'),
     path('mark_notification_read/', views.mark_notification_read, name='mark_notification_read'),
     path('people_you_may_know/', views.people_you_may_know, name='people_you_may_know'),
+    path('search/', views.search, name='search'),
     
 ]

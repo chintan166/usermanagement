@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib.auth import login, authenticate, logout,get_user_model
-from .forms import CustomUserCreationForm,BlogPostForm,CommentForm,ResumeForm,MessageForm,ReplyForm,EditProfileForm,ProjectForm,PasswordResetRequestForm,CustomAuthenticationForm,VideoUploadForm,SubmissionForm
+from .forms import CustomUserCreationForm,BlogPostForm,SearchForm,CommentForm,ResumeForm,MessageForm,ReplyForm,EditProfileForm,ProjectForm,PasswordResetRequestForm,CustomAuthenticationForm,VideoUploadForm,SubmissionForm
 from .models import CustomUser,BlogPost,Comment,Notification,Post,Resume,Message,AttendanceRecord,Subtopic,Quiz,UserProfile, Question, Answer,Video, Topic,Project, Submission
 from django.utils.timezone import now
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -232,11 +232,13 @@ def mark_attendance(request):
             AttendanceRecord.objects.create(user=request.user, date=today, status='Present')
             message = "Your attendance has been marked successfully."
             return redirect('mark_attendance')
+        
+    attendance_records = AttendanceRecord.objects.filter(user=request.user).order_by('-date')
 
     if attendance_exists and not message:
         message = "You have already marked your attendance for today."
 
-    return render(request, 'user_management/mark_attendance.html', {'message': message})
+    return render(request, 'user_management/mark_attendance.html', {'message': message,'attendance_records': attendance_records})
 
 @login_required
 def attendance_report(request):
@@ -253,10 +255,6 @@ def attendance_report(request):
         'end_date': end_date,
     }
     return render(request, 'user_management/attendance_report.html', context)
-
-def view_attendance(request):
-    attendance_records = AttendanceRecord.objects.filter(user=request.user).order_by('-date')
-    return render(request, 'user_management/view_attendance.html', {'attendance_records': attendance_records})
 
 def quiz_list(request):
     # Get the logged-in user's profile
@@ -862,3 +860,31 @@ def people_you_may_know(request):
     similar_users = UserProfile.objects.filter(area_of_interest=current_user_interest).exclude(user=request.user)
 
     return render(request, 'user_management/user_profiles_by_interest.html', {'similar_users': similar_users})
+
+def search(request):
+    form = SearchForm(request.GET or None)
+    query = request.GET.get('query', '')
+
+    # If query exists, we search the relevant models
+    blog_posts = []
+    projects = []
+    quizzes = []
+    posts = []
+    user_profiles = []
+
+    if query:
+        blog_posts = BlogPost.objects.filter(title__icontains=query) | BlogPost.objects.filter(description__icontains=query)
+        projects = Project.objects.filter(title__icontains=query) | Project.objects.filter(description__icontains=query)
+        quizzes = Quiz.objects.filter(title__icontains=query) | Quiz.objects.filter(description__icontains=query)
+        posts = Post.objects.filter(title__icontains=query) | Post.objects.filter(description__icontains=query)
+        user_profiles = UserProfile.objects.filter(user__username__icontains=query)
+
+    return render(request, 'user_management/search_results.html', {
+        'form': form,
+        'query': query,
+        'blog_posts': blog_posts,
+        'projects': projects,
+        'quizzes': quizzes,
+        'posts': posts,
+        'user_profiles': user_profiles
+    })

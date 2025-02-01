@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.conf import settings
 from django.utils import timezone
+from django.urls import reverse
 from django.contrib.auth.models import User
 
 class UserProfile(models.Model):
@@ -51,6 +52,10 @@ class Quiz(models.Model):
 
     def __str__(self):
         return self.title
+    
+    def get_absolute_url(self):
+        # Adjust the URL name as needed, for example 'quiz_detail' is just an example
+        return reverse('quiz_detail', kwargs={'quiz_id': self.pk})
     
 class Question(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
@@ -222,6 +227,9 @@ class BlogPost(models.Model):
 
     class Meta:
         ordering = ['-created_at']  # Show latest posts first
+        
+    def get_absolute_url(self):
+        return reverse('post_detail', kwargs={'post_id': self.id})
         
 class Comment(models.Model):
     post = models.ForeignKey('BlogPost', on_delete=models.CASCADE, related_name='comments')

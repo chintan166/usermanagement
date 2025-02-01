@@ -49,7 +49,9 @@
 
         {% for comment in comments %}
           <div class="comment">
-            <p><strong>{{ comment.user.username }}</strong> ({{ comment.created_at|date:"F d, Y h:i A" }}):</p>
+            <a href="{% url 'user_profile' comment.user.username %}" class="result-item">
+            
+            <p><strong>{{ comment.user.username }}</strong></a> ({{ comment.created_at|date:"F d, Y h:i A" }}):</p>
             <p>{{ comment.content }}</p>
           </div>
         {% empty %}
