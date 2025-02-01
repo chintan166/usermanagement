@@ -22,6 +22,7 @@ urlpatterns = [
     path('export_attendance_csv/', views.export_attendance_csv, name='export_attendance_csv'),
     path('projects/', views.list_projects, name='list_projects'),
     path('submit_project/', views.submit_project, name='submit_project'),
+    path('submitted-projects/', views.view_submitted_projects, name='view_submitted_projects'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('admin_view_videos/', views.admin_view_videos, name='admin_view_videos'),
     path('create_project/', views.create_project, name='create_project'),

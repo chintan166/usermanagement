@@ -436,6 +436,21 @@ def submit_project(request):
 
     return render(request, 'user_management/submit_project.html', {'form': form})
 
+def view_submitted_projects(request):
+    user = request.user
+
+    # Get the user's approved submissions
+    approved_submissions = Submission.objects.filter(user=user, admin_approved=True)
+
+    # If no approved submissions, display a message
+    if not approved_submissions:
+        messages.info(request, "You don't have any approved submissions yet.")
+
+    return render(request, 'user_management/view_submitted_projects.html', {
+        'approved_submissions': approved_submissions
+    })
+
+
 def view_users_and_area_of_interest(request):
     # Fetch all users excluding superusers and their associated UserProfile
     users = CustomUser.objects.exclude(is_superuser=True)  # Exclude superusers

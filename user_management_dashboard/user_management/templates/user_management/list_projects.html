@@ -3,38 +3,143 @@
 {% load static %}
 
 {% block content %}
+<!-- LinkedIn-style container -->
+<div class="container">
+    <h2 class="section-title">Available Projects</h2>
 
+    {% if messages %}
+        <div class="alert-container">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    <p>{{ message }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
 
-<h2>Available Projects</h2>
-{% if messages %}
-    <div class="messages">
-        {% for message in messages %}
-            <p class="message {{ message.tags }}">{{ message }}</p>
-        {% endfor %}
-    </div>
-{% endif %}
+    {% if projects %}
+        <div class="projects-list">
+            {% for project in projects %}
+                <div class="project-card">
+                    <h3 class="project-title">{{ project.title }}</h3>
+                    <p class="project-description">{{ project.description }}</p>
+                    <p><strong>Start Date:</strong> {{ project.start_date }}</p>
+                    <p><strong>End Date:</strong> {{ project.end_date }}</p>
 
-{% if projects %}
+                    {% if project.document %}
+                        <p><strong>Download Document:</strong> 
+                            <a href="{{ project.get_document_url }}" target="_blank" class="download-link">Click here to download</a>
+                        </p>
+                    {% else %}
+                        <p>No document uploaded.</p>
+                    {% endif %}
 
-<ul>
-  {% for project in projects %}
-    <li>
-      <h3>{{ project.title }}</h3>
-      <p>{{ project.description }}</p>
-      <p><strong>Start Date:</strong> {{ project.start_date }}</p>
-      <p><strong>End Date:</strong> {{ project.end_date }}</p>
+                    <a href="{% url 'submit_project' %}" class="btn btn-primary">Submit Your Work</a>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
 
-      {% if project.document %}
-            <p><strong>Download Document:</strong> 
-                <a href="{{ project.get_document_url }}" target="_blank">Click here to download</a>
-            </p>
-        {% else %}
-            <p>No document uploaded.</p>
-        {% endif %}
+<!-- Add some basic styling to resemble LinkedIn's clean, professional design -->
+<style>
+  .btn-primary:not(.btn-light)
+  {
+    width: 500px !important;
+  }
 
-      <a href="{% url 'submit_project' %}">Submit Your Work</a>
-    </li>
-  {% endfor %}
-</ul>
-{% endif %}
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+        font-family: 'Arial', sans-serif;
+        color: #333;
+        background-color: #f5f7fa;
+    }
+
+    .section-title {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #2d3a48;
+        border-bottom: 2px solid #e1e8ed;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+    }
+
+    .alert-container {
+        margin-bottom: 20px;
+    }
+
+    .alert {
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 4px;
+        background-color: #f3f4f6;
+    }
+
+    .alert-success {
+        background-color: #d4edda;
+        border: 1px solid #c3e6cb;
+    }
+
+    .alert-warning {
+        background-color: #fff3cd;
+        border: 1px solid #ffeeba;
+    }
+
+    .projects-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+    }
+
+    .project-card {
+        background-color: #ffffff;
+        border: 1px solid #e1e8ed;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease;
+    }
+
+    .project-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .project-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #0073b1;
+    }
+
+    .project-description {
+        font-size: 1rem;
+        color: #6c757d;
+    }
+
+    .download-link {
+        color: #0073b1;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .download-link:hover {
+        text-decoration: underline;
+    }
+
+    .btn {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #0073b1;
+        color: white;
+        font-weight: bold;
+        text-decoration: none;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn:hover {
+        background-color: #005b8c;
+    }
+</style>
 {% endblock %}

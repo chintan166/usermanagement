@@ -1,28 +1,108 @@
 {% extends "user_management/base.html" %}
 
 {% block content %}
+<style>
+    /* Global styling */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f6f9;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
 
-<h1>Available Topics</h1>
+/* Container for the content */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px;
+}
 
-<ul>
-    {% for topic in topics %}
-        <li>
-            <h3>{{ topic.name }}</h3>
-            <ul>
-                {% for subtopic in topic.subtopics.all %}
-                    <li>
-                        <a href="{% url 'topic_videos' topic_name=topic.name subtopic_name=subtopic.name %}">
-                            {{ subtopic.name }}
-                        </a>
-                    </li>
-                {% empty %}
-                    <p>No subtopics available for this topic.</p>
-                {% endfor %}
-            </ul>
-        </li>
-    {% empty %}
-        <p>No topics available.</p>
-    {% endfor %}
-</ul>
+/* Header styling */
+.header {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #0073b1;
+    text-align: center;
+    margin-bottom: 30px;
+}
 
+/* Topic list styling */
+.topic-list {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+/* Topic item */
+.topic-item {
+    background-color: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+/* Topic name */
+.topic-name {
+    font-size: 1.75rem;
+    color: #0073b1;
+    margin-bottom: 10px;
+}
+
+/* Subtopic list styling */
+.subtopic-list {
+    list-style-type: none;
+    padding-left: 0;
+    margin-top: 10px;
+}
+
+/* Subtopic item */
+.subtopic-item {
+    margin: 8px 0;
+}
+
+/* Subtopic link styling */
+.subtopic-link {
+    font-size: 1.2rem;
+    text-decoration: none;
+    color: #0073b1;
+    transition: color 0.3s;
+}
+
+.subtopic-link:hover {
+    color: #005e8c;
+}
+
+/* No subtopics / No topics available */
+.no-subtopics, .no-topics {
+    color: #999;
+    font-style: italic;
+    text-align: center;
+}
+
+</style>
+<div class="container">
+    <h1 class="header">Available Topics</h1>
+
+    <ul class="topic-list">
+        {% for topic in topics %}
+            <li class="topic-item">
+                <h3 class="topic-name">{{ topic.name }}</h3>
+                <ul class="subtopic-list">
+                    {% for subtopic in topic.subtopics.all %}
+                        <li class="subtopic-item">
+                            <a href="{% url 'topic_videos' topic_name=topic.name subtopic_name=subtopic.name %}" class="subtopic-link">
+                                {{ subtopic.name }}
+                            </a>
+                        </li>
+                    {% empty %}
+                        <p class="no-subtopics">No subtopics available for this topic.</p>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% empty %}
+            <p class="no-topics">No topics available.</p>
+        {% endfor %}
+    </ul>
+</div>
 {% endblock %}

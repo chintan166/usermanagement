@@ -1,25 +1,91 @@
 {% extends "user_management/base.html" %}
 
 {% block content %}
-<h2>Submit Project</h2>
+<div class="linkedin-container">
+    <h2 class="linkedin-title">Submit Your Project</h2>
 
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    
-    <!-- Display form errors -->
-    {% if form.errors %}
-        <div class="errors">
-            <ul>
-                {% for field in form %}
-                    {% if field.errors %}
-                        <li>{{ field.name }}: {{ field.errors }}</li>
-                    {% endif %}
-                {% endfor %}
-            </ul>
+    <form method="post" enctype="multipart/form-data" class="linkedin-form">
+        {% csrf_token %}
+        
+        <!-- Display form errors -->
+        {% if form.errors %}
+            <div class="linkedin-form-errors">
+                <ul>
+                    {% for field in form %}
+                        {% if field.errors %}
+                            <li class="error-item">{{ field.name }}: {{ field.errors }}</li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+        
+        <div class="linkedin-form-fields">
+            {{ form.as_p }}
         </div>
-    {% endif %}
+        
+        <button type="submit" class="linkedin-submit-btn">Submit Project</button>
+    </form>
+</div>
+<style>
+    /* LinkedIn Style */
+    .linkedin-container {
+        width: 80%;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
     
-    {{ form.as_p }}
-    <button type="submit">Submit Project</button>
-</form>
+    .linkedin-title {
+        font-size: 24px;
+        font-weight: 600;
+        color: #2a2a2a;
+        margin-bottom: 20px;
+    }
+    
+    .linkedin-form {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+    
+    .linkedin-form-errors {
+        background-color: #f8d7da;
+        color: #721c24;
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 15px;
+    }
+    
+    .error-item {
+        font-size: 14px;
+    }
+    
+    .linkedin-form-fields {
+        font-size: 16px;
+    }
+    
+    .linkedin-submit-btn {
+        background-color: #0073b1;
+        color: white;
+        font-size: 16px;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    
+    .linkedin-submit-btn:hover {
+        background-color: #005f8c;
+    }
+    
+    .linkedin-submit-btn:active {
+        background-color: #004d70;
+    }
+    
+</style>
 {% endblock %}
