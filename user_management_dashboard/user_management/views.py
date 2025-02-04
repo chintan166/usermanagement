@@ -392,6 +392,23 @@ def admin_list_projects(request):
     projects = Project.objects.all()
     return render(request, 'user_management/admin_list_projects.html', {'projects': projects})
 
+def export_projects_csv(request):
+    # Create the HTTP response with content type for CSV
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=projects.csv'
+
+    # Create a CSV writer object
+    writer = csv.writer(response)
+
+    # Write the header row
+    writer.writerow(['Title', 'Description', 'Start Date', 'End Date', 'Topic'])
+
+    # Write project data
+    for project in Project.objects.all():
+        writer.writerow([project.title, project.description, project.start_date, project.end_date, project.topic])
+
+    return response
+
 def submit_project(request):
     user = request.user
     try:
@@ -666,7 +683,18 @@ def my_posts(request):
     return render(request, 'user_management/my-posts.html', {
         'user_posts': user_posts,  # Pass user's posts to the template
     })
+
+# View to display all blog posts
+def list_of_posts(request):
+    posts = BlogPost.objects.filter(is_active=True)  # Only active posts
+    return render(request, 'user_management/list_of_posts.html', {'posts': posts})
+
+def admin_delete_post(request, post_id):
+    post = get_object_or_404(BlogPost, id=post_id)
+    post.delete()
+    return redirect('list_of_posts')  # Redirect to the post list after deletion
     
+
 def post_detail(request, post_id):
     # Fetch the post using its ID or return 404 if not found
     post = get_object_or_404(BlogPost, id=post_id)
@@ -814,6 +842,7 @@ def create_blog_post(request):
             # You may want to associate the user with the post, if applicable
             blog_post = form.save(commit=False)
             blog_post.user = request.user  # Associate the post with the current user
+            blog_post.is_active = True
             blog_post.save()  # Save the post to the database
             return redirect('dashboard')  # Redirect to the page showing all posts after successful creation
     else:

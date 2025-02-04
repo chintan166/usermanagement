@@ -189,6 +189,12 @@
       {% endif %}
       {% if request.user.is_superuser %}
       <li class="nav-item">
+        <a class="nav-link" href="{% url 'list_of_posts' %}">
+          <span class="menu-title">List Of Posts</span>
+          <i class="mdi mdi-home menu-icon"></i>
+        </a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" href="{% url 'upload_video' %}">
           <span class="menu-title">Upload Video</span>
           <i class="mdi mdi-home menu-icon"></i>
@@ -233,14 +239,6 @@
         </a>
       </li> 
       
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'create_blog_post' %}">
-          <span class="menu-title">Create Blog Post</span>
-          <i class="mdi mdi-home menu-icon"></i>
-        </a>
-      </li>
-
-
       
 
       <li class="nav-item">

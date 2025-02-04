@@ -3,40 +3,159 @@
 {% load static %}
 
 {% block content %}
+<style type="text/css">
+  /* Custom LinkedIn-like Styles */
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f3f6f8;
+    margin: 0;
+    padding: 0;
+  }
 
+  .text-primary {
+    color: #0073b1 !important;
+    }
 
-<h2>Attendance Report</h2>
+  .btn-export
+  {
+    background-color: #0073b1;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+    display: inline-block;
+    margin-bottom: 20px;
+    margin-top: 20px;
+  }
 
-<form method="get" action="{% url 'attendance_report' %}">
-  <label for="start_date">Start Date:</label>
-  <input type="date" id="start_date" name="start_date" value="{{ start_date }}">
-  
-  <label for="end_date">End Date:</label>
-  <input type="date" id="end_date" name="end_date" value="{{ end_date }}">
-  
-  <button type="submit">Filter</button>
-</form>
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 20px;
+  }
 
-<form method="get" action="{% url 'export_attendance_csv' %}">
-  <input type="hidden" name="start_date" value="{{ request.GET.start_date }}">
-  <input type="hidden" name="end_date" value="{{ request.GET.end_date }}">
-  <button type="submit">Export to CSV</button>
-</form>
+  h2 {
+    color: #0073b1; /* LinkedIn Blue */
+    margin-bottom: 20px;
+  }
 
-<table border="1">
-  <tr>
-    <th>User</th>
-    <th>Date</th>
-    <th>Status</th>
-  </tr>
-  {% for record in records %}
-    <tr>
-      <td>{{ record.user.username }}</td>
-      <td>{{ record.date }}</td>
-      <td>{{ record.status }}</td>
-    </tr>
-  {% endfor %}
-</table>
+  /* Table Styles */
+  table th {
+    background-color: #f1f3f5;
+    font-weight: 600;
+  }
 
+  table td {
+    color: #2c3e50;
+  }
+
+  .table-responsive {
+    margin-bottom: 20px;
+  }
+
+  /* Button Styles */
+  button {
+    font-size: 14px;
+    padding: 8px 15px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+  }
+
+  .btn-primary {
+    background-color: #0073b1;
+    color: white;
+  }
+
+  .btn-primary:hover {
+    background-color: #005d91;
+  }
+
+  .btn-secondary {
+    background-color: #f1f3f5;
+    color: #2c3e50;
+  }
+
+  .btn-secondary:hover {
+    background-color: #dcdfe1;
+  }
+
+  /* Alert Styles */
+  .alert-info {
+    background-color: #e8f4fa;
+    color: #0073b1;
+    padding: 15px;
+    border-radius: 4px;
+  }
+
+  /* Form and Input Styles */
+  .form-inline label {
+    margin-right: 10px;
+  }
+
+  .form-control {
+    border-radius: 4px;
+    margin-right: 15px;
+    padding: 6px 12px;
+  }
+
+  .mb-4 {
+    margin-bottom: 20px;
+  }
+
+</style>
+
+<!-- Header Section -->
+<div class="container mt-4">
+  <h2 class="text-primary mb-4">Attendance Report</h2>
+
+  <!-- Filter Form -->
+  <form method="get" action="{% url 'attendance_report' %}" class="form-inline mb-4">
+    <label for="start_date">Start Date:</label>
+    <input type="date" id="start_date" name="start_date" value="{{ start_date }}" class="form-control">
+
+    <label for="end_date">End Date:</label>
+    <input type="date" id="end_date" name="end_date" value="{{ end_date }}" class="form-control">
+
+    <button type="submit" class="btn-export">Filter</button>
+  </form>
+
+  <!-- Export Form -->
+  <form method="get" action="{% url 'export_attendance_csv' %}" class="mb-4">
+    <input type="hidden" name="start_date" value="{{ request.GET.start_date }}">
+    <input type="hidden" name="end_date" value="{{ request.GET.end_date }}">
+    <button type="submit" class="btn-export">Export to CSV</button>
+  </form>
+
+  <!-- Attendance Table -->
+  {% if records %}
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped">
+        <thead class="thead-light">
+          <tr>
+            <th>User</th>
+            <th>Date</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for record in records %}
+            <tr>
+              <td>{{ record.user.username }}</td>
+              <td>{{ record.date }}</td>
+              <td>{{ record.status }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <div class="alert alert-info">
+      No attendance records found for the selected date range.
+    </div>
+  {% endif %}
+</div>
 
 {% endblock %}

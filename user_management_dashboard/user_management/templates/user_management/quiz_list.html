@@ -4,16 +4,127 @@
 
 {% block content %}
 
+<style>
+/* General Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f6f9;
+    color: #333;
+}
 
-<h2>Available Quizzes</h2>
-{% if quizzes %}
-    {% for quiz in quizzes %}
-        <h3>{{ quiz.title }}</h3>
-        <p>{{ quiz.description }}</p>
-        <a href="{% url 'quiz_detail' quiz.id %}">Take Quiz</a>
-    {% endfor %}
-{% else %}
-    <p>No quizzes available for your area of interest.</p>
-{% endif %}
+.btn-primary:not(.btn-light)
+{
+    width: 400px !important;
+}
 
+/* Container to center and add padding */
+.container {
+    width: 80%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Page Header (Title) */
+.page-header {
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #0077b5; /* LinkedIn blue */
+}
+
+/* Quiz List and Card */
+.quiz-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.quiz-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.2s ease-in-out;
+}
+
+.quiz-card:hover {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.quiz-card h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #0077b5;
+    margin-bottom: 10px;
+}
+
+.quiz-card p {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+.quiz-card .btn {
+    background-color: #0077b5;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+}
+
+.quiz-card .btn:hover {
+    background-color: #005d8c;
+}
+
+/* No Quizzes Available */
+.no-quizzes {
+    text-align: center;
+    font-size: 16px;
+    color: #555;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        width: 95%;
+    }
+
+    .quiz-list {
+        grid-template-columns: 1fr;
+    }
+}
+
+</style>
+<div class="container">
+    <div class="page-header">
+        <h2>Available Quizzes</h2>
+    </div>
+    
+    {% if quizzes %}
+        <div class="quiz-list">
+            {% for quiz in quizzes %}
+                <div class="quiz-card">
+                    <h3>{{ quiz.title }}</h3>
+                    <p>{{ quiz.description }}</p>
+                    <a class="btn btn-primary" href="{% url 'quiz_detail' quiz.id %}">Take Quiz</a>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="no-quizzes">
+            <p>No quizzes available for your area of interest.</p>
+        </div>
+    {% endif %}
+</div>
 {% endblock %}

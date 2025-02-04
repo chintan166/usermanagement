@@ -1,35 +1,113 @@
 {% extends "user_management/base.html" %}
 
 {% block content %}
+<style>
+
+    /* General Container Styling */
+.container {
+    margin: 30px auto;
+    max-width: 1200px;
+    padding: 20px;
+    font-family: 'Arial', sans-serif;
+}
+
+.page-title {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Button Styling */
+.btn-export {
+    background-color: #0073b1; /* LinkedIn blue */
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+    display: inline-block;
+    margin-bottom: 20px;
+}
+
+.btn-export:hover {
+    background-color: #005c8d; /* Darker blue */
+}
+
+/* Table Styling */
+.table-container {
+    margin-top: 20px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.user-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #ffffff;
+    font-size: 1rem;
+}
+
+.user-table th,
+.user-table td {
+    padding: 12px;
+    text-align: left;
+}
+
+.user-table th {
+    background-color: #f4f7f6;
+    color: #0073b1; /* LinkedIn blue */
+}
+
+.user-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.user-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* No data row */
+.no-data {
+    text-align: center;
+    padding: 20px;
+    color: #888;
+}
+
+</style>
     <div class="container">
-        <h2>All Users and Their Area of Interest</h2>
+        <h2 class="page-title">All Users and Their Area of Interest</h2>
         
         <!-- Export to CSV Button -->
-        <a href="{% url 'export_users_to_csv' %}" class="btn btn-primary">Export to CSV</a>
+        <a href="{% url 'export_users_to_csv' %}" class="btn btn-export">Export to CSV</a>
         
-        <table>
-            <thead>
-                <tr>
-                    <th>Username</th>
-                    <th>Email</th>
-                    <th>Area of Interest</th>
-                    <th>Joining Date</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for profile in user_profiles %}
+        <!-- User Table -->
+        <div class="table-container">
+            <table class="user-table">
+                <thead>
                     <tr>
-                        <td>{{ profile.user.username }}</td>
-                        <td>{{ profile.user.email }}</td>
-                        <td>{{ profile.area_of_interest }}</td>
-                        <td>{{ profile.date_joined|date:"D, d M Y H:i:s" }}</td>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Area of Interest</th>
+                        <th>Joining Date</th>
                     </tr>
-                {% empty %}
-                    <tr>
-                        <td colspan="4">No users found.</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {% for profile in user_profiles %}
+                        <tr>
+                            <td>{{ profile.user.username }}</td>
+                            <td>{{ profile.user.email }}</td>
+                            <td>{{ profile.area_of_interest }}</td>
+                            <td>{{ profile.date_joined|date:"D, d M Y H:i:s" }}</td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="4" class="no-data">No users found.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 {% endblock %}

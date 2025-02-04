@@ -17,7 +17,11 @@
               </div>
               <div class="ms-3">
                 <p class="mb-0 text-primary">        
-                  <a href="{% url 'user_profile' item.post.user.username %}">{{ item.post.user.username }}</a>
+                  {% if item.post.user.username == "chintan" %}
+            <span class="text-danger">Admin</span> <!-- Or any special styling for admin -->
+        {% else %}
+            <a href="{% url 'user_profile' item.post.user.username %}">{{ item.post.user.username }}</a>
+        {% endif %}
                 </p>
                 <p class="mb-0 text-muted">{{ item.post.created_at|date:"F d, Y h:i A" }}</p>
               </div>

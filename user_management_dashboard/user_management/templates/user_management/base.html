@@ -60,14 +60,14 @@
     <!-- Layout styles -->
     <link rel="stylesheet" href="{% static 'css/style.css'%}">
     <!-- End layout styles -->
-    <link rel="shortcut icon" href="{% static 'images/favicon.png'%}" />
+    <link rel="shortcut icon" href="{% static 'images/dhventech7.png'%}" />
   </head>
   <body>
     <div class="container-scroller">
       <!-- partial:../../partials/_navbar.html -->
       <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
         <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-start">
-          <a class="navbar-brand brand-logo" href="{% url 'dashboard' %}"><img src="{% static 'images/logo7.png'%}" alt="logo" /></a>
+          <a class="navbar-brand brand-logo" href="{% url 'dashboard' %}"><img src="{% static 'images/dhventech7.png'%}" alt="logo" /></a>
           <a class="navbar-brand brand-logo-mini" href="{% url 'dashboard' %}"><img src="{% static 'images/logo-mini.svg'%}" alt="logo" /></a>
         </div>
         <div class="navbar-menu-wrapper d-flex align-items-stretch">
@@ -76,13 +76,14 @@
             <button type="submit" class="search-button">Search</button>
         </form>
           <ul class="navbar-nav navbar-nav-right">
-
+            {% if not request.user.is_superuser %}
             <li class="nav-item d-none d-lg-block full-screen-link">
               <a class="nav-link" href="{% url 'dashboard' %}">
                 <img width="35px" src="/static/images/home3.png">
               </a>
             </li>
 
+            
             <li class="nav-item d-none d-lg-block full-screen-link">
               <a class="nav-link" href="{% url 'people_you_may_know' %}">
                 <img width="38px" src="/static/images/user6.png">
@@ -99,6 +100,7 @@
                 <img width="50px" src="/static/images/jobs4.jpg">
               </a>
             </li>
+            
             <li class="nav-item d-none d-lg-block full-screen-link">
               <a class="nav-link" href="{% url 'view_notifications' %}">
                 <img width="30px" src="/static/images/notif1.png">
@@ -152,6 +154,7 @@
               </div>
             </li>
 
+            {% endif %}
             
 
 

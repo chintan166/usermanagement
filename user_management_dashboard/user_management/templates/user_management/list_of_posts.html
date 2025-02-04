@@ -1,0 +1,117 @@
+{% extends "user_management/base.html" %}
+
+{% block content %}
+<style>
+
+/* Base styles */
+.page-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.post-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-between;
+}
+
+.post-card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 600px;
+  padding: 20px;
+  transition: transform 0.3s;
+}
+
+.post-card:hover {
+  transform: translateY(-5px);
+}
+
+.post-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #0073b1;  /* LinkedIn blue */
+  margin-bottom: 10px;
+}
+
+.post-description {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 15px;
+}
+
+.post-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.post-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.875rem;
+  color: #777;
+}
+
+.post-author {
+  font-weight: bold;
+}
+
+.post-date {
+  color: #999;
+}
+
+.delete-form {
+  display: inline-block;
+}
+
+.btn-danger {
+  background-color: #f44336;
+  color: #fff;
+}
+
+.no-posts {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #888;
+}
+
+
+</style>
+  <h1 class="page-title">All Blog Posts</h1>
+  <div class="post-list">
+    {% for post in posts %}
+      <div class="post-card">
+        <h2 class="post-title">{{ post.title }}</h2>
+        <p class="post-description">{{ post.description }}</p>
+        
+        {% if post.blog_image %}
+          <div class="post-image">
+            <img src="{{ post.blog_image.url }}" alt="{{ post.title }}" class="img-fluid">
+          </div>
+        {% endif %}
+        
+        <div class="post-footer">
+          <span class="post-author">By {{ post.user.username }}</span>
+          <span class="post-date">{{ post.created_at|date:"F j, Y" }}</span>
+          
+          
+            <form action="{% url 'admin_delete_post' post.id %}" method="POST" class="delete-form">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+            </form>
+          
+        </div>
+      </div>
+    {% empty %}
+      <p class="no-posts">No blog posts available.</p>
+    {% endfor %}
+  </div>
+{% endblock %}

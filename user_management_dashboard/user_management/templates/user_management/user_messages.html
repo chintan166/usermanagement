@@ -1,24 +1,124 @@
 {% extends "user_management/base.html" %}
 
 {% block content %}
-  <h2>Your Messages</h2>
-  {% if messages %}
-    <ul>
-      {% for msg in messages %}
-        <li>
-          <strong>{{ msg.subject }}</strong> ({{ msg.created_at }})<br>
-          {{ msg.content }}<br>
-          <strong>Status:</strong> {{ msg.get_status_display }}<br>
-          {% if msg.reply %}
-            <strong>Admin Reply:</strong> {{ msg.reply }}<br>
-          {% else %}
-            <strong>No reply yet.</strong><br>
-          {% endif %}
-        </li>
-        <hr>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p>No messages yet.</p>
-  {% endif %}
+  <div class="message-container">
+    <h2 class="section-title">Your Messages</h2>
+    
+    {% if messages %}
+      <div class="message-list">
+        {% for msg in messages %}
+          <div class="message-item">
+            <div class="message-header">
+              <strong class="message-subject">{{ msg.subject }}</strong>
+              <span class="message-date">({{ msg.created_at }})</span>
+            </div>
+            <p class="message-content">{{ msg.content }}</p>
+            <div class="message-status">
+              <strong>Status:</strong> 
+              <span class="status-label">{{ msg.get_status_display }}</span>
+            </div>
+            {% if msg.reply %}
+              <div class="admin-reply">
+                <strong>Admin Reply:</strong> {{ msg.reply }}
+              </div>
+            {% else %}
+              <div class="no-reply">
+                <strong>No reply yet.</strong>
+              </div>
+            {% endif %}
+          </div>
+          <hr class="separator">
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="no-messages">No messages yet.</p>
+    {% endif %}
+  </div>
+
+  <style>
+    .message-container {
+      background-color: #f4f6f9;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .section-title {
+      font-size: 24px;
+      color: #2c3e50;
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    .message-list {
+      margin-top: 20px;
+    }
+
+    .message-item {
+      background-color: white;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .message-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 18px;
+      font-weight: bold;
+      color: #34495e;
+    }
+
+    .message-date {
+      color: #95a5a6;
+      font-size: 14px;
+    }
+
+    .message-content {
+      font-size: 16px;
+      line-height: 1.5;
+      margin-top: 10px;
+      color: #7f8c8d;
+    }
+
+    .message-status {
+      margin-top: 15px;
+      font-size: 14px;
+    }
+
+    .status-label {
+      font-weight: bold;
+      color: #2ecc71;
+    }
+
+    .admin-reply {
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #ecf0f1;
+      border-radius: 6px;
+    }
+
+    .no-reply {
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #f39c12;
+      color: white;
+      border-radius: 6px;
+      font-weight: bold;
+    }
+
+    .separator {
+      border: none;
+      border-top: 1px solid #bdc3c7;
+      margin: 10px 0;
+    }
+
+    .no-messages {
+      font-size: 18px;
+      color: #7f8c8d;
+      font-weight: bold;
+    }
+  </style>
+
 {% endblock %}

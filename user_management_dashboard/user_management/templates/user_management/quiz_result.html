@@ -3,20 +3,90 @@
 {% load static %}
 
 {% block content %}
+    <!-- Container for the results -->
+    <div class="quiz-results-container">
+        <h2 class="quiz-title">{{ quiz.title }} - Results</h2>
+        <p class="quiz-score">Your score: <strong>{{ score }}</strong> out of <strong>{{ total }}</strong></p>
 
-<h2>{{ quiz.title }} - Results</h2>
-<p>Your score: {{ score }} out of {{ total }}</p>
+        <div class="answers-section">
+            {% for answer_info in user_answers %}
+                <div class="answer-item">
+                    <h3 class="question-text">{{ answer_info.question.text }}</h3>
+                    <p class="user-answer"><strong>Your answer:</strong> {{ answer_info.selected_answer.text }}</p>
 
-{% for answer_info in user_answers %}
-    <h3>{{ answer_info.question.text }}</h3>
-    <p>Your answer: {{ answer_info.selected_answer.text }}</p>
+                    {% if answer_info.selected_answer != answer_info.correct_answer %}
+                        <p class="correct-answer"><strong>Correct answer:</strong> {{ answer_info.correct_answer.text }}</p>
+                    {% else %}
+                        <p class="correct-answer correct">Correct answer!</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 
-    {% if answer_info.selected_answer != answer_info.correct_answer %}
-        <p><strong>Correct answer: {{ answer_info.correct_answer.text }}</strong></p>
-    {% else %}
-        <p><strong>Correct answer!</strong></p>
-    {% endif %}
-{% endfor %}
+    <!-- Adding inline CSS for styling -->
+    <style>
+        .quiz-results-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f6f8;
+            border-radius: 8px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+        }
 
+        .quiz-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #0073b1;
+            margin-bottom: 20px;
+        }
 
+        .quiz-score {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .answers-section {
+            background-color: #ffffff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.1);
+        }
+
+        .answer-item {
+            border-bottom: 1px solid #e1e4e8;
+            padding: 10px 0;
+        }
+
+        .answer-item:last-child {
+            border-bottom: none;
+        }
+
+        .question-text {
+            font-size: 20px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .user-answer,
+        .correct-answer {
+            font-size: 16px;
+            color: #555;
+            margin-top: 5px;
+        }
+
+        .correct-answer.correct {
+            color: #28a745;
+        }
+
+        .correct-answer {
+            color: #dc3545;
+        }
+
+        .answer-item p strong {
+            font-weight: 600;
+        }
+    </style>
 {% endblock %}

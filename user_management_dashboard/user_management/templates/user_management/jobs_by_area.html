@@ -4,35 +4,165 @@
 
 {% block content %}
 
+<style>
+/* General Layout */
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    background-color: #f4f5f7;
+}
 
-<h2>Area of Interest: {{ request.user.userprofile.area_of_interest }}</h2>
+.profile-header {
+    margin-bottom: 30px;
+    padding: 10px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
-{% if posts %}
-    <ul>
-        {% for post in posts %}
-            <li>
-                <strong>{{ post.title }}</strong><br>
-                {{ post.description }}<br>
-                <small>
-                    Posted on: 
-                    {% load tz %}
-                    {% localtime on %}
-                        {{ post.created_at|date:"b. d, Y, h:i a" }} <!-- Format: Jan. 27, 2025, 5:29 p.m. -->
-                    {% endlocaltime %}
-                </small><br/>
+.profile-header h2 {
+    margin: 0;
+    font-size: 24px;
+    color: #0073b1;
+}
 
-                <strong>Apply here:</strong> 
-                {% if post.apply %}
-                    <a href="{{ post.apply }}" target="_blank">{{ post.apply }}</a>
-                {% else %}
-                    <span>No application link provided</span>
-                {% endif %}
-            </li>
-        {% endfor %}
-    </ul>
-{% else %}
-    <p>No jobs available for your area of interest.</p>
-{% endif %}
+/* Post Cards */
+.post-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
 
+.post-card {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    border-left: 4px solid #0073b1;
+}
 
+.post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.post-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+}
+
+.post-date {
+    font-size: 12px;
+    color: #666;
+}
+
+.post-description {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #333;
+}
+
+.post-footer {
+    margin-top: 20px;
+    font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.apply-link {
+    text-decoration: none;
+    color: #0073b1;
+    font-weight: bold;
+}
+
+.apply-link:hover {
+    text-decoration: underline;
+}
+
+.no-apply-link {
+    color: #999;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+
+    .post-card {
+        padding: 15px;
+    }
+
+    .post-title {
+        font-size: 18px;
+    }
+
+    .post-description {
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 480px) {
+    .post-card {
+        padding: 10px;
+    }
+
+    .post-title {
+        font-size: 16px;
+    }
+
+    .post-description {
+        font-size: 12px;
+    }
+
+    .post-footer {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+</style>
+
+<div class="container">
+    <div class="profile-header">
+        <h2>Area of Interest: {{ request.user.userprofile.area_of_interest }}</h2>
+    </div>
+
+    {% if posts %}
+        <div class="post-list">
+            {% for post in posts %}
+                <div class="post-card">
+                    <div class="post-header">
+                        <strong class="post-title">{{ post.title }}</strong>
+                        <small class="post-date">
+                            Posted on: 
+                            {% load tz %}
+                            {% localtime on %}
+                                {{ post.created_at|date:"b. d, Y, h:i a" }}
+                            {% endlocaltime %}
+                        </small>
+                    </div>
+                    <div class="post-description">
+                        <p>{{ post.description }}</p>
+                    </div>
+                    <div class="post-footer">
+                        <strong>Apply here:</strong>
+                        {% if post.apply %}
+                            <a href="{{ post.apply }}" target="_blank" class="apply-link">Apply Now</a>
+                        {% else %}
+                            <span class="no-apply-link">No application link provided</span>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No jobs available for your area of interest.</p>
+    {% endif %}
+</div>
 {% endblock %}

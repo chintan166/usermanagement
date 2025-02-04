@@ -3,21 +3,92 @@
 {% load static %}
 
 {% block content %}
-  <h1>Messages from Users</h1>
-  <ul>
-    {% for message in messages %}
+<style>
+/* Styles for Messages */
+.list-group-item {
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
 
-      <li>
-        <strong>{{ request.user.username|capfirst }} : {{ message.subject }}</strong><br>
-        {{ message.content }}<br>
-        <a href="{% url 'reply_to_message' message.id %}">Reply</a><br>
-        <small>{{ message.created_at }}</small>
-        {% if message.reply %}
-          <p><strong>Replied From Admin:</strong> {{ message.reply }}</p>
-        {% else %}
-          <p><em>No reply yet</em></p>
-        {% endif %}
-      </li>
-    {% endfor %}
-  </ul>
+.list-group-item:hover {
+  background-color: #f1f1f1;
+}
+
+h1 {
+  font-size: 2rem;
+  color: #333;
+}
+
+.font-weight-bold {
+  font-size: 1.1rem;
+}
+
+.text-muted {
+  color: #888;
+}
+
+.text-dark {
+  color: #212121;
+}
+
+.btn-outline-primary {
+  color: #0073b1;
+  border-color: #0073b1;
+}
+
+.btn-outline-primary:hover {
+  background-color: #0073b1;
+  color: #fff;
+  border-color: #005a8e;
+}
+
+.mt-2 {
+  margin-top: 0.5rem;
+}
+
+.mt-3 {
+  margin-top: 1rem;
+}
+
+.mb-4 {
+  margin-bottom: 2rem;
+}
+
+.shadow-sm {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.border-top {
+  border-top: 1px solid #f0f0f0;
+}
+
+</style>
+  <div class="container mt-4">
+    <h1 class="mb-4">Messages from Users</h1>
+    
+    <div class="list-group">
+      {% for message in messages %}
+        <div class="list-group-item p-4 mb-3 shadow-sm border rounded">
+          <div class="d-flex justify-content-between">
+            <div class="font-weight-bold text-dark">{{ request.user.username|capfirst }} : {{ message.subject }}</div>
+            <small class="text-muted">{{ message.created_at|date:"F j, Y, g:i a" }}</small>
+          </div>
+          <div class="mt-2">{{ message.content }}</div>
+          
+          <a href="{% url 'reply_to_message' message.id %}" class="btn btn-sm btn-outline-primary mt-2">Reply</a>
+
+          {% if message.reply %}
+            <div class="mt-3 pt-3 border-top">
+              <strong>Replied From Admin:</strong>
+              <p class="text-muted">{{ message.reply }}</p>
+            </div>
+          {% else %}
+            <div class="mt-3 pt-3 border-top text-muted">
+              <em>No reply yet</em>
+            </div>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
 {% endblock %}

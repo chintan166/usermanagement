@@ -3,19 +3,96 @@
 {% load static %}
 
 {% block content %}
+<style>
+  /* Base styling for body and layout */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f6f8;
+  margin: 0;
+  padding: 0;
+}
 
-<h2>Videos for {{ topic.name }}</h2>
-<ul>
-  {% for video in videos %}
-    <li>
-      <h3>{{ video.title }}</h3>
-      <p>{{ video.description }}</p>
-      <video controls>
-        <source src="{{ video.video_file.url }}" type="video/mp4">
-        Your browser does not support the video tag.
-      </video>
-    </li>
-  {% endfor %}
-</ul>
+.container {
+  width: 80%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
+/* Header section */
+.header {
+  border-bottom: 2px solid #e1e9f0;
+  padding-bottom: 15px;
+  margin-bottom: 20px;
+}
+
+.topic-title {
+  font-size: 28px;
+  color: #0073b1; /* LinkedIn blue */
+  margin: 0;
+}
+
+/* Video list and individual items */
+.video-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.video-item {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.video-title {
+  font-size: 20px;
+  color: #2d2a32;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.video-description {
+  font-size: 14px;
+  color: #6a6a6a;
+  margin-bottom: 15px;
+}
+
+.video-player {
+  max-width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+video {
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+</style>
+<div class="container">
+  <div class="header">
+    <h2 class="topic-title">Videos for {{ topic.name }}</h2>
+  </div>
+
+  <div class="video-list">
+    {% for video in videos %}
+      <div class="video-item">
+        <h3 class="video-title">{{ video.title }}</h3>
+        <p class="video-description">{{ video.description }}</p>
+        <div class="video-player">
+          <video controls>
+            <source src="{{ video.video_file.url }}" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
 {% endblock %}

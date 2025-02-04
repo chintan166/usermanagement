@@ -1,32 +1,145 @@
 {% extends "user_management/base.html" %}
 
 {% block content %}
-<h2>All Projects</h2>
+<style>
+/* Container */
+.container {
+    width: 100%;
+    margin: 0 auto;
+    padding-top: 20px;
+}
 
-<table>
-    <thead>
-        <tr>
-            <th>Title</th>
-            <th>Description</th>
-            <th>Start Date</th>
-            <th>End Date</th>
-            <th>Topic</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for project in projects %}
-        <tr>
-            <td>{{ project.title }}</td>
-            <td>{{ project.description }}</td>
-            <td>{{ project.start_date }}</td>
-            <td>{{ project.end_date }}</td>
-            <td>{{ project.topic }}</td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="5">No projects available.</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+/* Page Title */
+.page-title {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 20px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+/* Table Styling */
+.project-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    border-radius: 8px;
+    overflow: hidden;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.project-table th,
+.project-table td {
+    padding: 14px 20px;
+    text-align: left;
+    font-size: 15px;
+    color: #555;
+    line-height: 1.6;
+}
+
+.project-table th {
+    background-color: #f7f7f7;
+    color: #333;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.project-table td {
+    background-color: #fafafa;
+}
+
+.project-row:hover {
+    background-color: #f1f5f8;
+    cursor: pointer;
+}
+
+.project-title {
+    font-weight: 600;
+}
+
+.project-description {
+    max-width: 250px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #666;
+}
+
+.project-date {
+    color: #777;
+}
+
+.project-topic {
+    color: #0067b8;
+    font-weight: 600;
+}
+
+/* Button Styling */
+.btn {
+    background-color: #0073b1;
+    color: white;
+    padding: 8px 16px;
+    font-size: 14px;
+    border-radius: 20px;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #005c8a;
+}
+
+/* Empty state */
+.no-projects {
+    text-align: center;
+    color: #999;
+    font-style: italic;
+    padding: 30px 0;
+}
+
+/* Table borders */
+.project-table td,
+.project-table th {
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.project-table tr:last-child td {
+    border-bottom: none;
+}
+
+</style>
+<div class="container">
+    <h2 class="page-title">All Projects</h2>
+
+    <a href="{% url 'export_projects_csv' %}" class="btn" style="margin-bottom: 20px;">Export to CSV</a>
+
+    <table class="project-table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Topic</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for project in projects %}
+                <tr class="project-row">
+                    <td class="project-title">{{ project.title }}</td>
+                    <td class="project-description">{{ project.description }}</td>
+                    <td class="project-date">{{ project.start_date }}</td>
+                    <td class="project-date">{{ project.end_date }}</td>
+                    <td class="project-topic">{{ project.topic }}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="5" class="no-projects">No projects available.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
 {% endblock %}

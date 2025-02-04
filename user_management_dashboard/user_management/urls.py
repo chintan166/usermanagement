@@ -30,6 +30,7 @@ urlpatterns = [
     path('profile/edit/', views.edit_profile, name='edit_profile'),
     path('videos/<str:topic_name>/<str:subtopic_name>/', views.topic_videos, name='topic_videos'),
     path('list_projects/', views.admin_list_projects, name='admin_list_projects'),
+    path('export_project_csv/', views.export_projects_csv, name='export_projects_csv'),
     path('password_reset_request/', views.password_reset_request, name='password_reset_request'),
     path('password_reset/<int:user_id>/', views.password_reset, name='password_reset'),
     path('view_users_and_area_of_interest/', views.view_users_and_area_of_interest, name='view_users_and_area_of_interest'),
@@ -62,5 +63,7 @@ urlpatterns = [
     path('mark_notification_read/', views.mark_notification_read, name='mark_notification_read'),
     path('people_you_may_know/', views.people_you_may_know, name='people_you_may_know'),
     path('search/', views.search, name='search'),
+    path('list_of_posts/', views.list_of_posts, name='list_of_posts'),  # For displaying all posts
+    path('admin_delete_post/<int:post_id>/', views.admin_delete_post, name='admin_delete_post'),
     
 ]

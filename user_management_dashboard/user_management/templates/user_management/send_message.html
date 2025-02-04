@@ -1,12 +1,129 @@
 {% extends "user_management/base.html" %}
-
 {% load static %}
 
 {% block content %}
-  <h1>Send a Query</h1>
-  <form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Send Message</button>
-  </form>
+
+{% block extra_css %}
+  <style>
+    /* Main container */
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 40px;
+      background-color: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+      margin-top: 50px;
+    }
+
+    /* Page title */
+    .page-title {
+      font-size: 28px;
+      font-weight: 700;
+      color: #333;
+      margin-bottom: 20px;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    /* Form elements */
+    .query-form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group {
+      margin-bottom: 25px;
+    }
+
+    .form-group label {
+      font-size: 16px;
+      font-weight: 600;
+      color: #555;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .form-input, .form-textarea {
+      width: 100%;
+      padding: 15px;
+      font-size: 16px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background-color: #fafafa;
+      color: #333;
+      transition: all 0.3s ease;
+      margin-bottom: 15px;
+    }
+
+    .form-input:focus, .form-textarea:focus {
+      border-color: #0073b1; /* LinkedIn's blue */
+      background-color: #fff;
+      outline: none;
+    }
+
+    .form-textarea {
+      resize: vertical;
+      height: 150px;
+    }
+
+    /* Submit button */
+    .submit-button {
+      padding: 15px 30px;
+      background-color: #0073b1; /* LinkedIn blue */
+      color: #fff;
+      font-size: 18px;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .submit-button:hover {
+      background-color: #005a8c; /* Darker LinkedIn blue */
+    }
+
+    .submit-button:focus {
+      outline: none;
+    }
+
+    /* Focus states and additional form refinements */
+    .form-input, .form-textarea {
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-group .error {
+      color: #ff4d4d;
+      font-size: 14px;
+      margin-top: 5px;
+    }
+  </style>
 {% endblock %}
+
+  <div class="container">
+    <h1 class="page-title">Send a Query</h1>
+    
+    <form method="POST" class="query-form">
+      {% csrf_token %}
+      
+      <div class="form-group">
+        <label for="id_subject">Subject:</label>
+        <input type="text" name="subject" maxlength="200" required="" id="id_subject" class="form-input">
+      </div>
+      
+      <div class="form-group">
+        <label for="id_content">Content:</label>
+        <textarea name="content" cols="40" rows="10" required="" id="id_content" class="form-textarea"></textarea>
+      </div>
+      
+      <div class="form-submit">
+        <button type="submit" class="submit-button">Send Message</button>
+      </div>
+    </form>
+  </div>
+{% endblock %}
+
+

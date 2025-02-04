@@ -3,32 +3,143 @@
 {% load static %}
 
 {% block content %}
+<style>
+  /* General Styling */
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+    background-color: #f4f6f9;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;  /* Ensures padding doesn't affect the layout */
+  }
 
-<h2>{{ quiz.title }}</h2>
+  /* Quiz Title */
+  .quiz-title {
+    font-size: 28px;
+    font-weight: bold;
+    color: #2d2d2d;
+    margin-bottom: 40px;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* Question Card Styling */
+  .question-card {
+    background: #ffffff;
+    padding: 20px;
+    margin-bottom: 30px; /* Increased margin to create space between question cards */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  }
+
+  .question-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .question-text {
+    font-size: 20px;
+    color: #2d2d2d;
+    margin-bottom: 15px;
+    font-weight: 500;
+  }
+
+  .answer-option {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+  }
+
+  .answer-option:hover {
+    background-color: #f1f3f5;
+    border-color: #006aff;
+  }
+
+  .answer-option input {
+    margin-right: 15px;
+    cursor: pointer;
+  }
+
+  /* Submit Button */
+  .submit-btn {
+    background-color: #006aff;
+    color: white;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 30px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    width: 100%;
+    max-width: 220px;
+    margin: 40px auto 20px;
+    display: block;
+  }
+
+  .submit-btn:hover {
+    background-color: #0056d1;
+    transform: scale(1.05);
+  }
+
+  /* Pagination Styling */
+  .pagination {
+    margin-top: 40px;
+    text-align: center;
+  }
+
+  .pagination-link {
+    margin: 0 12px;
+    text-decoration: none;
+    color: #006aff;
+    font-size: 16px;
+    font-weight: 600;
+    transition: color 0.3s ease;
+  }
+
+  .pagination-link:hover {
+    color: #0056d1;
+  }
+
+  .current {
+    font-weight: bold;
+    color: #333;
+  }
+</style>
+
+<h2 class="quiz-title">{{ quiz.title }}</h2>
 
 <form method="post" action="{% url 'quiz_submit' quiz.id %}">
   {% csrf_token %}
   
   {% for question in page_obj %}
-    <fieldset style="padding: 5px 10px 10px 10px;">
-      <legend>{{ question.text }}</legend>
+    <div class="question-card">
+      <div class="question-text">{{ question.text }}</div>
       {% for answer in question.answer_set.all %}
-        <label style="padding: 5px 10px 10px 10px;">
+        <label class="answer-option">
           <input type="radio" name="{{ question.id }}" value="{{ answer.id }}">
-          {{ answer.text }}
-        </label><br>
+          <span>{{ answer.text }}</span>
+        </label>
       {% endfor %}
-    </fieldset>
+    </div>
   {% endfor %}
   
-  <button type="submit">Submit</button>
+  <button class="submit-btn" type="submit">Submit</button>
 </form>
 
 <div class="pagination">
   <span class="step-links">
     {% if page_obj.has_previous %}
-      <a href="?page=1">&laquo; first</a>
-      <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+      <a class="pagination-link" href="?page=1">&laquo; First</a>
+      <a class="pagination-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
     {% endif %}
     
     <span class="current">
@@ -36,29 +147,11 @@
     </span>
     
     {% if page_obj.has_next %}
-      <a href="?page={{ page_obj.next_page_number }}">next</a>
-      <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+      <a class="pagination-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+      <a class="pagination-link" href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
     {% endif %}
   </span>
 </div>
 
 {% endblock %}
 
-<style>
-  fieldset {
-    padding: 5px 10px 10px 10px;
-    margin: 10px;
-    border: 0;
-  }
-  label {
-    display: inline-block;
-    padding: 5px 10px 10px 10px;
-  }
-  .pagination {
-    margin-top: 20px;
-  }
-  .pagination a {
-    margin: 0 5px;
-    text-decoration: none;
-  }
-</style>
